@@ -1,1 +1,77 @@
 @import "tailwindcss";
+@import "@fontsource/permanent-marker";
+@import "@fontsource/overpass/500.css";
+@import "@fontsource/overpass/600.css";
+@import "@fontsource/overpass/700.css";
+@import "@fontsource/overpass/800.css";
+@import "@fontsource/overpass/900.css";
+
+@theme {
+    --font-body:"overpass", sans-serif;
+    --font-heading: "Permanent Marker", sans-serif;
+    --color-gradient:linear-gradient(90deg, #1CB5E0 0%, #000851 100%);
+}
+
+@layer base{
+    body {
+        @apply bg-black text-white font-body text-xl overflow-x-clip;
+    }
+}
+
+
+@layer components{
+    .main-container {
+        @apply max-w-[1600px] w-full m-auto px-4 lg:px-12
+    }
+
+    h1 {
+        position: relative;
+        &::before{
+            content: '';
+            position: absolute;
+            left:0;
+            bottom: 12px;
+            width: 99%;
+            height:1vh;
+            background : var(--color-gradient);
+            z-index: -1;
+        }
+
+        &::after{
+            content: '';
+            position: absolute;
+            left:0;
+            bottom: 6px;
+            width: 99%;
+            height:2px;
+            background : var(--color-gradient);
+            z-index: -1;
+        }
+    }
+
+    .text-stroke {
+        -webkit-text-stroke: 1px white;
+        color:transparent;
+    }
+
+    .btn {
+        background: linear-gradient(#000,#000) padding-box,
+        var(--color-gradient) border-box;
+    }
+
+    .btn:hover {
+        background: var(--color-gradient) padding-box,
+        var(--color-gradient) border-box;
+    }
+
+    .btn-light {
+         background: linear-gradient(#fff,#fff) padding-box,
+        var(--color-gradient) border-box;
+    }
+}
+
+@media (max-width:1023px){
+    h1::before {
+        bottom:4px;
+    }
+}

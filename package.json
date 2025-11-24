@@ -10,6 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource-variable/overpass": "^5.2.8",
+    "@fontsource/overpass": "^5.2.8",
+    "@fontsource/permanent-marker": "^5.2.7",
+    "@splinetool/react-spline": "^4.1.0",
     "@tailwindcss/vite": "^4.1.17",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
