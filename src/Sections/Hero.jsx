@@ -18,8 +18,8 @@ const Hero = () => {
             link="mailto:poudyal.sammit@gmail.com"
           />
         </div>
-      <div className='absolute -z-10 top:80 lg:top-32 right-12 w-96 h-96'>
-        {/* <Spline scene="https://prod.spline.design/rrwZ-JfRgHA8TcXd/scene.splinecode" /> */}
+      <div className='absolute -z-10 top-28 lg:top-32 right-[-15%] lg:right-12 w-96 h-96'>
+        <Spline scene="https://prod.spline.design/rrwZ-JfRgHA8TcXd/scene.splinecode" />
       </div>
       </div>
     </>

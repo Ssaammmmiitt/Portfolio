@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@fontsource-variable/overpass": "^5.2.8",
+    "@fontsource/kanit": "^5.2.8",
     "@fontsource/overpass": "^5.2.8",
     "@fontsource/permanent-marker": "^5.2.7",
     "@splinetool/react-spline": "^4.1.0",

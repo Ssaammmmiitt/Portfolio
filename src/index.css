@@ -1,13 +1,13 @@
 @import "tailwindcss";
 @import "@fontsource/permanent-marker";
-@import "@fontsource/overpass/500.css";
-@import "@fontsource/overpass/600.css";
-@import "@fontsource/overpass/700.css";
-@import "@fontsource/overpass/800.css";
-@import "@fontsource/overpass/900.css";
+@import "@fontsource/kanit/500.css";
+@import "@fontsource/kanit/600.css";
+@import "@fontsource/kanit/700.css";
+@import "@fontsource/kanit/800.css";
+@import "@fontsource/kanit/900.css";
 
 @theme {
-    --font-body:"overpass", sans-serif;
+    --font-body:"kanit", sans-serif;
     --font-heading: "Permanent Marker", sans-serif;
     --color-gradient:linear-gradient(90deg, #1CB5E0 0%, #000851 100%);
 }
