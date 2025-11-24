@@ -1,5 +1,6 @@
 @import "tailwindcss";
-@import "@fontsource/permanent-marker";
+@import "@fontsource/bungee";
+@import "@fontsource/bungee-shade";
 @import "@fontsource/kanit/500.css";
 @import "@fontsource/kanit/600.css";
 @import "@fontsource/kanit/700.css";
@@ -8,7 +9,7 @@
 
 @theme {
     --font-body:"kanit", sans-serif;
-    --font-heading: "Permanent Marker", sans-serif;
+    --font-heading: "bungee", sans-serif;
     --color-gradient:linear-gradient(90deg, #1CB5E0 0%, #000851 100%);
 }
 
