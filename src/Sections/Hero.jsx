@@ -6,11 +6,11 @@ const Hero = () => {
   return (
     <>
       <div className="relative overflow-hidden">
-        <div className="main-container h-screen flex flex-col lg:justify-center items-start lg:py-12 max-lg:pt-40">
+        <div className="main-container sm:h-[55vh] md:min-h-[90vh] flex flex-col lg:justify-center items-start lg:py-12 max-lg:pt-40 ">
           <h1 className="text-3xl lg:text-[3.2vw] uppercase font-heading font-semibold">
             Sammit Poudyal
           </h1>
-          <h2 className="text-6xl lg:text-[8vw] font-heading font-bold leading-none lg:tracking-tight tracking-tight mt-3 mb-6">
+          <h2 className="text-6xl lg:text-[8vw] font-heading font-bold leading-none lg:tracking-tight tracking-tight mt-3 mb-6 min-w-auto" >
             Web Developer <br /> <span className="text-stroke">(Frontend)</span>
           </h2>
           <GradientButton
