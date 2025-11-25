@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "@fontsource/bungee";
-@import "@fontsource/bungee-shade";
+@import "@fontsource-variable/sixtyfour";
 @import "@fontsource/kanit/500.css";
 @import "@fontsource/kanit/600.css";
 @import "@fontsource/kanit/700.css";
@@ -10,6 +10,7 @@
 @theme {
     --font-body:"kanit", sans-serif;
     --font-heading: "bungee", sans-serif;
+    --font-heading-alt :'Sixtyfour Variable', monospace;
     --color-gradient:linear-gradient(90deg, #1CB5E0 0%, #000851 100%);
 }
 
@@ -18,7 +19,7 @@
         @apply bg-black text-white font-body text-xl overflow-x-clip;
     }
     h3{
-        @apply font-heading font-medium uppercase text-2xl;
+        @apply  text-cyan-600 font-heading-alt font-semibold uppercase text-2xl;
     }
 }
 
