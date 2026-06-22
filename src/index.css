@@ -20,7 +20,13 @@
 
 @layer base {
     html {
-        scroll-behavior: smooth;
+        scroll-behavior: auto;
+    }
+    html.lenis {
+        height: auto;
+    }
+    html.lenis body {
+        height: auto;
     }
     body {
         @apply bg-black text-white font-body text-xl overflow-x-clip;

@@ -1,3 +1,4 @@
+import LenisProvider from "./Components/LenisProvider";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import Hero from "./Sections/Hero";
@@ -9,7 +10,7 @@ import Contact from "./Sections/Contact";
 
 function App() {
   return (
-    <>
+    <LenisProvider>
       <Navbar />
       <main>
         <Hero />
@@ -20,7 +21,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
-    </>
+    </LenisProvider>
   );
 }
 
