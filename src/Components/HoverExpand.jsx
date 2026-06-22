@@ -11,7 +11,7 @@ const HoverExpand = ({ projects, className }) => {
   return (
     <div className={cn("relative w-full", className)}>
       <div className="overflow-x-auto pb-4 -mx-4 px-4 md:overflow-visible md:mx-0 md:px-0 scrollbar-hide">
-        <div className="flex w-max md:w-full items-center justify-start md:justify-center gap-1.5 md:gap-1">
+        <div className="flex w-max md:w-full items-center justify-start md:justify-center gap-2 md:gap-2 min-h-[16rem] sm:min-h-[20rem] md:min-h-[30rem]">
           {projects.map((project, index) => {
             const isActive = activeIndex === index;
 
@@ -21,8 +21,8 @@ const HoverExpand = ({ projects, className }) => {
                 className="relative shrink-0 cursor-pointer overflow-hidden rounded-2xl md:rounded-3xl"
                 initial={false}
                 animate={{
-                  width: isActive ? (isDesktop ? "24rem" : "14rem") : isDesktop ? "5rem" : "3rem",
-                  height: isDesktop ? "24rem" : "14rem",
+                  width: isActive ? (isDesktop ? "30rem" : "16rem") : isDesktop ? "6rem" : "3.5rem",
+                  height: isDesktop ? "30rem" : "16rem",
                 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 onClick={() => setActiveIndex(index)}
@@ -48,20 +48,20 @@ const HoverExpand = ({ projects, className }) => {
                         initial={{ opacity: 0, y: 8 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 8 }}
-                        className="absolute inset-0 flex flex-col items-start justify-end p-3 md:p-4"
+                        className="absolute inset-0 flex flex-col items-start justify-end p-4 md:p-6"
                       >
-                        <p className="text-xs text-cyan-400 font-medium mb-1">{project.code}</p>
-                        <h4 className="text-sm md:text-lg font-heading text-white leading-tight mb-2">
+                        <p className="text-sm text-cyan-400 font-medium mb-1.5">{project.code}</p>
+                        <h4 className="text-base md:text-xl lg:text-2xl font-heading text-white leading-tight mb-2">
                           {project.title}
                         </h4>
                         {isDesktop && (
-                          <p className="text-xs text-white/60 line-clamp-2 mb-3">{project.desc}</p>
+                          <p className="text-sm text-white/60 line-clamp-2 mb-4">{project.desc}</p>
                         )}
-                        <div className="flex flex-wrap gap-1 md:gap-1.5 mb-3">
+                        <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4">
                           {(isDesktop ? project.tags : project.tags.slice(0, 2)).map((tag) => (
                             <span
                               key={tag}
-                              className="text-[10px] uppercase tracking-wider text-white/70 bg-white/10 px-2 py-0.5 rounded-full"
+                              className="text-xs uppercase tracking-wider text-white/70 bg-white/10 px-2.5 py-1 rounded-full"
                             >
                               {tag}
                             </span>
@@ -73,9 +73,9 @@ const HoverExpand = ({ projects, className }) => {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="flex items-center gap-1.5 text-xs text-white/70 hover:text-cyan-400 transition-colors"
+                            className="flex items-center gap-1.5 text-sm text-white/70 hover:text-cyan-400 transition-colors"
                           >
-                            <FiGithub size={16} />
+                            <FiGithub size={18} />
                             {isDesktop && <span>Source</span>}
                           </a>
                           {project.live && (
@@ -84,9 +84,9 @@ const HoverExpand = ({ projects, className }) => {
                               target="_blank"
                               rel="noopener noreferrer"
                               onClick={(e) => e.stopPropagation()}
-                              className="flex items-center gap-1.5 text-xs text-white/70 hover:text-cyan-400 transition-colors"
+                              className="flex items-center gap-1.5 text-sm text-white/70 hover:text-cyan-400 transition-colors"
                             >
-                              <FiExternalLink size={16} />
+                              <FiExternalLink size={18} />
                               {isDesktop && <span>Live</span>}
                             </a>
                           )}
