@@ -1,32 +1,30 @@
-import React from 'react'
-import GradientButton from '../Components/GradientButton'
-
-
+import GradientButton from "../Components/GradientButton";
+import HoverExpand from "../Components/HoverExpand";
+import SectionReveal from "../Components/SectionReveal";
+import { projects } from "../data/projects";
+import { site } from "../data/site";
 
 const Work = () => {
   return (
-    <>
-      <div className='h-screen bg-white text-black py-24 lg:py-40'>
-        {/*title*/}
-        <div className='main-container pb-8 lg:pb-12 max-md:flex-col flex gap-6 justify-between items-start md:items-end'>
-          <div className='max-w-xl'>
-            <h3 className='mb-3'>Selected Works</h3>
-            <div className="text-lg lg:text-xl">A showcase of my projects and collaborations.</div>
+    <section id="work" className="bg-surface text-on-surface py-20 lg:py-28">
+      <div className="main-container">
+        <SectionReveal className="pb-10 lg:pb-14 flex flex-col md:flex-row gap-6 justify-between items-start md:items-end">
+          <div className="max-w-xl">
+            <h3 className="mb-3">Selected Works</h3>
+            <p className="text-on-surface-muted text-lg lg:text-xl">
+              A showcase of projects and collaborations I&apos;ve worked on.
+              Hover or tap to explore.
+            </p>
           </div>
-          <GradientButton text="View Works" className='btn-light ' link="/" />
-        </div>
+          <GradientButton text="View All" className="btn-light" link={site.github} />
+        </SectionReveal>
 
-
-        {/*projects*/}
-        <div className="flex gap-4">
-          <a href=''>
-            <img src="" alt =" " />
-            <span></span>
-          </a>
-        </div>
+        <SectionReveal delay={0.15}>
+          <HoverExpand projects={projects} />
+        </SectionReveal>
       </div>
-    </>
-  )
-}
+    </section>
+  );
+};
 
-export default Work
+export default Work;

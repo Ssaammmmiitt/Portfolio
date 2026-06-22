@@ -8,75 +8,141 @@
 @import "@fontsource/kanit/900.css";
 
 @theme {
-    --font-body:"kanit", sans-serif;
+    --font-body: "kanit", sans-serif;
     --font-heading: "bungee", sans-serif;
-    --font-heading-alt :'Sixtyfour Variable', monospace;
-    --color-gradient:linear-gradient(90deg, #1CB5E0 0%, #000851 100%);
+    --font-heading-alt: 'Sixtyfour Variable', monospace;
+    --color-gradient: linear-gradient(90deg, #1CB5E0 0%, #000851 100%);
+    --color-surface: #F4F1EB;
+    --color-surface-muted: #EAE6DF;
+    --animate-marquee: marquee 30s linear infinite;
+    --animate-marquee-reverse: marquee-reverse 30s linear infinite;
 }
 
-@layer base{
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
     body {
         @apply bg-black text-white font-body text-xl overflow-x-clip;
     }
-    h3{
-        @apply  text-cyan-600 font-heading-alt font-semibold uppercase text-2xl;
+    h3 {
+        @apply text-cyan-600 font-heading-alt font-semibold uppercase text-xl md:text-2xl;
     }
 }
 
-
-@layer components{
+@layer components {
     .main-container {
-        @apply max-w-[1600px] w-full m-auto px-4 lg:px-12
+        @apply max-w-[1600px] w-full m-auto px-4 lg:px-12;
     }
 
     h1 {
         position: relative;
-        &::before{
+        &::before {
             content: '';
             position: absolute;
-            left:0;
+            left: 0;
             bottom: 12px;
             width: 99%;
-            height:1vh;
-            background : var(--color-gradient);
+            height: 1vh;
+            background: var(--color-gradient);
             z-index: -1;
         }
-
-        &::after{
+        &::after {
             content: '';
             position: absolute;
-            left:0;
+            left: 0;
             bottom: 6px;
             width: 99%;
-            height:2px;
-            background : var(--color-gradient);
+            height: 2px;
+            background: var(--color-gradient);
             z-index: -1;
         }
+    }
+
+    .hero-name {
+        background: linear-gradient(135deg, #ffffff 20%, #1CB5E0 80%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 30px rgba(28, 181, 224, 0.35));
+    }
+
+    .hero-name::before,
+    .hero-name::after {
+        display: none;
     }
 
     .text-stroke {
         -webkit-text-stroke: 1px white;
-        color:transparent;
+        color: transparent;
     }
 
     .btn {
-        background: linear-gradient(#000,#000) padding-box,
-        var(--color-gradient) border-box;
+        background: linear-gradient(#000, #000) padding-box,
+            var(--color-gradient) border-box;
     }
 
     .btn:hover {
         background: var(--color-gradient) padding-box,
-        var(--color-gradient) border-box;
+            var(--color-gradient) border-box;
+    }
+
+    .bg-surface {
+        background-color: var(--color-surface);
+    }
+
+    .text-on-surface {
+        color: #1c1917;
+    }
+
+    .text-on-surface-muted {
+        color: rgba(28, 25, 23, 0.72);
     }
 
     .btn-light {
-         background: linear-gradient(#fff,#fff) padding-box,
-        var(--color-gradient) border-box;
+        background: linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+            var(--color-gradient) border-box;
+        color: #1c1917;
+    }
+
+    .btn-light:hover {
+        background: var(--color-gradient) padding-box,
+            var(--color-gradient) border-box;
+        color: #fff;
+    }
+
+    .btn-light-dark {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-light-dark:hover {
+        border-color: rgba(28, 181, 224, 0.6);
+        background: rgba(28, 181, 224, 0.1);
     }
 }
 
-@media (max-width:1023px){
+@media (max-width: 1023px) {
     h1::before {
-        bottom:4px;
+        bottom: 4px;
     }
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
 }
