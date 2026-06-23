@@ -18,12 +18,12 @@ const TerminalBackground = () => {
             flickerAmount: 0.65,
           }
         : {
-            tint: "#0e7490",
-            brightness: 0.72,
-            scanlineIntensity: 0.8,
-            noiseAmp: 0.9,
-            glitchAmount: 1,
-            flickerAmount: 0.85,
+            tint: "#faf7f2",
+            brightness: 0.62,
+            scanlineIntensity: 0.45,
+            noiseAmp: 0.5,
+            glitchAmount: 0.65,
+            flickerAmount: 0.55,
           },
     [theme]
   );

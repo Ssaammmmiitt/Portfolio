@@ -14,11 +14,13 @@
 }
 
 .terminal-background__overlay[data-theme="light"] {
-  opacity: 0.93;
-}
-
-.terminal-background__overlay[data-theme="light"] {
-  opacity: 0.74;
+  background: linear-gradient(
+    165deg,
+    rgba(255, 253, 248, 0.92) 0%,
+    rgba(246, 242, 235, 0.86) 55%,
+    rgba(238, 232, 223, 0.9) 100%
+  );
+  opacity: 1;
 }
 
 .terminal-background__vignette {
@@ -37,7 +39,7 @@ html.light .terminal-background__vignette {
   background: radial-gradient(
     ellipse at center,
     transparent 0%,
-    rgba(14, 116, 144, 0.28) 100%
+    rgba(214, 198, 178, 0.22) 100%
   );
-  opacity: 0.45;
+  opacity: 0.5;
 }
