@@ -1,36 +1,39 @@
+import { useMemo } from "react";
+import LogoLoop from "../Components/LogoLoop";
 import SectionReveal from "../Components/SectionReveal";
-import { techStack } from "../data/techStack";
-
-const MarqueeRow = ({ reverse = false }) => (
-  <div className="overflow-hidden py-3">
-    <div
-      className={`flex gap-4 sm:gap-6 whitespace-nowrap ${
-        reverse ? "animate-marquee-reverse" : "animate-marquee"
-      }`}
-    >
-      {[...techStack, ...techStack].map((tech, i) => (
-        <span
-          key={i}
-          className="inline-block text-base sm:text-lg md:text-xl font-medium text-white/60 border border-white/15 px-5 sm:px-6 py-2 rounded-full hover:text-cyan-400 hover:border-cyan-500/30 transition-colors duration-200 cursor-default"
-        >
-          {tech}
-        </span>
-      ))}
-    </div>
-  </div>
-);
+import { useTheme } from "../context/ThemeProvider";
+import { getTechStackLogos } from "../data/techStack";
 
 const Marquee = () => {
+  const { theme } = useTheme();
+  const logos = useMemo(() => getTechStackLogos(theme), [theme]);
+
+  const logoLoopProps = {
+  logos,
+  logoHeight: 40,
+  gap: 56,
+  fadeOut: true,
+  fadeOutColor: "var(--color-bg-soft)",
+  pauseOnHover: true,
+  scaleOnHover: true,
+  ariaLabel: "Technologies I work with",
+};
+
   return (
-    <section className="bg-black py-16 md:py-20 overflow-hidden">
+    <section className="theme-bg-soft py-16 md:py-20 overflow-hidden">
       <SectionReveal className="main-container mb-10">
         <h3 className="mb-3">Tech Stack</h3>
-        <p className="text-white/70 text-base lg:text-lg">
+        <p className="theme-text-muted text-base lg:text-lg">
           Technologies I work with regularly.
         </p>
       </SectionReveal>
-      <MarqueeRow />
-      <MarqueeRow reverse />
+
+      <div className="space-y-6 md:space-y-8">
+        <div className="px-5 md:px-10 lg:px-20 ml-5">
+        <LogoLoop {...logoLoopProps} speed={90} direction="left" />
+        </div>
+        <LogoLoop {...logoLoopProps} speed={70} direction="right" />
+      </div>
     </section>
   );
 };

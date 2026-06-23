@@ -28,36 +28,24 @@ const Logo = ({ size = 44, className, showWordmark = false }) => {
           width="44"
           height="44"
           rx="13"
-          fill="#09090b"
+          fill="var(--logo-bg)"
           stroke={`url(#${gradientId})`}
           strokeWidth="2"
         />
 
-        <text
-          x="10"
-          y="33"
-          fill="#1CB5E0"
-          fontFamily="Bungee, sans-serif"
-          fontSize="23"
-        >
+        <text x="10" y="33" fill="#1CB5E0" fontFamily="Bungee, sans-serif" fontSize="23">
           S
         </text>
-        <text
-          x="25"
-          y="33"
-          fill="#ffffff"
-          fontFamily="Bungee, sans-serif"
-          fontSize="23"
-        >
+        <text x="25" y="33" fill="var(--logo-text)" fontFamily="Bungee, sans-serif" fontSize="23">
           P
         </text>
       </svg>
 
-      {/* {showWordmark && (
-        <span className="logo-wordmark hidden md:inline font-heading text-lg lg:text-xl tracking-wide leading-none">
+      {showWordmark && (
+        <span className="hidden md:inline font-heading text-lg lg:text-xl tracking-wide leading-none theme-text">
           Sammit<span className="text-cyan-400">.</span>
         </span>
-      )} */}
+      )}
     </div>
   );
 };

@@ -1,13 +1,17 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { FiMenu, FiX } from "react-icons/fi";
+import { navLinks } from "../data/site";
+import { useTheme } from "../context/ThemeProvider";
+import { easeOut } from "./animations";
 import Logo from "./Logo";
 import SocialLinks from "./SocialLinks";
-import { easeOut } from "./animations";
-import { navLinks } from "../data/site";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -22,6 +26,8 @@ const Navbar = () => {
     };
   }, [menuOpen]);
 
+  const barClass = theme === "dark" ? "bg-white" : "bg-[var(--color-text)]";
+
   return (
     <>
       <motion.nav
@@ -29,15 +35,11 @@ const Navbar = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: easeOut }}
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          scrolled ? "bg-black/80 backdrop-blur-md shadow-lg" : "bg-transparent"
+          scrolled ? "theme-nav shadow-lg backdrop-blur-md" : "bg-transparent"
         }`}
       >
-        <div className="main-container py-4 sm:py-5 flex justify-between items-center">
-          <a
-            href="#"
-            className="hover:opacity-85 transition-opacity"
-            aria-label="Sammit Poudyal — Home"
-          >
+        <div className="main-container py-4 sm:py-5 flex justify-between items-center gap-4">
+          <a href="#" className="hover:opacity-85 transition-opacity" aria-label="Sammit Poudyal — Home">
             <Logo size={40} showWordmark />
           </a>
 
@@ -49,23 +51,26 @@ const Navbar = () => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.08, duration: 0.4 }}
-                className="text-sm uppercase tracking-widest font-medium hover:text-cyan-400 transition-colors duration-200"
+                className="theme-text text-base lg:text-lg uppercase tracking-[0.18em] font-medium hover:text-cyan-400 transition-colors duration-200"
               >
                 {link.label}
               </motion.a>
             ))}
-            <SocialLinks size={20} className="ml-4 border-l border-white/20 pl-6 gap-4" includeEmail={false} />
+            <ThemeToggle />
+            <SocialLinks size={20} className="ml-2 border-l theme-border pl-6 gap-4" includeEmail={false} />
           </div>
 
-          <button
-            className="md:hidden flex flex-col gap-1.5 cursor-pointer z-50 relative"
-            onClick={() => setMenuOpen((prev) => !prev)}
-            aria-label="Toggle menu"
-          >
-            <span className={`inline-block w-8 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
-            <span className={`inline-block w-8 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
-            <span className={`inline-block w-8 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
-          </button>
+          <div className="md:hidden flex items-center gap-3">
+            <ThemeToggle />
+            <button
+              className="flex items-center justify-center cursor-pointer z-50 relative theme-text"
+              onClick={() => setMenuOpen((prev) => !prev)}
+              aria-label="Toggle menu"
+              type="button"
+            >
+              {menuOpen ? <FiX size={28} /> : <FiMenu size={28} />}
+            </button>
+          </div>
         </div>
       </motion.nav>
 
@@ -76,7 +81,7 @@ const Navbar = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 bg-black flex flex-col justify-center items-center gap-8"
+            className="fixed inset-0 z-40 theme-bg flex flex-col justify-center items-center gap-8"
           >
             {navLinks.map((link, i) => (
               <motion.a
@@ -86,7 +91,7 @@ const Navbar = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08, duration: 0.35 }}
-                className="text-2xl sm:text-3xl font-heading uppercase tracking-widest hover:text-cyan-400 transition-colors"
+                className="text-2xl sm:text-3xl font-heading uppercase tracking-widest theme-text hover:text-cyan-400 transition-colors"
               >
                 {link.label}
               </motion.a>
@@ -95,8 +100,9 @@ const Navbar = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.35 }}
-              className="mt-6"
+              className="mt-6 flex flex-col items-center gap-5"
             >
+              <ThemeToggle />
               <SocialLinks size={28} includeEmail={false} />
             </motion.div>
           </motion.div>

@@ -29,7 +29,7 @@ const SocialLinks = ({ size = 20, className, includeEmail = true }) => {
             href={href}
             target={isExternal ? "_blank" : undefined}
             rel={isExternal ? "noopener noreferrer" : undefined}
-            className="text-white/60 hover:text-cyan-400 transition-colors duration-200"
+            className="theme-icon-muted hover:text-cyan-400 transition-colors duration-200"
             aria-label={label}
           >
             <Icon size={size} />

@@ -2,7 +2,7 @@ import Spline from "@splinetool/react-spline";
 import { motion } from "framer-motion";
 import GradientButton from "../Components/GradientButton";
 import SocialLinks from "../Components/SocialLinks";
-import { fadeUp, staggerContainer, easeOut } from "../Components/animations";
+import { easeOut, fadeUp, staggerContainer } from "../Components/animations";
 import { site } from "../data/site";
 
 const Hero = () => {
@@ -34,7 +34,7 @@ const Hero = () => {
           <motion.h2
             variants={fadeUp}
             custom={0.2}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-[6.5vw] font-heading font-bold leading-none tracking-tight"
+            className="theme-text text-4xl sm:text-5xl md:text-6xl lg:text-[6.5vw] font-heading font-bold leading-none tracking-tight"
           >
             {site.title}{" "}
             <span className="text-stroke">{site.titleAccent}</span>
@@ -53,10 +53,7 @@ const Hero = () => {
             custom={0.3}
             className="flex flex-wrap items-center gap-3 sm:gap-4"
           >
-            <GradientButton
-              text="Let's Connect"
-              link={`mailto:${site.email}`}
-            />
+            <GradientButton text="Let's Connect" link={`mailto:${site.email}`} />
             <GradientButton text="View Work" link="#work" className="btn-light-dark" />
           </motion.div>
 

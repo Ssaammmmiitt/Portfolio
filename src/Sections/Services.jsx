@@ -22,7 +22,7 @@ const Services = () => {
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={staggerContainer}
-            className={`${s.bg} text-white border-t border-white/10`}
+            className={`service-panel service-panel-${index + 1} border-t theme-border`}
           >
             <div className="main-container py-14 lg:py-20">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-20 items-center">
@@ -34,13 +34,13 @@ const Services = () => {
                   <span className="text-cyan-400 text-2xl lg:text-4xl tracking-wide font-heading shrink-0 pt-1 font-bold">
                     {s.num}
                   </span>
-                  <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold leading-tight text-white">
+                  <h2 className="theme-text text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold leading-tight">
                     {s.title}
                   </h2>
                 </motion.div>
 
                 <motion.div variants={slideInRight} custom={index * 0.1} className="md:pl-4">
-                  <p className="text-white text-lg sm:text-xl md:text-2xl lg:text-[1.65rem] leading-relaxed font-medium">
+                  <p className="theme-text-muted text-lg sm:text-xl md:text-2xl lg:text-[1.65rem] leading-relaxed font-medium">
                     {s.desc}
                   </p>
                 </motion.div>

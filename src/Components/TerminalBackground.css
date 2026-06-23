@@ -1,0 +1,43 @@
+.terminal-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.terminal-background__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg);
+  opacity: 0.84;
+  transition: opacity 300ms ease;
+}
+
+.terminal-background__overlay[data-theme="light"] {
+  opacity: 0.93;
+}
+
+.terminal-background__overlay[data-theme="light"] {
+  opacity: 0.74;
+}
+
+.terminal-background__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+  opacity: 0.55;
+  transition: opacity 300ms ease;
+}
+
+html.light .terminal-background__vignette {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(14, 116, 144, 0.28) 100%
+  );
+  opacity: 0.45;
+}

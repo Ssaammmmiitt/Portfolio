@@ -16,7 +16,7 @@ const Contact = () => {
       <div className="main-container">
         <SectionReveal className="max-w-3xl">
           <h3 className="mb-4">Get In Touch</h3>
-          <p className="text-white/70 text-base lg:text-lg mb-12">
+          <p className="theme-text-muted text-base lg:text-lg mb-12">
             Have a project in mind or want to collaborate? I&apos;d love to hear
             from you.
           </p>
@@ -41,26 +41,26 @@ const Contact = () => {
                 rel={isExternal ? "noopener noreferrer" : undefined}
                 variants={scaleIn}
                 custom={i * 0.1}
-                className="group border border-white/15 rounded-2xl p-6 hover:border-cyan-500/40 transition-all duration-300 hover:shadow-[0_0_30px_rgba(28,181,224,0.1)]"
+                className="group theme-card border theme-border rounded-2xl p-6 hover:border-cyan-500/40 transition-all duration-300 hover:shadow-[0_0_30px_rgba(28,181,224,0.1)]"
               >
                 <div className="flex items-center justify-between mb-4">
                   <Icon size={24} className="text-cyan-400" />
                   <FiArrowUpRight
                     size={18}
-                    className="text-white/40 group-hover:text-cyan-400 transition-colors"
+                    className="theme-text-muted group-hover:text-cyan-400 transition-colors"
                   />
                 </div>
-                <span className="block text-sm text-white/50 uppercase tracking-wider mb-1">
+                <span className="block text-sm theme-text-muted uppercase tracking-wider mb-1">
                   {link.label}
                 </span>
-                <span className="text-white text-base break-all">{link.value}</span>
+                <span className="theme-text text-base break-all">{link.value}</span>
               </motion.a>
             );
           })}
         </motion.div>
 
-        <SectionReveal delay={0.2} className="border-t border-white/10 pt-12 text-center">
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-heading mb-6">
+        <SectionReveal delay={0.2} className="border-t theme-border pt-12 text-center">
+          <h2 className="theme-text text-3xl md:text-5xl lg:text-6xl font-heading mb-6">
             Let&apos;s build something
             <br />
             <span className="text-stroke"> great together.</span>
