@@ -3,18 +3,11 @@
 // ─────────────────────────────────────────────
 
 export const NAME = "Sammit Poudyal";
-
 export const FIRST_NAME = "Sammit";
-
 export const ROLE = "Full-Stack Developer · Applied AI";
-
 export const TITLE = "Computer Engineering Student";
-
 export const LOCATION = "Kathmandu, Nepal";
-
-export const AVAILABILITY =
-  "Open to software engineering, full-stack & applied AI opportunities";
-
+export const AVAILABILITY ="Open to software engineering, full-stack & applied AI opportunities";
 export const EMAIL = "poudyal.sammit@gmail.com";
 
 // ─────────────────────────────────────────────
@@ -203,12 +196,12 @@ export const PROJECTS = [
   },
 
   {
-    name: "NoteMerger",
+    name: "NoteMerge",
 
     title: "Turning Fragmented Notes into Structured Knowledge",
 
     description:
-      "An AI-powered application that combines summarization, semantic similarity, and topic clustering to organize and reduce redundant information.",
+      "An AI - powered application that combines summarization, semantic similarity, and topic clustering to organize and reduce redundant information.",
 
     year: "2025",
 
