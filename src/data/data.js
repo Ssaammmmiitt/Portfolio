@@ -137,7 +137,7 @@ export const MANIFESTO_LINES = [
 ];
 
 export const MANIFESTO_BODY =
-  "I build software at the intersection of engineering and intelligence - from responsive interfaces and backend systems to machine learning models and AI-powered workflows. I care about understanding the problem, making thoughtful technical decisions, and creating systems that can be measured, improved, and used in the real world. At the core, coding is coding: I genuinely enjoy building, and that gives me confidence to take on anything where code is the work - frontends, APIs, data, models, or the systems that connect them.";
+  "I build software at the intersection of engineering and intelligence - from responsive interfaces and backend systems to machine learning models and AI-powered workflows. I care about understanding the problem, making thoughtful technical decisions, and creating systems that can be measured, improved, and used in the real world. At the core, coding is coding : I genuinely enjoy building, and that gives me confidence to take on anything where code is the work - frontends, APIs, data, models, or the systems that connect them.";
 
 export const MANIFESTO_BODY_HIGHLIGHT = "coding is coding";
 

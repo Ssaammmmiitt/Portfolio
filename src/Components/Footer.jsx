@@ -12,12 +12,12 @@ function Clock({ city, tz }) {
   useEffect(() => {
     const tick = () => {
       setTime(
-        new Intl.DateTimeFormat("en-US", {
+        new Intl.DateTimeFormat("en-GB", {
           timeZone: tz,
           hour: "2-digit",
           minute: "2-digit",
           second: "2-digit",
-          hour12: true,
+          hour12: false,
         }).format(new Date())
       );
     };
