@@ -20,7 +20,7 @@ function SplitChars({ text, className, instant }) {
 
 const META = [LOCATION, "Specialized in AI, Frontend & Backend", AVAILABILITY];
 
-export default function Hero({ animate, instant }) {
+export default function Hero({ animate, instant, onIntroReady }) {
   const root = useRef(null);
   const names = NAME.split(" ");
   const nameSettled = instant || prefersReducedMotion();
@@ -28,16 +28,22 @@ export default function Hero({ animate, instant }) {
   useLayoutEffect(() => {
     if (!animate || !root.current) return;
 
-    if (instant) {
+    const introReady = () => onIntroReady?.();
+
+    if (instant || prefersReducedMotion()) {
       gsap.set(root.current.querySelectorAll(".hero-sub-letter, .hero-name-letter"), { y: "0%" });
       gsap.set(root.current.querySelectorAll(".hero-meta, .hero-scroll"), { y: 0, opacity: 1 });
+      introReady();
     }
 
     const compact = isCompactViewport();
 
     const ctx = gsap.context(() => {
-      if (!instant) {
-        const tl = gsap.timeline({ defaults: { ease: "power4.inOut" } });
+      if (!instant && !prefersReducedMotion()) {
+        const tl = gsap.timeline({
+          defaults: { ease: "power4.inOut" },
+          onComplete: introReady,
+        });
         tl.to(".hero-sub-letter", {
           y: "0%",
           duration: compact ? 0.8 : 1.15,
@@ -78,7 +84,7 @@ export default function Hero({ animate, instant }) {
     syncScrollTriggers();
 
     return () => ctx.revert();
-  }, [animate, instant]);
+  }, [animate, instant, onIntroReady]);
 
   return (
     <section id="hero" ref={root} className="relative min-h-dvh w-full overflow-x-clip bg-background">

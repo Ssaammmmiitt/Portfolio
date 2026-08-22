@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Navbar from "./Components/Navbar.jsx";
 import NavDock from "./Components/NavDock.jsx";
 import Hero from "./Components/Hero.jsx";
@@ -34,7 +34,12 @@ export default function App() {
     };
   });
   const [preloaderDone, setPreloaderDone] = useState(returning);
+  const [spaceScrollEnabled, setSpaceScrollEnabled] = useState(returning);
   const progressRef = useRef(null);
+
+  const enableSpaceScroll = useCallback(() => {
+    setSpaceScrollEnabled(true);
+  }, []);
 
   useLayoutEffect(() => {
     disableBrowserScrollRestore();
@@ -43,7 +48,7 @@ export default function App() {
     }
   }, [returning, savedScroll]);
 
-  useLenis(preloaderDone, savedScroll);
+  useLenis(preloaderDone, savedScroll, spaceScrollEnabled);
   useInPageNav(preloaderDone);
   const { showTopNav, showDock } = useScrollNav(preloaderDone);
   useThemeScrollSync();
@@ -54,6 +59,12 @@ export default function App() {
       document.body.style.overflow = "";
     };
   }, [preloaderDone]);
+
+  useEffect(() => {
+    if (!preloaderDone || returning) return;
+    const id = window.setTimeout(enableSpaceScroll, 2000);
+    return () => window.clearTimeout(id);
+  }, [preloaderDone, returning, enableSpaceScroll]);
 
   useEffect(() => {
     if (!preloaderDone || !progressRef.current) return;
@@ -85,7 +96,7 @@ export default function App() {
       <Navbar visible={preloaderDone} instant={returning} show={showTopNav} />
       <NavDock visible={preloaderDone && showDock} />
       <main>
-        <Hero animate={preloaderDone} instant={returning} />
+        <Hero animate={preloaderDone} instant={returning} onIntroReady={enableSpaceScroll} />
         <Manifesto ready={preloaderDone} />
         <Marquee />
         <Strategy ready={preloaderDone} />

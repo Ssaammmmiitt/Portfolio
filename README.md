@@ -19,13 +19,16 @@ Open the local URL shown in the terminal.
 | `npm run build` | Create production build |
 | `npm run preview` | Preview production build |
 | `npm run test` | Run tests |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run lint` | Run ESLint |
 | `npm run check` | Lint, test, and build |
+| `npm run deploy` | Build and publish to GitHub Pages |
 
-## Notes
+## Configuration
 
-- Content and configuration live in `src/data/data.js`.
-- For a map of folders and components, see `STRUCTURE.md`.
+- **Content**  -  edit copy, projects, nav links, and form options in `src/data/data.js`.
+- **Contact form**  -  create a `.env` file with `VITE_WEB3FORMS_ACCESS_KEY` and `VITE_HCAPTCHA_SITE_KEY`.
 
 ## Deploy
 
-The project is set up for static hosting (e.g. GitHub Pages via `npm run deploy`).
+Static output goes to `dist/`. The project is set up for GitHub Pages via `npm run deploy`.

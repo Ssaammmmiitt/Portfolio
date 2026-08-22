@@ -101,9 +101,9 @@ export const MANIFESTO_LINES = [
 ];
 
 export const MANIFESTO_BODY =
-  "I build software at the intersection of engineering and intelligence — from responsive interfaces and backend systems to machine learning models and AI-powered workflows. I care about understanding the problem, making thoughtful technical decisions, and creating systems that can be measured, improved, and used in the real world. At the core, coding is coding: I genuinely enjoy building, whether that means frontends, APIs, data pipelines, models, or the systems that connect them.";
+  "I build software at the intersection of engineering and intelligence  -  from responsive interfaces and backend systems to machine learning models and AI-powered workflows. I care about understanding the problem, making thoughtful technical decisions, and creating systems that can be measured, improved, and used in the real world. At the core, coding is coding : I genuinely enjoy building, whether that means frontends, APIs, data pipelines, models, or the systems that connect them.";
 
-export const MANIFESTO_BODY_HIGHLIGHT = "coding is coding";
+export const MANIFESTO_BODY_HIGHLIGHT = "coding is coding ";
 
 // ─────────────────────────────────────────────
 // ENGINEERING PRINCIPLES
@@ -112,71 +112,43 @@ export const MANIFESTO_BODY_HIGHLIGHT = "coding is coding";
 export const STRATEGY = [
   {
     title: "problem before technology",
-
     kicker: "Start with why",
-
     text: "The best solution does not begin with a framework or a model. I start by understanding the problem, the people using the system, and the constraints involved before deciding what technology belongs in the solution.",
-
-    bg: "#111111",
-
+    bg: "#0c0c0c",
     fg: "#f4f1eb",
-
     accent: "#22d3ee",
   },
-
   {
     title: "build the whole system",
-  
     kicker: "Think end to end",
-  
-    text:
-      "I enjoy working across the full journey of a product - from interfaces and APIs to data, models, infrastructure, and intelligent features. Understanding how these pieces connect helps me make better technical decisions and build more coherent systems.",
-  
-    bg: "#334155",
-    fg: "#f4f1eb",
-    accent: "#050505",
+    text: "I enjoy working across the full journey of a product - from interfaces and APIs to data, models, infrastructure, and intelligent features. Understanding how these pieces connect helps me make better technical decisions and build more coherent systems.",
+    bg: "#1c1917",
+    fg: "#f5f0e8",
+    accent: "#a8a29e",
   },
-
   {
     title: "intelligence with purpose",
-
     kicker: "AI when it matters",
-
     text: "AI is most valuable when it meaningfully improves a product or workflow. I am interested in applying machine learning and intelligent systems where they solve a real problem - not simply adding AI because it is fashionable.",
-
-    bg: "#ff2d1a",
-
-    fg: "#fff7f5",
-
-    accent: "#1a0503",
+    bg: "#134e4a",
+    fg: "#ecfdf5",
+    accent: "#5eead4",
   },
-
   {
     title: "measure what matters",
-
     kicker: "Evidence over assumptions",
-
     text: "A system is not finished because it runs. I believe in evaluating performance with meaningful evidence - whether that means model quality, application reliability, usability, or the outcome the product is meant to improve.",
-
-    bg: "#f3ece4",
-
-    fg: "#161412",
-
-    accent: "#ff2d1a",
+    bg: "#e8e1d6",
+    fg: "#292524",
+    accent: "#b45309",
   },
-
   {
     title: "learn by building",
-
     kicker: "Curiosity into practice",
-
     text: "The technologies I understand best are the ones I have used to solve real problems. I learn by experimenting, building, breaking things, measuring the results, and improving the system.",
-
-    bg: "#2f46ff",
-
-    fg: "#eef0ff",
-
-    accent: "#22d3ee",
+    bg: "#1e1b4b",
+    fg: "#eef2ff",
+    accent: "#818cf8",
   },
 ];
 
@@ -296,9 +268,9 @@ export const PROJECTS = [
 // ─────────────────────────────────────────────
 
 export const BIO_TEXTS = [
-  "I'm an undergraduate Computer Engineering student based in Kathmandu, still figuring things out — and honestly, that's part of what I enjoy. I move across stacks, domains, and tools, exploring what fits and learning what each one is actually good for.",
-  "Right now, I'm driven by curiosity: seeing how far a technology can go, what problems it solves well, and where it breaks. That has taken me from web and full-stack development into data, machine learning, and applied AI — not because I'm locked into one lane, but because I'm interested in understanding how different pieces of technology can work together.",
-  "At the core, coding is coding. I enjoy building, and I'm happy working wherever code is the craft — interfaces, systems, models, or the glue between them. If something needs to be built thoughtfully, I'm interested.",
+  "I'm an undergraduate Computer Engineering student based in Kathmandu, still figuring things out  -  and honestly, that's part of what I enjoy. I move across stacks, domains, and tools, exploring what fits and learning what each one is actually good for.",
+  "Right now, I'm driven by curiosity: seeing how far a technology can go, what problems it solves well, and where it breaks. That has taken me from web and full-stack development into data, machine learning, and applied AI  -  not because I'm locked into one lane, but because I'm interested in understanding how different pieces of technology can work together.",
+  "At the core, coding is coding. I enjoy building, and I'm happy working wherever code is the craft  -  interfaces, systems, models, or the glue between them. If something needs to be built thoughtfully, I'm interested.",
 ];
 
 // ─────────────────────────────────────────────
@@ -324,7 +296,7 @@ export const CULTURE_DATA = [
   },
   {
     name: "tools",
-    items: ["Figma", "GSAP", "Three.js", "Postman", "Spline"],
+    items: ["Figma", "Canva","GSAP", "Three.js", "Postman", "Spline"],
   },
 ];
 

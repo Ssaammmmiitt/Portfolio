@@ -1,13 +1,15 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import {
+  completeHardResetIfNeeded,
   getReloadStreak,
   hasVisited,
   markVisited,
   readScroll,
+  recordUnloadScrollState,
   saveScroll,
 } from "./visitCache.js";
 
-const RELOAD_WINDOW = 1200;
+const RELOAD_WINDOW = 2000;
 
 describe("visitCache", () => {
   beforeEach(() => {
@@ -70,5 +72,36 @@ describe("visitCache", () => {
       streak: 1,
       now: 1000 + RELOAD_WINDOW + 1,
     });
+  });
+
+  it("records unload streak at top and prepares hard reset on second reload", () => {
+    expect(recordUnloadScrollState(0, 5000)).toEqual({
+      atTop: true,
+      shouldHardReset: false,
+      streak: 1,
+      now: 5000,
+    });
+
+    expect(recordUnloadScrollState(0, 5200)).toEqual({
+      atTop: true,
+      shouldHardReset: true,
+      streak: 2,
+      now: 5200,
+    });
+
+    expect(sessionStorage.getItem("sammit-site-hard-reset")).toBe("1");
+    expect(hasVisited()).toBe(false);
+    expect(readScroll()).toBe(0);
+  });
+
+  it("completes hard reset on the following load", () => {
+    sessionStorage.setItem("sammit-site-hard-reset", "1");
+    sessionStorage.setItem("sammit-site-visited", "1");
+    sessionStorage.setItem("sammit-site-scroll", "900");
+
+    expect(completeHardResetIfNeeded()).toBe(true);
+    expect(sessionStorage.getItem("sammit-site-hard-reset")).toBeNull();
+    expect(hasVisited()).toBe(false);
+    expect(readScroll()).toBe(0);
   });
 });

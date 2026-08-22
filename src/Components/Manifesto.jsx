@@ -177,7 +177,7 @@ export default function Manifesto({ ready }) {
             <div className="mb-8 flex items-end justify-between gap-8 sm:mb-10 md:mb-14">
               <p className="kicker mb-0!">manifesto</p>
               <p className="hidden max-w-xs text-right text-xs leading-relaxed tracking-[0.18em] text-faint uppercase md:block">
-                Scroll — the words come alive
+                Scroll  -  the words come alive
               </p>
             </div>
 

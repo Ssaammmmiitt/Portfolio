@@ -43,7 +43,7 @@ export const MANIFESTO_COLORS = {
   },
 };
 
-/** GSAP-friendly CSS vars — re-resolve on invalidate when theme toggles. */
+/** GSAP-friendly CSS vars  -  re-resolve on invalidate when theme toggles. */
 export const MANIFESTO_VARS = {
   paper: "var(--theme-paper)",
   muted: "var(--theme-manifesto-muted)",

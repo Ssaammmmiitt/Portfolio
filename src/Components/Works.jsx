@@ -38,6 +38,8 @@ function ProjectPreview({ project }) {
 export default function Works({ ready }) {
   const root = useRef(null);
   const modal = useRef(null);
+  const listRef = useRef(null);
+  const nameRefs = useRef([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const { theme } = useTheme();
   const isLight = theme === "light";
@@ -50,7 +52,7 @@ export default function Works({ ready }) {
 
     const ctx = gsap.context(() => {
       if (canHoverFine()) {
-        gsap.set(modal.current, { scale: 0, x: 80, y: 0, opacity: 0 });
+        gsap.set(modal.current, { scale: 0, opacity: 0 });
       }
 
       if (prefersReducedMotion()) return;
@@ -77,12 +79,33 @@ export default function Works({ ready }) {
   }, [ready]);
 
   useLayoutEffect(() => {
-    if (!modal.current || !canHoverFine()) return;
+    if (!modal.current || !listRef.current || !canHoverFine()) return;
+
+    if (hoveredIndex == null) {
+      gsap.to(modal.current, {
+        scale: 0,
+        opacity: 0,
+        duration: 0.35,
+        ease: "power3.out",
+      });
+      return;
+    }
+
+    const nameEl = nameRefs.current[hoveredIndex];
+    if (!nameEl) return;
+
+    const nameRect = nameEl.getBoundingClientRect();
+    const containerRect = listRef.current.getBoundingClientRect();
+    const gap = 20;
+    const x = nameRect.right - containerRect.left + gap;
+    const modalHeight = modal.current.offsetHeight;
+    const y = nameRect.top - containerRect.top + nameRect.height / 2 - modalHeight / 2;
 
     gsap.to(modal.current, {
-      scale: hoveredIndex != null ? 1 : 0,
-      opacity: hoveredIndex != null ? 1 : 0,
-      y: (hoveredIndex ?? 0) * 92,
+      x,
+      y,
+      scale: 1,
+      opacity: 1,
       duration: 0.45,
       ease: "power3.out",
     });
@@ -98,6 +121,7 @@ export default function Works({ ready }) {
         </h2>
 
         <div
+          ref={listRef}
           className="relative"
           onMouseLeave={() => setHoveredIndex(null)}
         >
@@ -111,7 +135,12 @@ export default function Works({ ready }) {
               onBlur={() => setHoveredIndex(null)}
             >
               <div className="min-w-0">
-                <h3 className="display-title text-[clamp(1.7rem,6vw,4rem)] leading-none text-paper lg:transition-transform lg:duration-300 lg:group-hover:translate-x-3 lg:group-hover:text-faint">
+                <h3
+                  ref={(el) => {
+                    nameRefs.current[index] = el;
+                  }}
+                  className="display-title inline-block text-[clamp(1.7rem,6vw,4rem)] leading-none text-paper lg:transition-transform lg:duration-300 lg:group-hover:translate-x-3 lg:group-hover:text-faint"
+                >
                   {project.name}
                 </h3>
                 <span className="mt-2 block font-condensed text-[0.65rem] tracking-[0.18em] text-faint uppercase sm:text-xs sm:tracking-[0.22em] lg:mt-0 lg:inline lg:ml-4">

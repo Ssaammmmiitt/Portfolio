@@ -121,7 +121,7 @@ export default function Footer({ ready = true }) {
           <a
             href="#hero"
             className="nav-brand inline-flex min-h-11 items-center py-2"
-            aria-label="Sammit Poudyal — Home"
+            aria-label="Sammit Poudyal  -  Home"
           >
             <Logo size={40} invertIcon={!isLight} showWordmark />
           </a>

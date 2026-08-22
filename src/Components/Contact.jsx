@@ -228,7 +228,7 @@ export default function Contact({ ready }) {
 
           {step === "sent" ? (
             <div className="reveal-item space-y-3">
-              <p className="text-lg text-subtle sm:text-xl">Thanks — your message was sent. I’ll get back to you soon.</p>
+              <p className="text-lg text-subtle sm:text-xl">Thanks  -  your message was sent. I’ll get back to you soon.</p>
             </div>
           ) : (
             <form ref={formRef} onSubmit={onSubmit} noValidate>
@@ -285,7 +285,7 @@ export default function Contact({ ready }) {
               {step === "verify" || step === "sending" ? (
                 <div className="reveal-item mt-2 space-y-4 rounded-xl border border-border bg-muted/40 p-5 sm:p-6">
                   <p className="text-sm text-soft">
-                    One last step — complete the verification below to send your message and help prevent spam.
+                    One last step  -  complete the verification below to send your message and help prevent spam.
                   </p>
                   {step === "verify" ? (
                     <HCaptcha

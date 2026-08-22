@@ -26,7 +26,7 @@ function isInteractiveTarget(target) {
   );
 }
 
-export function useLenis(enabled, initialScroll = 0) {
+export function useLenis(enabled, initialScroll = 0, spaceScrollEnabled = true) {
   useEffect(() => {
     if (!enabled) return;
 
@@ -77,6 +77,10 @@ export function useLenis(enabled, initialScroll = 0) {
       let delta = 0;
 
       if (event.code === "Space") {
+        if (!spaceScrollEnabled) {
+          event.preventDefault();
+          return;
+        }
         delta = event.shiftKey ? -step : step;
       } else if (event.code === "PageDown") {
         delta = step;
@@ -126,5 +130,5 @@ export function useLenis(enabled, initialScroll = 0) {
       lenis.destroy();
       document.documentElement.classList.remove("lenis");
     };
-  }, [enabled, initialScroll]);
+  }, [enabled, initialScroll, spaceScrollEnabled]);
 }
