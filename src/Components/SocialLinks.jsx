@@ -1,6 +1,6 @@
 import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
-import { site } from "../data/site";
-import { cn } from "../lib/utils";
+import { EMAIL, SOCIALS } from "../data.js";
+import { cn } from "../lib/utils.js";
 
 const icons = {
   github: FiGithub,
@@ -9,12 +9,15 @@ const icons = {
 };
 
 const links = [
-  { key: "github", href: site.github, label: "GitHub" },
-  { key: "linkedin", href: site.linkedin, label: "LinkedIn" },
-  { key: "email", href: `mailto:${site.email}`, label: "Email" },
+  ...SOCIALS.map(({ label, href }) => ({
+    key: label,
+    href,
+    label: label.charAt(0).toUpperCase() + label.slice(1),
+  })),
+  { key: "email", href: `mailto:${EMAIL}`, label: "Email" },
 ];
 
-const SocialLinks = ({ size = 20, className, includeEmail = true }) => {
+const SocialLinks = ({ size = 20, className, linkClassName, includeEmail = true }) => {
   const visibleLinks = includeEmail ? links : links.filter((l) => l.key !== "email");
 
   return (
@@ -29,7 +32,7 @@ const SocialLinks = ({ size = 20, className, includeEmail = true }) => {
             href={href}
             target={isExternal ? "_blank" : undefined}
             rel={isExternal ? "noopener noreferrer" : undefined}
-            className="theme-icon-muted hover:text-cyan-400 transition-colors duration-200"
+            className={cn("text-subtle transition-colors duration-200 hover:text-acid", linkClassName)}
             aria-label={label}
           >
             <Icon size={size} />

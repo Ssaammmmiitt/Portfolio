@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
 
 const ThemeContext = createContext(null);
 const STORAGE_KEY = "portfolio-theme";
@@ -7,20 +7,26 @@ const applyTheme = (theme) => {
   const root = document.documentElement;
   root.classList.toggle("light", theme === "light");
   root.dataset.theme = theme;
+
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) {
+    meta.setAttribute("content", theme === "light" ? "#f6f2eb" : "#050505");
+  }
+};
+
+const readStoredTheme = () => {
+  if (typeof window === "undefined") return "dark";
+  return localStorage.getItem(STORAGE_KEY) === "light" ? "light" : "dark";
 };
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState(readStoredTheme);
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem(STORAGE_KEY);
-    const nextTheme = savedTheme === "light" ? "light" : "dark";
-    setTheme(nextTheme);
-    applyTheme(nextTheme);
-  }, []);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     applyTheme(theme);
+  }, [theme]);
+
+  useEffect(() => {
     localStorage.setItem(STORAGE_KEY, theme);
   }, [theme]);
 

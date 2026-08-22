@@ -1,7 +1,7 @@
 import { useId } from "react";
 import { cn } from "../lib/utils";
 
-const Logo = ({ size = 44, className, showWordmark = false }) => {
+const Logo = ({ size = 44, className, showWordmark = false, invertIcon = false }) => {
   const uid = useId().replace(/:/g, "");
   const gradientId = `logo-gradient-${uid}`;
 
@@ -14,6 +14,7 @@ const Logo = ({ size = 44, className, showWordmark = false }) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
+        className={cn("shrink-0", invertIcon && "logo-invert")}
       >
         <defs>
           <linearGradient id={gradientId} x1="4" y1="24" x2="44" y2="24" gradientUnits="userSpaceOnUse">
@@ -42,8 +43,8 @@ const Logo = ({ size = 44, className, showWordmark = false }) => {
       </svg>
 
       {showWordmark && (
-        <span className="hidden md:inline font-heading text-lg lg:text-xl tracking-wide leading-none theme-text">
-          Sammit<span className="text-cyan-400">.</span>
+        <span className="logo-wordmark hidden font-heading text-lg uppercase leading-none tracking-wide md:inline lg:text-xl">
+          Sammit
         </span>
       )}
     </div>
