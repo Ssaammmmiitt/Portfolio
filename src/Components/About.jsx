@@ -1,64 +1,68 @@
 import { useLayoutEffect, useRef } from "react";
 import { BIO_TEXTS } from "../data.js";
-import { useTheme } from "../context/ThemeProvider.jsx";
 import { useReveal } from "../hooks/useReveal.js";
-import { gsap } from "../lib/gsap.js";
-import { refreshScrubTween, SCROLL_TEXT_VARS, syncScrollTriggers } from "../lib/motion.js";
+import { gsap, ScrollTrigger } from "../lib/gsap.js";
+import { prefersReducedMotion, SCROLL_TEXT_VARS } from "../lib/motion.js";
+
+function splitWords(text) {
+  return text.trim().split(/\s+/).filter(Boolean);
+}
 
 function HighlightText({ texts, ready }) {
   const ref = useRef(null);
-  const tweensRef = useRef([]);
-  const { theme } = useTheme();
 
   useLayoutEffect(() => {
     if (!ready || !ref.current) return;
 
+    const root = ref.current;
+    const words = root.querySelectorAll("[data-word]");
+    if (!words.length) return;
+
+    // Prevent duplicate triggers from StrictMode remounts / HMR.
+    ScrollTrigger.getById?.("about-bio")?.kill();
+
     const ctx = gsap.context(() => {
-      tweensRef.current = [];
+      if (prefersReducedMotion()) {
+        gsap.set(words, { color: SCROLL_TEXT_VARS.paper });
+        return;
+      }
 
-      ref.current.querySelectorAll("[data-copy]").forEach((paragraph) => {
-        const words = paragraph.querySelectorAll("[data-word]");
-        const tween = gsap.fromTo(
-          words,
-          { color: SCROLL_TEXT_VARS.mutedWord },
-          {
-            color: SCROLL_TEXT_VARS.paper,
-            stagger: 0.04,
-            ease: "none",
-            scrollTrigger: {
-              trigger: paragraph,
-              start: "top 88%",
-              end: "top 42%",
-              scrub: 0.5,
-            },
-          }
-        );
-        tweensRef.current.push(tween);
+      // Set once; animate with `to` (not `fromTo`) so refresh won't re-flash the from state.
+      gsap.set(words, { color: SCROLL_TEXT_VARS.mutedWord });
+
+      gsap.to(words, {
+        color: SCROLL_TEXT_VARS.paper,
+        ease: "none",
+        stagger: 0.035,
+        immediateRender: false,
+        scrollTrigger: {
+          id: "about-bio",
+          trigger: root,
+          start: "top 78%",
+          end: "bottom 58%",
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
       });
-    }, ref);
-
-    syncScrollTriggers();
+    }, root);
 
     return () => {
-      tweensRef.current = [];
+      ScrollTrigger.getById?.("about-bio")?.kill();
       ctx.revert();
     };
   }, [ready]);
 
-  useLayoutEffect(() => {
-    if (!ready || !tweensRef.current.length) return;
-
-    tweensRef.current.forEach((tween) => refreshScrubTween(tween));
-    syncScrollTriggers();
-  }, [theme, ready]);
-
   return (
-    <div ref={ref} className="flex max-w-2xl flex-col gap-y-6 text-base leading-[1.75] sm:gap-y-8 sm:text-lg sm:leading-[1.8] lg:max-w-none">
+    <div ref={ref} className="flex flex-col gap-6 sm:gap-7 md:gap-8">
       {texts.map((text) => (
-        <p key={text.slice(0, 24)} data-copy="" className="text-pretty">
-          {text.split(" ").map((word, i) => (
-            <span key={`${word}-${i}`} data-word="" className="mr-[0.28em] inline">
+        <p
+          key={text.slice(0, 32)}
+          className="text-base leading-[1.75] text-pretty sm:text-lg sm:leading-[1.8]"
+        >
+          {splitWords(text).map((word, i, list) => (
+            <span key={`${word}-${i}`} data-word="" className="text-[var(--theme-muted-word)]">
               {word}
+              {i < list.length - 1 ? " " : ""}
             </span>
           ))}
         </p>
@@ -73,17 +77,19 @@ export default function About({ ready }) {
 
   return (
     <section id="about" ref={root} className="section-y relative overflow-x-clip bg-background">
-      <div className="wrap grid items-start gap-10 sm:gap-12 lg:grid-cols-12 lg:gap-x-14 xl:gap-x-20">
-        <div className="min-w-0 lg:col-span-4 xl:col-span-4">
-          <div className="lg:sticky lg:top-8 lg:max-w-[18rem] lg:self-start xl:top-28 xl:max-w-none">
-            <h2 className="reveal-title font-display text-[clamp(2.75rem,11vw,5.5rem)] leading-[0.82] uppercase text-paper lg:text-[clamp(3rem,6.5vw,7rem)] xl:text-[clamp(3.4rem,7vw,8.5rem)]">
+      <div className="wrap">
+        <div className="flex flex-col gap-10 sm:gap-12 lg:flex-row lg:items-start lg:gap-16 xl:gap-20">
+          <div className="w-full shrink-0 lg:w-[min(100%,18rem)] xl:w-[min(100%,22rem)]">
+            <p className="reveal-kicker kicker">about</p>
+            <h2 className="reveal-title display-title text-[clamp(2.75rem,10vw,5.5rem)] text-paper">
               Software
-              <span className="block text-acid">Engineer</span>
+              <span className="mt-1 block text-acid">Engineer</span>
             </h2>
           </div>
-        </div>
-        <div className="min-w-0 lg:col-span-8 xl:col-span-8">
-          <HighlightText texts={BIO_TEXTS} ready={ready} />
+
+          <div className="min-w-0 flex-1 lg:max-w-2xl xl:max-w-xl">
+            <HighlightText texts={BIO_TEXTS} ready={ready} />
+          </div>
         </div>
       </div>
     </section>

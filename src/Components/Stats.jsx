@@ -30,7 +30,7 @@ export default function Stats({ ready }) {
 
   return (
     <section ref={root} className="section-y overflow-x-clip border-t border-border bg-background">
-      <div className="wrap grid grid-cols-2 gap-8 lg:grid-cols-4 lg:gap-10">
+      <div className="wrap grid grid-cols-2 gap-10 sm:gap-12 lg:grid-cols-4 lg:gap-14">
         {STATS.map((stat) => (
           <div key={stat.label} className="reveal-item text-center md:text-left">
             <p className="stat-value display-title text-[clamp(2.5rem,8vw,5rem)] leading-none text-acid">

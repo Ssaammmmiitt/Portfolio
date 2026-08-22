@@ -450,25 +450,32 @@ html.has-smooth-cursor .scroll-to-top-btn {
 @utility wrap {
   margin-inline: auto;
   width: min(100%, 1320px);
-  padding-inline: max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right));
+  padding-inline: max(1.25rem, env(safe-area-inset-left)) max(1.25rem, env(safe-area-inset-right));
 }
 
 @media (min-width: 640px) {
   .wrap {
-    padding-inline: max(1.5rem, env(safe-area-inset-left)) max(1.5rem, env(safe-area-inset-right));
+    padding-inline: max(1.75rem, env(safe-area-inset-left)) max(1.75rem, env(safe-area-inset-right));
   }
 }
 
 @media (min-width: 768px) {
   .wrap {
-    padding-inline: max(5vw, env(safe-area-inset-left)) max(5vw, env(safe-area-inset-right));
+    padding-inline: max(2rem, 5vw, env(safe-area-inset-left)) max(2rem, 5vw, env(safe-area-inset-right));
   }
 }
 
 @media (min-width: 1024px) {
   .wrap {
+    width: min(90%, 1280px);
+    padding-inline: max(2rem, env(safe-area-inset-left)) max(2rem, env(safe-area-inset-right));
+  }
+}
+
+@media (min-width: 1280px) {
+  .wrap {
     width: min(88%, 1320px);
-    padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+    padding-inline: max(2.5rem, env(safe-area-inset-left)) max(2.5rem, env(safe-area-inset-right));
   }
 }
 
@@ -477,24 +484,52 @@ html.has-smooth-cursor .scroll-to-top-btn {
 }
 
 @utility section-y {
-  padding-block: 4.5rem;
+  padding-block: 5rem;
 }
 
 @media (min-width: 640px) {
   .section-y {
-    padding-block: 5.5rem;
+    padding-block: 6rem;
   }
 }
 
 @media (min-width: 768px) {
   .section-y {
-    padding-block: 6.5rem;
+    padding-block: 7rem;
   }
 }
 
 @media (min-width: 1024px) {
   .section-y {
-    padding-block: 8rem;
+    padding-block: 8.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .section-y {
+    padding-block: 9rem;
+  }
+}
+
+@utility section-head {
+  margin-bottom: 2.75rem;
+}
+
+@media (min-width: 640px) {
+  .section-head {
+    margin-bottom: 3.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .section-head {
+    margin-bottom: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-head {
+    margin-bottom: 4.5rem;
   }
 }
 

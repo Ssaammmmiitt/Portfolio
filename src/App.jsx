@@ -97,7 +97,7 @@ export default function App() {
       <Navbar visible={preloaderDone} instant={returning} show={showTopNav} />
       <NavDock visible={preloaderDone && showDock} />
       <ScrollToTop enabled={preloaderDone} />
-      <main>
+      <main className="flex flex-col">
         <Hero animate={preloaderDone} instant={returning} onIntroReady={enableSpaceScroll} />
         <Manifesto ready={preloaderDone} />
         <Marquee />

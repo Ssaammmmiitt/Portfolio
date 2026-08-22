@@ -77,7 +77,11 @@ vi.mock("../lib/gsap.js", () => ({
     })),
     utils: { toArray: (sel) => Array.from(document.querySelectorAll(sel)) },
   },
-  ScrollTrigger: { refresh: vi.fn(), update: vi.fn() },
+  ScrollTrigger: {
+    refresh: vi.fn(),
+    update: vi.fn(),
+    getById: vi.fn(() => undefined),
+  },
   EASE_IN_OUT: "power2.inOut",
 }));
 

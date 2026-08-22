@@ -26,13 +26,16 @@ describe("scroll text colors", () => {
 
 describe("syncScrollTriggers", () => {
   it("schedules refresh and update", () => {
+    vi.useFakeTimers();
     vi.stubGlobal("requestAnimationFrame", (cb) => {
       cb();
       return 1;
     });
 
     syncScrollTriggers();
+    vi.runAllTimers();
 
     vi.unstubAllGlobals();
+    vi.useRealTimers();
   });
 });

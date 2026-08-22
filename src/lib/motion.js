@@ -76,29 +76,33 @@ export function getScrollTextColors(theme = "dark") {
 }
 
 let syncScheduled = false;
+let syncTimer = 0;
 
 /** Re-sync scrub ScrollTriggers after layout or theme changes (Lenis-safe). */
 export function syncScrollTriggers() {
   if (typeof window === "undefined" || syncScheduled) return;
 
   syncScheduled = true;
-  requestAnimationFrame(() => {
-    syncScheduled = false;
-    const lenis = window.__lenis;
-    const scrollY = lenis?.scroll ?? window.scrollY;
+  window.clearTimeout(syncTimer);
+  syncTimer = window.setTimeout(() => {
+    requestAnimationFrame(() => {
+      syncScheduled = false;
+      const lenis = window.__lenis;
+      const scrollY = lenis?.scroll ?? window.scrollY;
 
-    ScrollTrigger.refresh(true);
-    if (typeof ScrollTrigger.update === "function") {
-      ScrollTrigger.update();
-    }
+      ScrollTrigger.refresh(true);
+      if (typeof ScrollTrigger.update === "function") {
+        ScrollTrigger.update();
+      }
 
-    if (lenis) {
-      lenis.scrollTo(scrollY, { immediate: true });
-      lenis.emit?.("scroll");
-    } else if (Math.abs(window.scrollY - scrollY) > 1) {
-      window.scrollTo(0, scrollY);
-    }
-  });
+      if (lenis) {
+        lenis.scrollTo(scrollY, { immediate: true });
+        lenis.emit?.("scroll");
+      } else if (Math.abs(window.scrollY - scrollY) > 1) {
+        window.scrollTo(0, scrollY);
+      }
+    });
+  }, 50);
 }
 
 /** Preserve scrub progress while re-reading CSS variable targets. */

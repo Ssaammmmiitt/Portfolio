@@ -96,24 +96,26 @@ export default function Hero({ animate, instant, onIntroReady }) {
         <div className="noise pointer-events-none absolute inset-0 opacity-[0.07] mix-blend-overlay" />
       </div>
 
-      <div className="hero-stage gpu-layer wrap relative z-10 flex min-h-dvh origin-bottom flex-col justify-end pt-24 pb-[max(7rem,env(safe-area-inset-bottom))] sm:pt-28 sm:pb-32 md:pb-40 lg:pb-48">
-        <p className="mb-3 text-center font-condensed text-[clamp(0.72rem,2.4vw,1.05rem)] uppercase tracking-[0.28em] text-subtle sm:mb-4 sm:tracking-[0.45em]">
-          <SplitChars text={ROLE} className="hero-sub-letter" instant={instant} />
-        </p>
-        <h1 className="display-title flex flex-wrap justify-center gap-x-[0.18em] text-center text-[clamp(3.2rem,16vw,13rem)] leading-[0.8] tracking-wide text-paper">
-          {names.map((part) => (
-            <span key={part}>
-              <GibberishSplitChars
-                text={part}
-                className="hero-name-letter"
-                instant={instant}
-                settled={nameSettled}
-              />
-            </span>
-          ))}
-        </h1>
+      <div className="hero-stage gpu-layer wrap relative z-10 flex min-h-dvh origin-bottom flex-col justify-center pt-20 pb-[max(5.5rem,env(safe-area-inset-bottom))] sm:pt-24 sm:pb-28 md:justify-end md:pt-28 md:pb-40 lg:pb-48">
+        <div className="flex flex-col items-center">
+          <h1 className="order-1 display-title flex flex-wrap justify-center gap-x-[0.18em] text-center text-[clamp(3.2rem,16vw,13rem)] leading-[0.8] tracking-wide text-paper md:order-2">
+            {names.map((part) => (
+              <span key={part}>
+                <GibberishSplitChars
+                  text={part}
+                  className="hero-name-letter"
+                  instant={instant}
+                  settled={nameSettled}
+                />
+              </span>
+            ))}
+          </h1>
+          <p className="order-2 mt-3 text-center font-condensed text-[clamp(0.72rem,2.4vw,1.05rem)] uppercase tracking-[0.28em] text-subtle sm:mt-4 sm:tracking-[0.45em] md:order-1 md:mt-0 md:mb-4">
+            <SplitChars text={ROLE} className="hero-sub-letter" instant={instant} />
+          </p>
+        </div>
 
-        <div className="mt-10 mb-2 grid min-w-0 grid-cols-1 gap-3 border-t border-border pt-6 sm:mt-14 sm:grid-cols-2 sm:gap-y-4 lg:mt-20 lg:grid-cols-3 lg:pt-8">
+        <div className="mt-6 mb-2 grid min-w-0 grid-cols-1 gap-3 border-t border-border pt-5 sm:mt-10 sm:grid-cols-2 sm:gap-y-4 sm:pt-6 md:mt-14 md:pt-6 lg:mt-20 lg:grid-cols-3 lg:pt-8">
           {META.map((item, i) => (
             <p
               key={item}

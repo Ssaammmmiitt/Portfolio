@@ -34,10 +34,12 @@ class SplineErrorBoundary extends Component {
 function CodeColumn({ rows }) {
   return (
     <div className="flex min-w-0 flex-col">
-      <p className="reveal-kicker kicker">The code</p>
-      <h2 className="reveal-title display-title mb-8 text-[clamp(2.6rem,9vw,5.5rem)] text-paper md:mb-12">
-        What <span className="text-acid">I build</span>
-      </h2>
+      <div className="section-head">
+        <p className="reveal-kicker kicker">The code</p>
+        <h2 className="reveal-title display-title text-[clamp(2.6rem,9vw,5.5rem)] text-paper">
+          What <span className="text-acid">I build</span>
+        </h2>
+      </div>
       <ul className="flex flex-col">
         {rows.map((row) => (
           <li
@@ -133,7 +135,7 @@ export default function Stack({ ready }) {
 
   return (
     <section id="stack" ref={root} className="section-y overflow-x-clip bg-background">
-      <div className="wrap grid min-w-0 items-start gap-14 md:grid-cols-2 md:gap-x-14 lg:gap-x-24 xl:gap-x-32">
+      <div className="wrap grid min-w-0 items-start gap-12 md:grid-cols-2 md:gap-x-12 lg:gap-x-20 xl:gap-x-28">
         <CodeColumn rows={CODE_DATA} />
 
         <div className="reveal-item min-w-0 md:sticky md:top-8 md:self-start lg:top-28 md:pl-2 lg:pl-6">

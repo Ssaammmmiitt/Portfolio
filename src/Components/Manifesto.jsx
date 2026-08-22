@@ -8,7 +8,6 @@ import {
   prefersReducedMotion,
   MANIFESTO_VARS,
   refreshScrubTimeline,
-  syncScrollTriggers,
 } from "../lib/motion.js";
 
 function accentMode({ accent, softAccent }) {
@@ -81,6 +80,7 @@ export default function Manifesto({ ready }) {
   const pin = useRef(null);
   const timelineRef = useRef(null);
   const colorTweensRef = useRef({ rest: null, soft: null, accent: null });
+  const skipThemeRefresh = useRef(true);
   const { theme } = useTheme();
   const bodyWords = getBodyWords(MANIFESTO_BODY, MANIFESTO_BODY_HIGHLIGHT);
 
@@ -135,8 +135,6 @@ export default function Manifesto({ ready }) {
       timelineRef.current = tl;
     }, root);
 
-    syncScrollTriggers();
-
     return () => {
       timelineRef.current = null;
       colorTweensRef.current = { rest: null, soft: null, accent: null };
@@ -144,7 +142,13 @@ export default function Manifesto({ ready }) {
     };
   }, [ready]);
 
+  // Theme toggles only — never tie this to `ready` or scrub replays on intro.
   useLayoutEffect(() => {
+    if (skipThemeRefresh.current) {
+      skipThemeRefresh.current = false;
+      return;
+    }
+
     if (!ready || !root.current) return;
 
     if (prefersReducedMotion()) {
@@ -156,8 +160,8 @@ export default function Manifesto({ ready }) {
     if (!tl) return;
 
     refreshScrubTimeline(tl);
-    syncScrollTriggers();
-  }, [theme, ready]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- refresh on theme change only
+  }, [theme]);
 
   return (
     <section id="manifesto" ref={root} className="relative overflow-x-clip bg-background">
@@ -174,7 +178,7 @@ export default function Manifesto({ ready }) {
             <MouseFollowingEyes />
           </div>
           <div className="wrap relative w-full min-w-0">
-            <div className="mb-8 flex items-end justify-between gap-8 sm:mb-10 md:mb-14">
+            <div className="mb-8 flex items-end justify-between gap-8 sm:mb-10 md:mb-12 lg:mb-14">
               <p className="kicker mb-0!">manifesto</p>
               <p className="hidden max-w-xs text-right text-xs leading-relaxed tracking-[0.18em] text-faint uppercase md:block">
                 Scroll  -  the words come alive
@@ -187,7 +191,7 @@ export default function Manifesto({ ready }) {
               ))}
             </div>
 
-            <p className="mt-8 max-w-3xl text-[clamp(1rem,2.4vw,1.65rem)] leading-[1.55] font-light text-soft sm:mt-12 md:mt-16">
+            <p className="mt-8 max-w-3xl text-[clamp(1rem,2.4vw,1.65rem)] leading-[1.55] font-light text-soft sm:mt-10 md:mt-14 lg:mt-16">
               {bodyWords.map(({ word, index, softAccent }) => (
                 <Word key={`${word}-${index}`} softAccent={softAccent}>
                   {word}

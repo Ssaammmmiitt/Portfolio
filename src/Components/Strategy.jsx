@@ -7,7 +7,7 @@ import { isAlreadyInView } from "../lib/visitCache.js";
 
 function StrategyHeader() {
   return (
-    <>
+    <div className="section-head">
       <p className="reveal-kicker kicker">strategy</p>
       <h2 className="reveal-title display-title text-[clamp(2.4rem,8vw,5rem)] text-paper">
         How i approach
@@ -17,7 +17,7 @@ function StrategyHeader() {
       <p className="reveal-item mt-4 max-w-md text-sm leading-relaxed text-faint sm:mt-5">
         Five lenses that guide how I design, build, and ship software.
       </p>
-    </>
+    </div>
   );
 }
 
@@ -98,7 +98,7 @@ function StackedStrategy({ ready }) {
   }, [ready]);
 
   return (
-    <div ref={root} className="relative mt-12 pb-[8svh] sm:mt-16">
+    <div ref={root} className="relative pb-[8svh]">
       {STRATEGY.map((item, i) => (
         <article
           key={item.title}
@@ -185,9 +185,9 @@ export default function Strategy({ ready }) {
 
   return (
     <section id="strategy" ref={root} className="relative overflow-x-clip bg-background">
-      <div className="wrap section-y pb-6 md:pb-10">
+      <div className="wrap section-y">
         {wideLayout ? (
-          <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-x-14 xl:gap-x-20">
+          <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-x-16 xl:gap-x-20">
             <div className="min-w-0 lg:col-span-4 xl:col-span-3 lg:sticky lg:top-8 lg:self-start xl:top-28">
               <StrategyHeader />
             </div>

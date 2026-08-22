@@ -116,11 +116,13 @@ export default function Works({ ready }) {
   return (
     <section id="works" ref={root} className="section-y relative overflow-x-clip bg-background">
       <div className="wrap">
-        <p className="reveal-kicker kicker">selected works</p>
-        <h2 className="reveal-title display-title mb-10 text-[clamp(2.6rem,9vw,6.5rem)] text-paper md:mb-16">
-          Check out my projects
-          <span className="mt-2 block text-faint">See my expertise</span>
-        </h2>
+        <div className="section-head">
+          <p className="reveal-kicker kicker">selected works</p>
+          <h2 className="reveal-title display-title text-[clamp(2.6rem,9vw,6.5rem)] text-paper">
+            Check out my projects
+            <span className="mt-2 block text-faint">See my expertise</span>
+          </h2>
+        </div>
 
         <div
           ref={listRef}
