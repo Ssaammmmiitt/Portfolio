@@ -103,6 +103,9 @@ html.light {
   --color-soft: var(--theme-soft);
   --color-border: var(--theme-border);
   --color-border-strong: var(--theme-border-strong);
+  --color-accent-fg: var(--theme-accent-fg);
+  --color-nav-fg-hover: var(--theme-nav-fg-hover);
+  --color-dock-fg: var(--theme-dock-fg);
   --color-hero: #141414;
   --color-portrait: #0a0a0a;
   --spacing-section: 9rem;
@@ -131,6 +134,19 @@ html.light {
     text-size-adjust: 100%;
     color-scheme: dark;
     transition: background-color 300ms ease, color 300ms ease;
+  }
+
+  html.lenis {
+    scroll-behavior: auto;
+  }
+
+  #hero,
+  #manifesto,
+  #strategy,
+  #works,
+  #about,
+  #contact {
+    scroll-margin-top: max(5.5rem, calc(env(safe-area-inset-top) + 4.25rem));
   }
 
   html.light {
@@ -347,7 +363,7 @@ html.light .logo-invert {
   color: var(--theme-faint);
 }
 
-@media (pointer: fine) and (hover: hover) {
+@media (pointer: fine) and (hover: hover) and (min-width: 1024px) {
   html.has-custom-cursor,
   html.has-custom-cursor * {
     cursor: none;
@@ -490,4 +506,8 @@ html.light .logo-invert {
 
 .spline-blend canvas {
   background: transparent !important;
+}
+
+.spline-panel {
+  touch-action: pan-y;
 }

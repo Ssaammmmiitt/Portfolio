@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
-import { BUDGETS, EMAIL, SOURCES } from "../data.js";
+import { BUDGETS, CONTACT_TOPICS, EMAIL, SOURCES } from "../data.js";
 import { useReveal } from "../hooks/useReveal.js";
 import {
   canSubmitContactForm,
@@ -26,7 +26,7 @@ function FieldError({ id, message }) {
 function Field({ id, label, type = "text", textarea, error, onClearError }) {
   const errorId = `${id}-error`;
   const fieldClass = cn(
-    "peer w-full min-h-12 border-b bg-transparent py-3.5 font-sans text-base text-text outline-none transition-colors focus:border-text",
+    "peer w-full min-h-12 border-b bg-transparent py-3.5 font-sans text-base text-text outline-hidden transition-colors focus:border-text",
     error ? "border-primary" : "border-border-strong"
   );
 
@@ -57,7 +57,7 @@ function Field({ id, label, type = "text", textarea, error, onClearError }) {
       )}
       <label
         htmlFor={id}
-        className="pointer-events-none absolute top-3.5 left-0 origin-[0] text-faint transition-all peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-[:not(:placeholder-shown)]:-translate-y-6 peer-[:not(:placeholder-shown)]:scale-75 peer-focus:-translate-y-6 peer-focus:scale-75"
+        className="pointer-events-none absolute top-3.5 left-0 origin-left text-faint transition-all peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-not-placeholder-shown:-translate-y-6 peer-not-placeholder-shown:scale-75 peer-focus:-translate-y-6 peer-focus:scale-75"
       >
         {label}
       </label>
@@ -80,7 +80,7 @@ function ChoiceGroup({ title, name, options, required, error, onClearError }) {
           <label
             key={option}
             className={cn(
-              "inline-flex min-h-11 cursor-pointer items-center rounded-full border px-3.5 py-2 text-sm text-subtle transition-colors has-[:checked]:border-acid has-[:checked]:bg-acid has-[:checked]:text-[var(--theme-accent-fg)] sm:px-4",
+              "inline-flex min-h-11 cursor-pointer items-center rounded-full border px-3.5 py-2 text-sm text-subtle transition-colors has-checked:border-acid has-checked:bg-acid has-checked:text-accent-fg sm:px-4",
               error ? "border-primary/60" : "border-border-strong"
             )}
           >
@@ -106,6 +106,7 @@ function getFormValues(form) {
   return {
     name: String(data.get("name") || "").trim(),
     email: String(data.get("email") || "").trim(),
+    topic: String(data.get("topic") || "").trim(),
     project: String(data.get("project") || "").trim(),
     budget: String(data.get("budget") || "").trim(),
     source: String(data.get("source") || "").trim(),
@@ -147,13 +148,15 @@ export default function Contact({ ready }) {
     setError("");
 
     const values = getFormValues(formRef.current);
-    const validation = validateContactForm(values);
+    const validation = validateContactForm(values, { topics: CONTACT_TOPICS });
 
     if (!validation.valid) {
       setFieldErrors(validation.errors);
       setError("Please fix the highlighted fields before continuing.");
 
-      const firstInvalidId = ["name", "email", "project", "budget"].find((field) => validation.errors[field]);
+      const firstInvalidId = ["name", "email", "topic", "project", "budget"].find(
+        (field) => validation.errors[field]
+      );
       if (firstInvalidId) {
         formRef.current?.querySelector(`#${firstInvalidId}`)?.focus();
       }
@@ -250,6 +253,14 @@ export default function Contact({ ready }) {
                 error={fieldErrors.email}
                 onClearError={clearFieldError}
               />
+              <ChoiceGroup
+                title="What would you like to discuss?"
+                name="topic"
+                options={CONTACT_TOPICS}
+                required
+                error={fieldErrors.topic}
+                onClearError={clearFieldError}
+              />
               <Field
                 id="project"
                 label="Tell us about your project"
@@ -304,7 +315,7 @@ export default function Contact({ ready }) {
               ) : (
                 <button
                   type="submit"
-                  className="reveal-item mt-2 inline-flex h-12 w-full min-w-44 items-center justify-center rounded-full bg-acid px-8 text-sm font-medium tracking-wide text-[var(--theme-accent-fg)] uppercase sm:w-auto"
+                  className="reveal-item mt-2 inline-flex h-12 w-full min-w-44 items-center justify-center rounded-full bg-acid px-8 text-sm font-medium tracking-wide text-accent-fg uppercase sm:w-auto"
                 >
                   submit
                 </button>

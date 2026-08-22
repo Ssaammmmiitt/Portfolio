@@ -2,15 +2,18 @@ import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Contact from "./Contact.jsx";
-import { BUDGETS } from "../data.js";
+import { BUDGETS, CONTACT_TOPICS } from "../data.js";
 import { renderWithProviders } from "../test/renderWithProviders.jsx";
 
 describe("Contact", () => {
-  it("renders form fields and budget options", () => {
+  it("renders form fields and choice options", () => {
     renderWithProviders(<Contact ready={true} />);
     expect(screen.getByLabelText(/your name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/your email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/tell us about your project/i)).toBeInTheDocument();
+    CONTACT_TOPICS.forEach((topic) => {
+      expect(screen.getByText(topic)).toBeInTheDocument();
+    });
     BUDGETS.forEach((budget) => {
       expect(screen.getByText(budget)).toBeInTheDocument();
     });
@@ -25,6 +28,7 @@ describe("Contact", () => {
     expect(screen.getByText(/please fix the highlighted fields/i)).toBeInTheDocument();
     expect(screen.getByText(/name is required/i)).toBeInTheDocument();
     expect(screen.getByText(/email is required/i)).toBeInTheDocument();
+    expect(screen.getByText(/please select a topic/i)).toBeInTheDocument();
     expect(screen.queryByText(/one last step/i)).not.toBeInTheDocument();
   });
 
@@ -34,6 +38,7 @@ describe("Contact", () => {
 
     await user.type(screen.getByLabelText(/your name/i), "Test User");
     await user.type(screen.getByLabelText(/your email/i), "test@example.com");
+    await user.click(screen.getByText(CONTACT_TOPICS[0]));
     await user.type(screen.getByLabelText(/tell us about your project/i), "Portfolio rebuild");
     await user.click(screen.getByText(BUDGETS[0]));
     await user.click(screen.getByRole("button", { name: /submit/i }));
@@ -53,6 +58,7 @@ describe("Contact", () => {
 
     await user.type(screen.getByLabelText(/your name/i), "Test User");
     await user.type(screen.getByLabelText(/your email/i), "test@example.com");
+    await user.click(screen.getByText(CONTACT_TOPICS[0]));
     await user.type(screen.getByLabelText(/tell us about your project/i), "Hello there, I need help with a project.");
     await user.click(screen.getByText(BUDGETS[0]));
     await user.click(screen.getByRole("button", { name: /submit/i }));

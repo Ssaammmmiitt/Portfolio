@@ -1,10 +1,13 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import {
+  getReloadStreak,
   hasVisited,
   markVisited,
   readScroll,
   saveScroll,
 } from "./visitCache.js";
+
+const RELOAD_WINDOW = 1200;
 
 describe("visitCache", () => {
   beforeEach(() => {
@@ -26,5 +29,46 @@ describe("visitCache", () => {
   it("ignores invalid scroll values", () => {
     sessionStorage.setItem("sammit-site-scroll", "not-a-number");
     expect(readScroll()).toBe(0);
+  });
+
+  it("tracks reload streak only at scroll top", () => {
+    saveScroll(120);
+    expect(getReloadStreak(1000)).toEqual({
+      atTop: false,
+      shouldHardReset: false,
+      clearStreak: true,
+    });
+  });
+
+  it("requires two quick reloads at top for hard reset", () => {
+    const t0 = 10_000;
+    expect(getReloadStreak(t0)).toEqual({
+      atTop: true,
+      shouldHardReset: false,
+      streak: 1,
+      now: t0,
+    });
+
+    sessionStorage.setItem("sammit-site-reload-streak", "1");
+    sessionStorage.setItem("sammit-site-reload-streak-ts", String(t0));
+
+    expect(getReloadStreak(t0 + 400)).toEqual({
+      atTop: true,
+      shouldHardReset: true,
+      streak: 2,
+      now: t0 + 400,
+    });
+  });
+
+  it("resets reload streak after the time window", () => {
+    sessionStorage.setItem("sammit-site-reload-streak", "1");
+    sessionStorage.setItem("sammit-site-reload-streak-ts", "1000");
+
+    expect(getReloadStreak(1000 + RELOAD_WINDOW + 1)).toEqual({
+      atTop: true,
+      shouldHardReset: false,
+      streak: 1,
+      now: 1000 + RELOAD_WINDOW + 1,
+    });
   });
 });

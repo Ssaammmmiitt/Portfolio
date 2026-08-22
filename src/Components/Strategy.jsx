@@ -154,7 +154,7 @@ function GridStrategy({ ready, gridRef }) {
   }, [ready, gridRef]);
 
   return (
-    <div ref={gridRef} className="grid gap-4 sm:gap-5 md:grid-cols-1 lg:grid-cols-2 lg:gap-6">
+    <div ref={gridRef} className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:gap-6">
       {STRATEGY.map((item, i) => (
         <article key={item.title} className="approach-grid-card reveal-item">
           <StrategyCard index={i} item={item} />

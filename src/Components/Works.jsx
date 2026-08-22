@@ -1,17 +1,19 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { PROJECTS } from "../data.js";
+import { useTheme } from "../context/ThemeProvider.jsx";
 import { useReveal } from "../hooks/useReveal.js";
 import { gsap } from "../lib/gsap.js";
+import { cn } from "../lib/utils.js";
 import { canHoverFine, prefersReducedMotion } from "../lib/motion.js";
 
 function ProjectPreview({ project }) {
-  const accent = project.color || "#22d3ee";
+  const accent = project.color || "var(--theme-accent)";
 
   return (
     <div className="flex size-full flex-col overflow-hidden rounded-lg border border-border/50 bg-background">
       <div
         className="flex min-h-0 flex-1 items-center justify-center p-3"
-        style={{ background: project.thumbnail ? "#0a0a0a" : accent }}
+        style={{ background: project.thumbnail ? "var(--theme-muted)" : accent }}
       >
         {project.thumbnail ? (
           <img
@@ -37,6 +39,8 @@ export default function Works({ ready }) {
   const root = useRef(null);
   const modal = useRef(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const { theme } = useTheme();
+  const isLight = theme === "light";
   const activeProject = hoveredIndex != null ? PROJECTS[hoveredIndex] : PROJECTS[0];
 
   useReveal(root, ready);
@@ -116,7 +120,11 @@ export default function Works({ ready }) {
               </div>
               <span className="flex shrink-0 items-center gap-2 text-[0.65rem] tracking-[0.2em] text-faint uppercase sm:text-xs">
                 View
-                <img src="/images/arrow-right.svg" alt="" className="w-3 invert" />
+                <img
+                  src="/images/arrow-right.svg"
+                  alt=""
+                  className={cn("w-3", !isLight && "invert")}
+                />
               </span>
             </a>
           ))}

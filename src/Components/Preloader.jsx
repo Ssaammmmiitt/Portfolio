@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { NAME } from "../data.js";
 import { gsap, EASE_IN_OUT } from "../lib/gsap.js";
+import { prefersReducedMotion } from "../lib/motion.js";
 
 export default function Preloader({ onDone }) {
   const root = useRef(null);
@@ -13,6 +14,11 @@ export default function Preloader({ onDone }) {
   }, [onDone]);
 
   useLayoutEffect(() => {
+    if (prefersReducedMotion()) {
+      done.current();
+      return;
+    }
+
     const ctx = gsap.context(() => {
       const obj = { n: 0 };
       const tl = gsap.timeline({
@@ -43,7 +49,7 @@ export default function Preloader({ onDone }) {
   return (
     <div
       ref={root}
-      className="fixed inset-0 z-[10000] flex h-dvh w-full items-center justify-center overflow-hidden bg-background"
+      className="fixed inset-0 z-10000 flex h-dvh w-full items-center justify-center overflow-hidden bg-background"
     >
       <div ref={label} className="flex flex-col items-center gap-6 text-text">
         <p className="flex items-center gap-3 px-6 text-center font-display text-3xl tracking-wide sm:text-4xl md:text-5xl">

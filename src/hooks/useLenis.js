@@ -17,6 +17,15 @@ function isEditableTarget(target) {
   );
 }
 
+function isInteractiveTarget(target) {
+  if (!target || !(target instanceof Element)) return false;
+  return Boolean(
+    target.closest(
+      "a, button, [role='button'], summary, select, input, textarea, [contenteditable='true']"
+    )
+  );
+}
+
 export function useLenis(enabled, initialScroll = 0) {
   useEffect(() => {
     if (!enabled) return;
@@ -62,7 +71,7 @@ export function useLenis(enabled, initialScroll = 0) {
     });
 
     const onKeyDown = (event) => {
-      if (isEditableTarget(event.target)) return;
+      if (isEditableTarget(event.target) || isInteractiveTarget(event.target)) return;
 
       const step = window.innerHeight * KEYBOARD_SCROLL_RATIO;
       let delta = 0;

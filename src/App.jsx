@@ -14,6 +14,7 @@ import Footer from "./Components/Footer.jsx";
 import Preloader from "./Components/Preloader.jsx";
 import Cursor from "./Components/Cursor.jsx";
 import { useLenis } from "./hooks/useLenis.js";
+import { useInPageNav } from "./hooks/useInPageNav.js";
 import { useScrollNav } from "./hooks/useScrollNav.js";
 import { useThemeScrollSync } from "./hooks/useThemeScrollSync.js";
 import { gsap } from "./lib/gsap.js";
@@ -43,6 +44,7 @@ export default function App() {
   }, [returning, savedScroll]);
 
   useLenis(preloaderDone, savedScroll);
+  useInPageNav(preloaderDone);
   const { showTopNav, showDock } = useScrollNav(preloaderDone);
   useThemeScrollSync();
 
@@ -78,7 +80,7 @@ export default function App() {
       <Cursor />
       <div
         ref={progressRef}
-        className="fixed top-0 left-0 z-[10002] h-px w-full origin-left scale-x-0 bg-gradient-to-r from-acid via-paper to-primary"
+        className="fixed top-0 left-0 z-10002 h-px w-full origin-left scale-x-0 bg-linear-to-r from-acid via-paper to-primary"
       />
       <Navbar visible={preloaderDone} instant={returning} show={showTopNav} />
       <NavDock visible={preloaderDone && showDock} />

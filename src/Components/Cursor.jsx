@@ -8,7 +8,9 @@ export default function Cursor() {
   useEffect(() => {
     const el = dot.current;
     if (!el || prefersReducedMotion()) return;
-    if (!window.matchMedia("(pointer: fine) and (hover: hover)").matches) return;
+    if (!window.matchMedia("(min-width: 1024px) and (pointer: fine) and (hover: hover)").matches) {
+      return;
+    }
 
     document.documentElement.classList.add("has-custom-cursor");
     gsap.set(el, { xPercent: -50, yPercent: -50, opacity: 1 });
@@ -42,7 +44,7 @@ export default function Cursor() {
     <div
       ref={dot}
       aria-hidden="true"
-      className="pointer-events-none fixed top-0 left-0 z-[10003] hidden size-3 rounded-full bg-acid mix-blend-difference opacity-0 lg:block"
+      className="pointer-events-none fixed top-0 left-0 z-10003 hidden size-3 rounded-full bg-acid mix-blend-difference opacity-0 lg:block"
     />
   );
 }

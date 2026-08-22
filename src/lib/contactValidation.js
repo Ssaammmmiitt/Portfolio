@@ -1,10 +1,11 @@
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function validateContactForm(values) {
+export function validateContactForm(values, { topics = [] } = {}) {
   const errors = {};
 
   const name = values.name?.trim() ?? "";
   const email = values.email?.trim() ?? "";
+  const topic = values.topic?.trim() ?? "";
   const project = values.project?.trim() ?? "";
   const budget = values.budget?.trim() ?? "";
 
@@ -20,6 +21,12 @@ export function validateContactForm(values) {
     errors.email = "Email is required.";
   } else if (!EMAIL_PATTERN.test(email)) {
     errors.email = "Enter a valid email address.";
+  }
+
+  if (!topic) {
+    errors.topic = "Please select a topic.";
+  } else if (topics.length > 0 && !topics.includes(topic)) {
+    errors.topic = "Please select a valid topic.";
   }
 
   if (!project) {

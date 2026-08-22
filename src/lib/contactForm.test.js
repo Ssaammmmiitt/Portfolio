@@ -41,6 +41,7 @@ describe("contactForm", () => {
     const payload = {
       name: "Jane",
       email: "jane@example.com",
+      topic: "Collaboration",
       project: "New app",
       budget: "$5k–$10k",
       source: "Referral",
@@ -56,6 +57,7 @@ describe("contactForm", () => {
     const body = fetch.mock.calls[0][1].body;
     expect(body.get("name")).toBe("Jane");
     expect(body.get("email")).toBe("jane@example.com");
+    expect(body.get("topic")).toBe("Collaboration");
     expect(body.get("h-captcha-response")).toBe("token-123");
   });
 

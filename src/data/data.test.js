@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   BUDGETS,
   CODE_DATA,
+  CONTACT_TOPICS,
   EMAIL,
   MANIFESTO_LINES,
   NAV_LINKS,
@@ -31,6 +32,7 @@ describe("site data", () => {
     expect(STATS.length).toBeGreaterThan(0);
     expect(CODE_DATA.length).toBeGreaterThan(0);
     expect(BUDGETS.length).toBeGreaterThan(0);
+    expect(CONTACT_TOPICS.length).toBe(6);
   });
 
   it("uses in-page nav anchors", () => {

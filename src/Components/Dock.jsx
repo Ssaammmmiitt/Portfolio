@@ -121,7 +121,7 @@ function DockIcon({ children, className = "" }) {
   return (
     <div
       className={cn(
-        "flex size-full items-center justify-center text-[var(--theme-dock-fg)]",
+        "flex size-full items-center justify-center text-dock-fg",
         className
       )}
     >

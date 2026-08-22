@@ -3,7 +3,7 @@ import { BIO_TEXTS } from "../data.js";
 import { useTheme } from "../context/ThemeProvider.jsx";
 import { useReveal } from "../hooks/useReveal.js";
 import { gsap } from "../lib/gsap.js";
-import { getScrollTextColors, syncScrollTriggers, updateScrubTweenColor } from "../lib/motion.js";
+import { refreshScrubTween, SCROLL_TEXT_VARS, syncScrollTriggers } from "../lib/motion.js";
 
 function HighlightText({ texts, ready }) {
   const ref = useRef(null);
@@ -15,15 +15,14 @@ function HighlightText({ texts, ready }) {
 
     const ctx = gsap.context(() => {
       tweensRef.current = [];
-      const { paper, mutedWord } = getScrollTextColors("dark");
 
       ref.current.querySelectorAll("[data-copy]").forEach((paragraph) => {
         const words = paragraph.querySelectorAll("[data-word]");
         const tween = gsap.fromTo(
           words,
-          { color: mutedWord },
+          { color: SCROLL_TEXT_VARS.mutedWord },
           {
-            color: paper,
+            color: SCROLL_TEXT_VARS.paper,
             stagger: 0.04,
             ease: "none",
             scrollTrigger: {
@@ -49,14 +48,7 @@ function HighlightText({ texts, ready }) {
   useLayoutEffect(() => {
     if (!ready || !tweensRef.current.length) return;
 
-    const { paper, mutedWord } = getScrollTextColors(theme);
-
-    tweensRef.current.forEach((tween) => {
-      if (typeof tween?.progress !== "function") return;
-      tween.vars.from = { color: mutedWord };
-      updateScrubTweenColor(tween, paper);
-    });
-
+    tweensRef.current.forEach((tween) => refreshScrubTween(tween));
     syncScrollTriggers();
   }, [theme, ready]);
 

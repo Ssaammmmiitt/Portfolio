@@ -1,10 +1,35 @@
-import { lazy, Suspense, useRef } from "react";
+import { Component, lazy, Suspense, useEffect, useRef, useState } from "react";
 import { CODE_DATA } from "../data.js";
 import { useReveal } from "../hooks/useReveal.js";
+import { scrollByDelta } from "../lib/scrollTo.js";
 
-const SPLINE_SCENE = "https://prod.spline.design/rrwZ-JfRgHA8TcXd/scene.splinecode";
+const SPLINE_SCENE = "/spline/stack.splinecode";
 
 const Spline = lazy(() => import("@splinetool/react-spline"));
+
+function SplineFallback() {
+  return (
+    <div className="flex size-full items-center justify-center">
+      <div className="size-8 animate-pulse rounded-full bg-border" />
+    </div>
+  );
+}
+
+class SplineErrorBoundary extends Component {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  render() {
+    if (this.state.failed) {
+      return this.props.fallback;
+    }
+
+    return this.props.children;
+  }
+}
 
 function CodeColumn({ rows }) {
   return (
@@ -39,18 +64,65 @@ function CodeColumn({ rows }) {
   );
 }
 
-function SplinePanel() {
-  return (
-    <div className="relative flex h-[min(68vw,360px)] w-full items-center sm:h-[min(60vw,400px)] md:h-[min(72svh,520px)]">
-      <Suspense
-        fallback={
-          <div className="flex size-full items-center justify-center">
-            <div className="size-8 animate-pulse rounded-full bg-border" />
-          </div>
+function SplinePanel({ ready }) {
+  const panelRef = useRef(null);
+  const [loadScene, setLoadScene] = useState(false);
+
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const onWheel = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      scrollByDelta(event.deltaY);
+    };
+
+    panel.addEventListener("wheel", onWheel, { passive: false, capture: true });
+    return () => panel.removeEventListener("wheel", onWheel, { capture: true });
+  }, []);
+
+  useEffect(() => {
+    if (!ready) {
+      setLoadScene(false);
+      return;
+    }
+
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLoadScene(true);
+          observer.disconnect();
         }
-      >
-        <Spline scene={SPLINE_SCENE} className="spline-blend size-full" />
-      </Suspense>
+      },
+      { rootMargin: "160px", threshold: 0.01 }
+    );
+
+    observer.observe(panel);
+    return () => observer.disconnect();
+  }, [ready]);
+
+  return (
+    <div
+      ref={panelRef}
+      className="spline-panel relative flex h-[min(68vw,360px)] w-full items-center sm:h-[min(60vw,400px)] md:h-[min(72svh,520px)]"
+    >
+      {loadScene ? (
+        <SplineErrorBoundary fallback={<SplineFallback />}>
+          <Suspense fallback={<SplineFallback />}>
+            <Spline
+              scene={SPLINE_SCENE}
+              renderOnDemand
+              className="spline-blend pointer-events-none size-full"
+            />
+          </Suspense>
+        </SplineErrorBoundary>
+      ) : (
+        <SplineFallback />
+      )}
     </div>
   );
 }
@@ -61,13 +133,11 @@ export default function Stack({ ready }) {
 
   return (
     <section ref={root} className="section-y overflow-x-clip bg-background">
-      <div className="wrap grid items-start gap-10 md:grid-cols-2 md:gap-x-10 lg:gap-x-16 xl:gap-x-24">
+      <div className="wrap grid items-start gap-14 md:grid-cols-2 md:gap-x-14 lg:gap-x-24 xl:gap-x-32">
         <CodeColumn rows={CODE_DATA} />
 
-        <div
-          className="reveal-item md:sticky md:top-[max(5.5rem,calc(env(safe-area-inset-top)+4.25rem))] md:self-start"
-        >
-          <SplinePanel />
+        <div className="reveal-item md:sticky md:top-[max(5.5rem,calc(env(safe-area-inset-top)+4.25rem))] md:self-start md:pl-2 lg:pl-6">
+          <SplinePanel ready={ready} />
         </div>
       </div>
     </section>

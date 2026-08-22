@@ -51,7 +51,7 @@ export default function NavDock({ visible = false }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 28 }}
           transition={{ duration: 0.35, ease: easeOut }}
-          className="fixed inset-x-0 bottom-0 z-[1001] flex justify-center pb-[max(0.65rem,env(safe-area-inset-bottom))]"
+          className="fixed inset-x-0 bottom-0 z-1001 flex justify-center pb-[max(0.65rem,env(safe-area-inset-bottom))]"
         >
           <Dock
             items={items}

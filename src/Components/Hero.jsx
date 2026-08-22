@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
+import { GibberishSplitChars } from "./GibberishText.jsx";
 import { AVAILABILITY, LOCATION, NAME, ROLE } from "../data.js";
 import { gsap } from "../lib/gsap.js";
 import { isCompactViewport, prefersReducedMotion, syncScrollTriggers } from "../lib/motion.js";
@@ -22,6 +23,7 @@ const META = [LOCATION, "Specialized in AI, Frontend & Backend", AVAILABILITY];
 export default function Hero({ animate, instant }) {
   const root = useRef(null);
   const names = NAME.split(" ");
+  const nameSettled = instant || prefersReducedMotion();
 
   useLayoutEffect(() => {
     if (!animate || !root.current) return;
@@ -95,7 +97,12 @@ export default function Hero({ animate, instant }) {
         <h1 className="display-title flex flex-wrap justify-center gap-x-[0.18em] text-center text-[clamp(3.2rem,16vw,13rem)] leading-[0.8] tracking-wide text-paper">
           {names.map((part) => (
             <span key={part}>
-              <SplitChars text={part} className="hero-name-letter" instant={instant} />
+              <GibberishSplitChars
+                text={part}
+                className="hero-name-letter"
+                instant={instant}
+                settled={nameSettled}
+              />
             </span>
           ))}
         </h1>
@@ -120,7 +127,8 @@ export default function Hero({ animate, instant }) {
             instant ? "opacity-100" : "opacity-0"
           }`}
         >
-          Scroll to enter
+          Scroll to enter{" "}
+          <span className="text-faint normal-case tracking-[0.24em]">(spacebar)</span>
         </p>
       </div>
     </section>

@@ -48,9 +48,10 @@ export async function submitContactForm(payload, hcaptchaToken) {
 
   const formData = new FormData();
   formData.append("access_key", WEB3FORMS_ACCESS_KEY);
-  formData.append("subject", `Portfolio inquiry from ${payload.name}`);
+  formData.append("subject", `Portfolio inquiry: ${payload.topic} from ${payload.name}`);
   formData.append("name", payload.name);
   formData.append("email", payload.email);
+  formData.append("topic", payload.topic);
   formData.append("message", payload.project);
   formData.append("budget", payload.budget);
   formData.append("source", payload.source || "Not specified");

@@ -62,7 +62,7 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
       <header
         ref={root}
         className={cn(
-          "nav-shell fixed top-0 left-0 z-[1001] w-full",
+          "nav-shell fixed top-0 left-0 z-1001 w-full",
           instant ? "opacity-100" : "opacity-0",
           visible && show ? "pointer-events-auto" : "pointer-events-none"
         )}
@@ -90,8 +90,8 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
               className={cn(
                 "nav-interactive nav-interactive-cta",
                 isLight
-                  ? "border-border-strong text-text hover:border-[var(--theme-nav-fg-hover)]"
-                  : "border-white text-white hover:border-[var(--theme-nav-fg-hover)]"
+                  ? "border-border-strong text-text hover:border-nav-fg-hover"
+                  : "border-white text-white hover:border-nav-fg-hover"
               )}
             />
             <SocialLinks
@@ -105,8 +105,8 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
               className={cn(
                 "nav-link nav-interactive nav-interactive-cta inline-flex min-h-11 items-center rounded-full border px-3.5 text-xs font-medium sm:px-4 sm:text-sm",
                 isLight
-                  ? "border-border-strong hover:border-[var(--theme-nav-fg-hover)] hover:bg-text/10 hover:text-[var(--theme-nav-fg-hover)]"
-                  : "border-white hover:border-[var(--theme-nav-fg-hover)] hover:bg-white/10 hover:text-[var(--theme-nav-fg-hover)]"
+                  ? "border-border-strong hover:border-nav-fg-hover hover:bg-text/10 hover:text-nav-fg-hover"
+                  : "border-white hover:border-nav-fg-hover hover:bg-white/10 hover:text-nav-fg-hover"
               )}
             >
               Connect with me
@@ -139,7 +139,7 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[1000] flex flex-col items-center justify-center gap-8 bg-background"
+            className="fixed inset-0 z-1000 flex flex-col items-center justify-center gap-8 bg-background"
           >
             {NAV_LINKS.map((link, i) => (
               <motion.a

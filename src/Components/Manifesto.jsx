@@ -1,13 +1,14 @@
 import { useLayoutEffect, useRef } from "react";
 import { MANIFESTO_BODY, MANIFESTO_BODY_HIGHLIGHT, MANIFESTO_LINES } from "../data.js";
 import { useTheme } from "../context/ThemeProvider.jsx";
+import MouseFollowingEyes from "./MouseFollowingEyes.jsx";
 import { gsap } from "../lib/gsap.js";
 import {
-  getManifestoColors,
   isCompactViewport,
   prefersReducedMotion,
+  MANIFESTO_VARS,
+  refreshScrubTimeline,
   syncScrollTriggers,
-  updateTimelineColorTweens,
 } from "../lib/motion.js";
 
 function accentMode({ accent, softAccent }) {
@@ -65,14 +66,14 @@ function getBodyWords(body, highlightPhrase) {
   });
 }
 
-function applyManifestoStaticColors(root, colors) {
+function applyManifestoStaticColors(root) {
   const accents = root.querySelectorAll('[data-accent="true"]');
   const softAccents = root.querySelectorAll('[data-accent="soft"]');
   const rest = root.querySelectorAll('[data-accent="false"]');
 
-  gsap.set(rest, { color: colors.paper, y: 0, opacity: 1 });
-  gsap.set(accents, { color: colors.accent, y: 0, opacity: 1 });
-  gsap.set(softAccents, { color: colors.accentSoft, y: 0, opacity: 1 });
+  gsap.set(rest, { color: MANIFESTO_VARS.paper, y: 0, opacity: 1 });
+  gsap.set(accents, { color: MANIFESTO_VARS.accent, y: 0, opacity: 1 });
+  gsap.set(softAccents, { color: MANIFESTO_VARS.accentSoft, y: 0, opacity: 1 });
 }
 
 export default function Manifesto({ ready }) {
@@ -86,7 +87,6 @@ export default function Manifesto({ ready }) {
   useLayoutEffect(() => {
     if (!ready || !root.current) return;
 
-    const colors = getManifestoColors("dark");
     const words = root.current.querySelectorAll("[data-word]");
     const accents = root.current.querySelectorAll('[data-accent="true"]');
     const softAccents = root.current.querySelectorAll('[data-accent="soft"]');
@@ -95,11 +95,15 @@ export default function Manifesto({ ready }) {
 
     const ctx = gsap.context(() => {
       if (prefersReducedMotion()) {
-        applyManifestoStaticColors(root.current, colors);
+        applyManifestoStaticColors(root.current);
         return;
       }
 
-      gsap.set(words, { color: colors.mutedWord, y: compact ? 10 : 28, opacity: 0.55 });
+      gsap.set(words, {
+        color: MANIFESTO_VARS.muted,
+        y: compact ? 10 : 28,
+        opacity: 0.55,
+      });
 
       const tl = gsap.timeline({
         defaults: { ease: "none" },
@@ -114,17 +118,17 @@ export default function Manifesto({ ready }) {
       tl.to(words, { y: 0, opacity: 1, stagger: compact ? 0.05 : 0.08, duration: 0.6 }, 0);
       colorTweensRef.current.rest = tl.to(
         rest,
-        { color: colors.paper, stagger: compact ? 0.06 : 0.1, duration: 0.7 },
+        { color: MANIFESTO_VARS.paper, stagger: compact ? 0.06 : 0.1, duration: 0.7 },
         0.05
       );
       colorTweensRef.current.soft = tl.to(
         softAccents,
-        { color: colors.accentSoft, stagger: 0.04, duration: 0.65 },
+        { color: MANIFESTO_VARS.accentSoft, stagger: 0.04, duration: 0.65 },
         0.08
       );
       colorTweensRef.current.accent = tl.to(
         accents,
-        { color: colors.accent, stagger: 0.1, duration: 0.7 },
+        { color: MANIFESTO_VARS.accent, stagger: 0.1, duration: 0.7 },
         0.12
       );
 
@@ -143,22 +147,15 @@ export default function Manifesto({ ready }) {
   useLayoutEffect(() => {
     if (!ready || !root.current) return;
 
-    const colors = getManifestoColors(theme);
-
     if (prefersReducedMotion()) {
-      applyManifestoStaticColors(root.current, colors);
+      applyManifestoStaticColors(root.current);
       return;
     }
 
     const tl = timelineRef.current;
     if (!tl) return;
 
-    updateTimelineColorTweens(tl, [
-      { tween: colorTweensRef.current.rest, color: colors.paper },
-      { tween: colorTweensRef.current.soft, color: colors.accentSoft },
-      { tween: colorTweensRef.current.accent, color: colors.accent },
-    ]);
-
+    refreshScrubTimeline(tl);
     syncScrollTriggers();
   }, [theme, ready]);
 
@@ -170,9 +167,15 @@ export default function Manifesto({ ready }) {
       >
         <div className="sticky top-0 flex min-h-dvh items-start overflow-x-clip pt-[max(5.5rem,calc(env(safe-area-inset-top)+4.25rem))] pb-10 sm:items-center sm:py-20 lg:py-28 motion-reduce:relative motion-reduce:py-20">
           <div className="noise pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay" />
+          <div
+            className="pointer-events-none absolute top-1/2 right-[clamp(3.5rem,7vw,9rem)] z-10 hidden -translate-y-1/2 lg:block"
+            aria-hidden="true"
+          >
+            <MouseFollowingEyes />
+          </div>
           <div className="wrap relative w-full">
             <div className="mb-8 flex items-end justify-between gap-8 sm:mb-10 md:mb-14">
-              <p className="kicker !mb-0">manifesto</p>
+              <p className="kicker mb-0!">manifesto</p>
               <p className="hidden max-w-xs text-right text-xs leading-relaxed tracking-[0.18em] text-faint uppercase md:block">
                 Scroll — the words come alive
               </p>
