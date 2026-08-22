@@ -53,11 +53,11 @@ function HighlightText({ texts, ready }) {
   }, [theme, ready]);
 
   return (
-    <div ref={ref} className="flex flex-col gap-y-6 text-base leading-[1.75] sm:gap-y-8 sm:text-lg sm:leading-[1.8]">
+    <div ref={ref} className="flex max-w-2xl flex-col gap-y-6 text-base leading-[1.75] sm:gap-y-8 sm:text-lg sm:leading-[1.8] lg:max-w-none">
       {texts.map((text) => (
-        <p key={text.slice(0, 24)} data-copy="">
+        <p key={text.slice(0, 24)} data-copy="" className="text-pretty">
           {text.split(" ").map((word, i) => (
-            <span key={`${word}-${i}`} data-word="" className="mr-[0.28em] inline-block">
+            <span key={`${word}-${i}`} data-word="" className="mr-[0.28em] inline">
               {word}
             </span>
           ))}
@@ -73,16 +73,16 @@ export default function About({ ready }) {
 
   return (
     <section id="about" ref={root} className="section-y relative overflow-x-clip bg-background">
-      <div className="wrap grid items-start gap-12 md:grid-cols-12 md:gap-10 lg:gap-14 xl:gap-20">
-        <div className="md:col-span-5 lg:col-span-4">
-          <div className="md:sticky md:top-28">
-            <h2 className="reveal-title font-display text-[clamp(3.4rem,12vw,8.5rem)] leading-[0.8] uppercase text-paper">
+      <div className="wrap grid items-start gap-10 sm:gap-12 lg:grid-cols-12 lg:gap-x-14 xl:gap-x-20">
+        <div className="min-w-0 lg:col-span-4 xl:col-span-4">
+          <div className="lg:sticky lg:top-8 lg:max-w-[18rem] lg:self-start xl:top-28 xl:max-w-none">
+            <h2 className="reveal-title font-display text-[clamp(2.75rem,11vw,5.5rem)] leading-[0.82] uppercase text-paper lg:text-[clamp(3rem,6.5vw,7rem)] xl:text-[clamp(3.4rem,7vw,8.5rem)]">
               Software
               <span className="block text-acid">Engineer</span>
             </h2>
           </div>
         </div>
-        <div className="md:col-span-7 lg:col-span-8">
+        <div className="min-w-0 lg:col-span-8 xl:col-span-8">
           <HighlightText texts={BIO_TEXTS} ready={ready} />
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "../lib/gsap.js";
 import { isCompactViewport, syncScrollTriggers } from "../lib/motion.js";
@@ -27,6 +27,9 @@ function isInteractiveTarget(target) {
 }
 
 export function useLenis(enabled, initialScroll = 0, spaceScrollEnabled = true) {
+  const spaceScrollRef = useRef(spaceScrollEnabled);
+  spaceScrollRef.current = spaceScrollEnabled;
+
   useEffect(() => {
     if (!enabled) return;
 
@@ -77,7 +80,7 @@ export function useLenis(enabled, initialScroll = 0, spaceScrollEnabled = true) 
       let delta = 0;
 
       if (event.code === "Space") {
-        if (!spaceScrollEnabled) {
+        if (!spaceScrollRef.current) {
           event.preventDefault();
           return;
         }
@@ -130,5 +133,5 @@ export function useLenis(enabled, initialScroll = 0, spaceScrollEnabled = true) 
       lenis.destroy();
       document.documentElement.classList.remove("lenis");
     };
-  }, [enabled, initialScroll, spaceScrollEnabled]);
+  }, [enabled, initialScroll]);
 }

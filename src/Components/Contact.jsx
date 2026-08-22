@@ -205,7 +205,7 @@ export default function Contact({ ready }) {
   }, []);
 
   return (
-    <section id="contact" ref={root} className="section-y relative overflow-x-clip border-t border-border bg-background">
+    <section id="contact" ref={root} className="section-y dock-safe-pb relative overflow-x-clip border-t border-border bg-background">
       <div className="wrap max-w-3xl">
           <p className="reveal-kicker kicker">Contact</p>
           <h2 className="reveal-title display-title mb-6 text-[clamp(2.6rem,9vw,6.2rem)] text-paper md:mb-8">
@@ -263,7 +263,7 @@ export default function Contact({ ready }) {
               />
               <Field
                 id="project"
-                label="Tell us about your project"
+                label="Tell me about your project"
                 textarea
                 error={fieldErrors.project}
                 onClearError={clearFieldError}
@@ -277,7 +277,7 @@ export default function Contact({ ready }) {
                 onClearError={clearFieldError}
               />
               <ChoiceGroup
-                title="How did you hear about us? (optional)"
+                title="How did you hear about me? (optional)"
                 name="source"
                 options={SOURCES}
               />
@@ -288,7 +288,8 @@ export default function Contact({ ready }) {
                     One last step  -  complete the verification below to send your message and help prevent spam.
                   </p>
                   {step === "verify" ? (
-                    <HCaptcha
+                    <div className="max-w-full overflow-x-auto">
+                      <HCaptcha
                       ref={captchaRef}
                       sitekey={HCAPTCHA_SITE_KEY}
                       reCaptchaCompat={false}
@@ -299,6 +300,7 @@ export default function Contact({ ready }) {
                         setError("Verification expired. Please try again.");
                       }}
                     />
+                    </div>
                   ) : (
                     <p className="text-sm text-faint">Sending your message…</p>
                   )}
@@ -328,7 +330,7 @@ export default function Contact({ ready }) {
               ) : null}
 
               <p className="mt-5 text-xs text-faint">
-                By submitting this form you accept our Privacy Policy. Messages are protected by spam filtering and human verification.
+                By submitting this form you accept my Privacy Policy. Messages are protected by spam filtering and human verification.
               </p>
             </form>
           )}

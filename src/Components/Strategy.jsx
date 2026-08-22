@@ -154,7 +154,7 @@ function GridStrategy({ ready, gridRef }) {
   }, [ready, gridRef]);
 
   return (
-    <div ref={gridRef} className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:gap-6">
+    <div ref={gridRef} className="grid min-w-0 gap-4 sm:gap-5 lg:grid-cols-2 lg:gap-6">
       {STRATEGY.map((item, i) => (
         <article key={item.title} className="approach-grid-card reveal-item">
           <StrategyCard index={i} item={item} />
@@ -172,7 +172,7 @@ export default function Strategy({ ready }) {
   useReveal(root, ready);
 
   useEffect(() => {
-    const media = window.matchMedia("(min-width: 768px)");
+    const media = window.matchMedia("(min-width: 1024px)");
     const update = () => setWideLayout(media.matches);
     update();
     media.addEventListener("change", update);
@@ -187,11 +187,11 @@ export default function Strategy({ ready }) {
     <section id="strategy" ref={root} className="relative overflow-x-clip bg-background">
       <div className="wrap section-y pb-6 md:pb-10">
         {wideLayout ? (
-          <div className="grid items-start gap-10 md:grid-cols-12 md:gap-x-10 lg:gap-x-14 xl:gap-x-20">
-            <div className="md:col-span-4 lg:col-span-3 md:sticky md:top-28 md:self-start">
+          <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-x-14 xl:gap-x-20">
+            <div className="min-w-0 lg:col-span-4 xl:col-span-3 lg:sticky lg:top-8 lg:self-start xl:top-28">
               <StrategyHeader />
             </div>
-            <div className="md:col-span-8 lg:col-span-9">
+            <div className="min-w-0 lg:col-span-8 xl:col-span-9">
               <GridStrategy ready={ready} gridRef={gridRef} />
             </div>
           </div>

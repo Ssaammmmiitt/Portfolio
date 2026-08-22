@@ -76,19 +76,19 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
             <Logo size={40} invertIcon={!isLight} showWordmark />
           </a>
 
-          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+          <div className="hidden min-w-0 lg:flex lg:items-center lg:gap-5 xl:gap-8">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                className="nav-link nav-interactive text-base font-medium uppercase tracking-[0.18em] lg:text-lg"
+                className="nav-link nav-interactive shrink-0 text-base font-medium uppercase tracking-[0.18em] lg:text-lg"
               >
                 {link.label}
               </a>
             ))}
             <ThemeToggle
               className={cn(
-                "nav-interactive nav-interactive-cta",
+                "nav-interactive nav-interactive-cta shrink-0",
                 isLight
                   ? "border-border-strong text-text hover:border-nav-fg-hover"
                   : "border-white text-white hover:border-nav-fg-hover"
@@ -97,13 +97,13 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
             <SocialLinks
               size={20}
               linkClassName="nav-link nav-interactive inline-flex"
-              className={cn("nav-border ml-2 gap-4 border-l pl-6")}
+              className={cn("nav-border ml-1 hidden gap-4 border-l pl-5 xl:ml-2 xl:flex xl:pl-6")}
               includeEmail={false}
             />
             <a
               href="#contact"
               className={cn(
-                "nav-link nav-interactive nav-interactive-cta inline-flex min-h-11 items-center rounded-full border px-3.5 text-xs font-medium sm:px-4 sm:text-sm",
+                "nav-link nav-interactive nav-interactive-cta hidden min-h-11 shrink-0 items-center rounded-full border px-3.5 text-xs font-medium sm:px-4 sm:text-sm xl:inline-flex",
                 isLight
                   ? "border-border-strong hover:border-nav-fg-hover hover:bg-text/10 hover:text-nav-fg-hover"
                   : "border-white hover:border-nav-fg-hover hover:bg-white/10 hover:text-nav-fg-hover"
@@ -113,7 +113,7 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
             </a>
           </div>
 
-          <div className="md:hidden flex items-center gap-3">
+          <div className="flex items-center gap-3 lg:hidden">
             <ThemeToggle
               className={cn(
                 "nav-interactive nav-interactive-cta",

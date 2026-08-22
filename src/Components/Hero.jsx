@@ -113,13 +113,13 @@ export default function Hero({ animate, instant, onIntroReady }) {
           ))}
         </h1>
 
-        <div className="mt-10 mb-2 grid grid-cols-1 gap-3 border-t border-border pt-6 sm:mt-14 sm:grid-cols-2 sm:gap-y-4 lg:mt-20 lg:grid-cols-3 lg:pt-8">
+        <div className="mt-10 mb-2 grid min-w-0 grid-cols-1 gap-3 border-t border-border pt-6 sm:mt-14 sm:grid-cols-2 sm:gap-y-4 lg:mt-20 lg:grid-cols-3 lg:pt-8">
           {META.map((item, i) => (
             <p
               key={item}
-              className={`hero-meta text-sm text-subtle max-md:text-xs ${
-                i === 1 ? "sm:text-right lg:text-center" : ""
-              } ${i === 2 ? "lg:col-span-1 lg:text-right sm:max-lg:col-span-2" : ""} ${
+              className={`hero-meta min-w-0 text-sm text-subtle max-md:text-xs ${
+                i === 1 ? "text-left sm:text-right lg:text-center" : ""
+              } ${i === 2 ? "text-left sm:col-span-2 lg:col-span-1 lg:text-right" : ""} ${
                 instant ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
               }`}
             >

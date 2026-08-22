@@ -168,12 +168,12 @@ export default function Manifesto({ ready }) {
         <div className="sticky top-0 flex min-h-dvh items-start overflow-x-clip pt-[max(5.5rem,calc(env(safe-area-inset-top)+4.25rem))] pb-10 sm:items-center sm:py-20 lg:py-28 motion-reduce:relative motion-reduce:py-20">
           <div className="noise pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay" />
           <div
-            className="pointer-events-none absolute top-1/2 right-[clamp(3.5rem,7vw,9rem)] z-10 hidden -translate-y-1/2 lg:block"
+            className="pointer-events-none absolute top-1/2 right-[clamp(1rem,3vw,4rem)] z-10 hidden -translate-y-1/2 xl:block"
             aria-hidden="true"
           >
             <MouseFollowingEyes />
           </div>
-          <div className="wrap relative w-full">
+          <div className="wrap relative w-full min-w-0">
             <div className="mb-8 flex items-end justify-between gap-8 sm:mb-10 md:mb-14">
               <p className="kicker mb-0!">manifesto</p>
               <p className="hidden max-w-xs text-right text-xs leading-relaxed tracking-[0.18em] text-faint uppercase md:block">
@@ -181,7 +181,7 @@ export default function Manifesto({ ready }) {
               </p>
             </div>
 
-            <div className="relative flex flex-col gap-1">
+            <div className="relative flex flex-col gap-1 lg:max-w-[92%] xl:max-w-none xl:pr-[11rem]">
               {MANIFESTO_LINES.map((entry) => (
                 <Line key={entry.line} {...entry} />
               ))}

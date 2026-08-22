@@ -97,7 +97,9 @@ export default function Works({ ready }) {
     const nameRect = nameEl.getBoundingClientRect();
     const containerRect = listRef.current.getBoundingClientRect();
     const gap = 20;
-    const x = nameRect.right - containerRect.left + gap;
+    const modalWidth = modal.current.offsetWidth;
+    const maxX = Math.max(0, containerRect.width - modalWidth - 8);
+    const x = Math.min(nameRect.right - containerRect.left + gap, maxX);
     const modalHeight = modal.current.offsetHeight;
     const y = nameRect.top - containerRect.top + nameRect.height / 2 - modalHeight / 2;
 
@@ -129,12 +131,12 @@ export default function Works({ ready }) {
             <a
               key={project.name}
               href="#contact"
-              className="work-row group flex min-h-14 items-center justify-between gap-4 border-t border-border py-5 last:border-b sm:py-7 md:py-8"
+              className="work-row group flex min-h-14 min-w-0 items-center justify-between gap-4 border-t border-border py-5 last:border-b sm:py-7 md:py-8"
               onMouseEnter={() => setHoveredIndex(index)}
               onFocus={() => setHoveredIndex(index)}
               onBlur={() => setHoveredIndex(null)}
             >
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <h3
                   ref={(el) => {
                     nameRefs.current[index] = el;

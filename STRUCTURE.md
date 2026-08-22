@@ -11,20 +11,21 @@ index.html
               ├── Preloader → onDone unlocks scroll + section animations
               ├── Navbar    → fixed top nav (GSAP + Framer Motion)
               ├── NavDock   → bottom dock nav (visible after hero scroll)
+              ├── ScrollToTop → back-to-top button (bottom left)
               ├── main
               │     ├── Hero          (GSAP intro; spacebar hint after intro)
               │     ├── Manifesto     (pinned scroll text + mouse-following eyes)
               │     ├── Marquee
               │     ├── Strategy      (stacked approach cards)
+              │     ├── Works         (featured project cards)
               │     ├── Stack         (skills list + lazy Spline 3D scene)
               │     ├── Stats
-              │     ├── Works
               │     ├── About
               │     └── Contact       (Web3Forms + hCaptcha)
               └── Footer
 ```
 
-`App.jsx` owns global UX: Lenis smooth scroll, scroll progress bar, custom cursor (desktop), theme/scroll sync, and the preloader gate (`preloaderDone`) passed to sections as `ready` / `animate`.
+`App.jsx` owns global UX: Lenis smooth scroll, scroll progress bar, theme/scroll sync, and the preloader gate (`preloaderDone`) passed to sections as `ready` / `animate`.
 
 ## Directories
 
@@ -92,8 +93,9 @@ Loaded early from `main.jsx` via `visitCache.js`:
 | `Footer.jsx` | `App` | Clocks, nav, social, large name |
 | `Navbar.jsx` | `App` | Links from `NAV_LINKS`, theme toggle |
 | `NavDock.jsx` | `App` | Bottom dock nav; uses `Dock.jsx` |
+| `ScrollToTop.jsx` | `App` | Floating back-to-top control (bottom left) |
 | `Preloader.jsx` | `App` | First-visit intro only |
-| `Cursor.jsx` | `App` | Custom cursor (`lg+`, fine pointer) |
+| `SmoothCursor.jsx` | `App` | Spring-animated pointer (`lg+`, fine pointer) |
 | `GibberishText.jsx` | Hero | Animated name decode effect |
 | `MouseFollowingEyes.jsx` | Manifesto | Desktop eyes that track cursor |
 | `Logo.jsx`, `SocialLinks.jsx`, `ThemeToggle.jsx` | Navbar / Footer | Shared chrome |

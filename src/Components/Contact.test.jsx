@@ -10,7 +10,7 @@ describe("Contact", () => {
     renderWithProviders(<Contact ready={true} />);
     expect(screen.getByLabelText(/your name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/your email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/tell us about your project/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/tell me about your project/i)).toBeInTheDocument();
     CONTACT_TOPICS.forEach((topic) => {
       expect(screen.getByText(topic)).toBeInTheDocument();
     });
@@ -39,7 +39,7 @@ describe("Contact", () => {
     await user.type(screen.getByLabelText(/your name/i), "Test User");
     await user.type(screen.getByLabelText(/your email/i), "test@example.com");
     await user.click(screen.getByText(CONTACT_TOPICS[0]));
-    await user.type(screen.getByLabelText(/tell us about your project/i), "Portfolio rebuild");
+    await user.type(screen.getByLabelText(/tell me about your project/i), "Portfolio rebuild");
     await user.click(screen.getByText(BUDGETS[0]));
     await user.click(screen.getByRole("button", { name: /submit/i }));
 
@@ -59,7 +59,7 @@ describe("Contact", () => {
     await user.type(screen.getByLabelText(/your name/i), "Test User");
     await user.type(screen.getByLabelText(/your email/i), "test@example.com");
     await user.click(screen.getByText(CONTACT_TOPICS[0]));
-    await user.type(screen.getByLabelText(/tell us about your project/i), "Hello there, I need help with a project.");
+    await user.type(screen.getByLabelText(/tell me about your project/i), "Hello there, I need help with a project.");
     await user.click(screen.getByText(BUDGETS[0]));
     await user.click(screen.getByRole("button", { name: /submit/i }));
     await user.click(screen.getByTestId("hcaptcha-mock"));

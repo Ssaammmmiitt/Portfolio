@@ -108,7 +108,7 @@ function SplinePanel({ ready }) {
   return (
     <div
       ref={panelRef}
-      className="spline-panel relative flex h-[min(68vw,360px)] w-full items-center sm:h-[min(60vw,400px)] md:h-[min(72svh,520px)]"
+      className="spline-panel relative flex h-[min(68vw,360px)] w-full min-w-0 items-center sm:h-[min(60vw,400px)] md:h-[min(55svh,420px)] lg:h-[min(72svh,520px)]"
     >
       {loadScene ? (
         <SplineErrorBoundary fallback={<SplineFallback />}>
@@ -132,11 +132,11 @@ export default function Stack({ ready }) {
   useReveal(root, ready);
 
   return (
-    <section ref={root} className="section-y overflow-x-clip bg-background">
-      <div className="wrap grid items-start gap-14 md:grid-cols-2 md:gap-x-14 lg:gap-x-24 xl:gap-x-32">
+    <section id="stack" ref={root} className="section-y overflow-x-clip bg-background">
+      <div className="wrap grid min-w-0 items-start gap-14 md:grid-cols-2 md:gap-x-14 lg:gap-x-24 xl:gap-x-32">
         <CodeColumn rows={CODE_DATA} />
 
-        <div className="reveal-item md:sticky md:top-[max(5.5rem,calc(env(safe-area-inset-top)+4.25rem))] md:self-start md:pl-2 lg:pl-6">
+        <div className="reveal-item min-w-0 md:sticky md:top-8 md:self-start lg:top-28 md:pl-2 lg:pl-6">
           <SplinePanel ready={ready} />
         </div>
       </div>

@@ -8,6 +8,16 @@ export function scrollByDelta(deltaY) {
   window.scrollBy({ top: deltaY, left: 0, behavior: "auto" });
 }
 
+export function scrollToTop() {
+  const lenis = window.__lenis;
+  if (lenis) {
+    lenis.scrollTo(0, { duration: 1.05 });
+    return;
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 export function scrollToHash(hash) {
   const id = hash.replace(/^#/, "");
   const target = document.getElementById(id);

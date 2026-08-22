@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { scrollToHash } from "./scrollTo.js";
+import { scrollToHash, scrollToTop } from "./scrollTo.js";
 
 describe("scrollToHash", () => {
   beforeEach(() => {
@@ -38,5 +38,26 @@ describe("scrollToHash", () => {
       offset: -72,
       duration: 1.05,
     });
+  });
+});
+
+describe("scrollToTop", () => {
+  beforeEach(() => {
+    window.scrollTo = vi.fn();
+    delete window.__lenis;
+  });
+
+  it("scrolls to top natively when Lenis is unavailable", () => {
+    scrollToTop();
+    expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
+  });
+
+  it("uses Lenis when available", () => {
+    const scrollTo = vi.fn();
+    window.__lenis = { scrollTo };
+
+    scrollToTop();
+
+    expect(scrollTo).toHaveBeenCalledWith(0, { duration: 1.05 });
   });
 });

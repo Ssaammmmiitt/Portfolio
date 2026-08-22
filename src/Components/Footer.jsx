@@ -74,7 +74,7 @@ export default function Footer({ ready = true }) {
     <footer
       id="footer"
       ref={root}
-      className="relative overflow-x-clip border-t border-border bg-background pt-16 sm:pt-20 md:pt-24 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
+      className="relative overflow-x-clip border-t border-border bg-background pt-16 sm:pt-20 md:pt-24 dock-safe-pb"
     >
       <div className="wrap">
         <div className="grid grid-cols-2 gap-10 sm:gap-12 md:grid-cols-12 md:gap-8">
@@ -109,7 +109,7 @@ export default function Footer({ ready = true }) {
           </div>
         </div>
 
-        <h2 className="footer-name display-title mt-16 flex flex-wrap justify-center gap-x-[0.18em] text-center text-[clamp(3.1rem,18vw,13rem)] leading-[0.8] text-paper sm:mt-20 md:mt-24">
+        <h2 className="footer-name display-title mt-16 flex flex-wrap justify-center gap-x-[0.18em] text-balance text-center text-[clamp(2.75rem,16vw,13rem)] leading-[0.8] text-paper sm:mt-20 md:mt-24">
           {NAME.split(" ").map((part, i) => (
             <span key={`${part}-${i}`} className={i === 1 ? "text-acid" : ""}>
               {part}
