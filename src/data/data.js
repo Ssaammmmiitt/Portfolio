@@ -309,11 +309,11 @@ export const STATS = [
 // ─────────────────────────────────────────────
 
 export const BUDGETS = [
+  "None",
   "Under $500",
   "$500 – $1000",
   "$1000 – $5000",
-  "$5000+",
-  "None",
+  "$5000+"
 ];
 
 export const CONTACT_TOPICS = [
