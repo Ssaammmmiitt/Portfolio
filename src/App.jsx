@@ -101,9 +101,9 @@ export default function App() {
         <Hero animate={preloaderDone} instant={returning} onIntroReady={enableSpaceScroll} />
         <Manifesto ready={preloaderDone} />
         <Marquee />
-        <Strategy ready={preloaderDone} />
         <Works ready={preloaderDone} />
         <Stack ready={preloaderDone} />
+        <Strategy ready={preloaderDone} />
         <Stats ready={preloaderDone} />
         <About ready={preloaderDone} />
         <Contact ready={preloaderDone} />

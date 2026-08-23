@@ -73,7 +73,10 @@ export default function MouseFollowingEyes() {
   }, []);
 
   return (
-    <div className="flex gap-2 xl:gap-3" aria-hidden="true">
+    <div
+      className="flex gap-2 lg:mr-6 lg:pr-2 xl:gap-3 xl:mr-10 xl:pr-4 2xl:mr-14 2xl:pr-6"
+      aria-hidden="true"
+    >
       <Eye
         mouseX={mousePos.x}
         mouseY={mousePos.y}

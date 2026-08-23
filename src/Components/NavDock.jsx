@@ -7,49 +7,106 @@ import Dock from "./Dock.jsx";
 
 const easeOut = [0.22, 1, 0.36, 1];
 
+const DOCK_SIZES = {
+  compact: {
+    panelHeight: 56,
+    baseItemSize: 40,
+    itemSlotWidth: 48,
+    magnification: 48,
+    distance: 100,
+    iconSize: 18,
+  },
+  default: {
+    panelHeight: 64,
+    baseItemSize: 44,
+    itemSlotWidth: 58,
+    magnification: 58,
+    distance: 130,
+    iconSize: 18,
+  },
+  large: {
+    panelHeight: 72,
+    baseItemSize: 50,
+    itemSlotWidth: 64,
+    magnification: 64,
+    distance: 145,
+    iconSize: 20,
+  },
+  xl: {
+    panelHeight: 82,
+    baseItemSize: 56,
+    itemSlotWidth: 72,
+    magnification: 72,
+    distance: 160,
+    iconSize: 22,
+  },
+};
+
+function useDockSize() {
+  const [tier, setTier] = useState("default");
+
+  useEffect(() => {
+    const compact = window.matchMedia("(max-width: 639px)");
+    const large = window.matchMedia("(min-width: 1024px)");
+    const xl = window.matchMedia("(min-width: 1280px)");
+
+    const update = () => {
+      if (compact.matches) setTier("compact");
+      else if (xl.matches) setTier("xl");
+      else if (large.matches) setTier("large");
+      else setTier("default");
+    };
+
+    update();
+    compact.addEventListener("change", update);
+    large.addEventListener("change", update);
+    xl.addEventListener("change", update);
+
+    return () => {
+      compact.removeEventListener("change", update);
+      large.removeEventListener("change", update);
+      xl.removeEventListener("change", update);
+    };
+  }, []);
+
+  return DOCK_SIZES[tier];
+}
+
 export default function NavDock({ visible = false }) {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
-  const [compact, setCompact] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia("(max-width: 639px)");
-    const update = () => setCompact(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
+  const dockSize = useDockSize();
 
   const items = useMemo(
     () => [
       {
-        icon: <FiHome size={18} />,
+        icon: <FiHome size={dockSize.iconSize} />,
         label: "Home",
         onClick: () => scrollToHash("#hero"),
       },
       {
-        icon: <FiBriefcase size={18} />,
+        icon: <FiBriefcase size={dockSize.iconSize} />,
         label: "Work",
         onClick: () => scrollToHash("#works"),
       },
       {
-        icon: <FiUser size={18} />,
+        icon: <FiUser size={dockSize.iconSize} />,
         label: "About",
         onClick: () => scrollToHash("#about"),
       },
       {
-        icon: <FiMail size={18} />,
+        icon: <FiMail size={dockSize.iconSize} />,
         label: "Contact",
         onClick: () => scrollToHash("#contact"),
       },
       {
-        icon: isDark ? <FiSun size={18} /> : <FiMoon size={18} />,
+        icon: isDark ? <FiSun size={dockSize.iconSize} /> : <FiMoon size={dockSize.iconSize} />,
         label: isDark ? "Light mode" : "Dark mode",
         onClick: toggleTheme,
         className: "dock-item-accent",
       },
     ],
-    [isDark, toggleTheme]
+    [dockSize.iconSize, isDark, toggleTheme]
   );
 
   return (
@@ -60,15 +117,15 @@ export default function NavDock({ visible = false }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 28 }}
           transition={{ duration: 0.35, ease: easeOut }}
-          className="fixed inset-x-0 bottom-0 z-1001 flex justify-center pb-[max(0.65rem,env(safe-area-inset-bottom))]"
+          className="fixed inset-x-0 bottom-0 z-1001 flex justify-center pb-[max(0.65rem,env(safe-area-inset-bottom))] lg:pb-[max(0.85rem,env(safe-area-inset-bottom))] xl:pb-[max(1rem,env(safe-area-inset-bottom))]"
         >
           <Dock
             items={items}
-            panelHeight={compact ? 56 : 64}
-            baseItemSize={compact ? 40 : 44}
-            itemSlotWidth={compact ? 48 : 58}
-            magnification={compact ? 48 : 58}
-            distance={compact ? 100 : 130}
+            panelHeight={dockSize.panelHeight}
+            baseItemSize={dockSize.baseItemSize}
+            itemSlotWidth={dockSize.itemSlotWidth}
+            magnification={dockSize.magnification}
+            distance={dockSize.distance}
           />
         </motion.div>
       )}

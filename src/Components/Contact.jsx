@@ -26,7 +26,7 @@ function FieldError({ id, message }) {
 function Field({ id, label, type = "text", textarea, error, onClearError, className }) {
   const errorId = `${id}-error`;
   const fieldClass = cn(
-    "peer w-full min-h-12 border-b bg-transparent py-3.5 font-sans text-base text-text outline-hidden transition-colors focus:border-text sm:min-h-13 sm:py-4",
+    "peer w-full min-h-12 border-b bg-transparent py-3.5 font-sans text-base text-paper outline-hidden transition-colors placeholder:text-transparent focus:border-paper sm:min-h-13 sm:py-4",
     error ? "border-primary" : "border-border-strong"
   );
 
@@ -57,7 +57,7 @@ function Field({ id, label, type = "text", textarea, error, onClearError, classN
       )}
       <label
         htmlFor={id}
-        className="pointer-events-none absolute top-3.5 left-0 max-w-[calc(100%-0.5rem)] origin-left truncate text-faint transition-all peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-not-placeholder-shown:-translate-y-6 peer-not-placeholder-shown:scale-75 peer-focus:-translate-y-6 peer-focus:scale-75 sm:top-4"
+        className="pointer-events-none absolute top-3.5 left-0 max-w-[calc(100%-0.5rem)] origin-left truncate text-subtle transition-all peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-subtle peer-not-placeholder-shown:-translate-y-6 peer-not-placeholder-shown:scale-75 peer-not-placeholder-shown:text-soft peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-paper sm:top-4"
       >
         {label}
       </label>
@@ -74,7 +74,7 @@ function ChoiceGroup({ title, name, options, required, error, onClearError }) {
       className="reveal-item"
       aria-describedby={error ? errorId : undefined}
     >
-      <legend className="mb-3.5 max-w-full text-pretty text-[0.95rem] font-medium leading-snug text-text sm:mb-4 sm:text-base md:mb-5 md:text-[1.05rem]">
+      <legend className="mb-3.5 max-w-full text-pretty text-[0.95rem] font-medium leading-snug text-paper sm:mb-4 sm:text-base md:mb-5 md:text-[1.05rem]">
         {title}
         {required ? <span className="sr-only"> (required)</span> : null}
       </legend>
@@ -83,7 +83,7 @@ function ChoiceGroup({ title, name, options, required, error, onClearError }) {
           <label
             key={option}
             className={cn(
-              "inline-flex min-h-11 max-w-full cursor-pointer items-center rounded-full border px-3 py-2 text-left text-[0.8125rem] leading-snug text-subtle transition-colors has-checked:border-acid has-checked:bg-acid has-checked:text-accent-fg sm:min-h-11 sm:px-3.5 sm:text-sm md:px-4",
+              "inline-flex min-h-11 max-w-full cursor-pointer items-center rounded-full border px-3 py-2 text-left text-[0.8125rem] leading-snug text-soft transition-colors hover:border-border hover:text-paper has-checked:border-acid has-checked:bg-acid has-checked:text-accent-fg sm:min-h-11 sm:px-3.5 sm:text-sm md:px-4",
               error ? "border-primary/60" : "border-border-strong"
             )}
           >
@@ -224,21 +224,22 @@ export default function Contact({ ready }) {
         </div>
 
         <p className="reveal-item mb-8 flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-2 border-l border-border pl-3.5 sm:mb-10 sm:pl-4 md:mb-12 lg:mb-14">
-          <span className="shrink-0 font-condensed text-[0.65rem] uppercase tracking-[0.22em] text-faint sm:tracking-[0.28em]">
+          <span className="shrink-0 font-condensed text-[0.65rem] uppercase tracking-[0.22em] text-subtle sm:tracking-[0.28em]">
             Direct
           </span>
           <a
             href={`mailto:${EMAIL}`}
-            className="min-w-0 break-all text-sm text-subtle underline-link transition-colors duration-200 hover:text-soft sm:break-normal"
+            className="min-w-0 break-all text-sm text-soft underline-link transition-colors duration-200 hover:text-paper sm:break-normal"
           >
             {EMAIL}
           </a>
         </p>
 
         {step === "sent" ? (
-          <div className="reveal-item space-y-3 py-2">
-            <p className="max-w-prose text-base leading-relaxed text-subtle sm:text-lg md:text-xl">
-              Thanks  -  your message was sent. I’ll get back to you soon.
+          <div className="reveal-item rounded-xl border border-border bg-muted/30 px-4 py-5 sm:px-5 sm:py-6">
+            <p className="max-w-prose text-base leading-relaxed text-paper sm:text-lg md:text-xl">
+              Thanks  -  your message was sent.{" "}
+              <span className="text-soft">I’ll get back to you soon.</span>
             </p>
           </div>
         ) : (
@@ -249,7 +250,7 @@ export default function Contact({ ready }) {
             className="flex flex-col gap-8 sm:gap-9 md:gap-10"
           >
             <div
-              className="absolute-left-[9999px] h-px w-px overflow-hidden opacity-0"
+              className="absolute -left-[9999px] h-px w-px overflow-hidden opacity-0"
               aria-hidden="true"
             >
               <label htmlFor="botcheck">Leave this empty</label>
@@ -312,8 +313,8 @@ export default function Contact({ ready }) {
 
             <div className="flex flex-col gap-4 pt-1 sm:gap-5 sm:pt-2">
               {step === "verify" || step === "sending" ? (
-                <div className="reveal-item space-y-4 rounded-xl border border-border bg-muted/40 p-4 sm:space-y-5 sm:p-5 md:p-6">
-                  <p className="text-sm leading-relaxed text-soft">
+                <div className="reveal-item space-y-4 rounded-xl border border-border bg-muted/50 p-4 sm:space-y-5 sm:p-5 md:p-6">
+                  <p className="text-sm leading-relaxed text-paper sm:text-base">
                     One last step  -  complete the verification below to send your message and help
                     prevent spam.
                   </p>
@@ -332,13 +333,13 @@ export default function Contact({ ready }) {
                       />
                     </div>
                   ) : (
-                    <p className="text-sm text-faint">Sending your message…</p>
+                    <p className="text-sm text-soft sm:text-base">Sending your message…</p>
                   )}
                   {step === "verify" ? (
                     <button
                       type="button"
                       onClick={resetToForm}
-                      className="inline-flex min-h-11 w-fit items-center text-sm text-faint underline-offset-4 hover:underline"
+                      className="inline-flex min-h-11 w-fit items-center text-sm text-subtle underline-offset-4 transition-colors hover:text-paper hover:underline"
                     >
                       Go back and edit
                     </button>
@@ -359,7 +360,7 @@ export default function Contact({ ready }) {
                 </p>
               ) : null}
 
-              <p className="max-w-prose text-xs leading-relaxed text-faint">
+              <p className="max-w-prose text-xs leading-relaxed text-subtle sm:text-[0.8125rem]">
                 By submitting this form you accept my Privacy Policy. Messages are protected by spam
                 filtering and human verification.
               </p>

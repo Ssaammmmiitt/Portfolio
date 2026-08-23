@@ -298,6 +298,22 @@ html.light .logo-invert {
   }
 }
 
+@media (min-width: 1024px) {
+  .dock-shell {
+    gap: 1.25rem;
+    padding: 0.65rem 2.35rem 0.85rem;
+    border-radius: 1.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .dock-shell {
+    gap: 1.45rem;
+    padding: 0.75rem 2.75rem 1rem;
+    border-radius: 1.65rem;
+  }
+}
+
 .dock-shell::-webkit-scrollbar {
   display: none;
 }
@@ -481,6 +497,18 @@ html.has-smooth-cursor .scroll-to-top-btn {
 
 @utility dock-safe-pb {
   padding-bottom: max(6.5rem, calc(env(safe-area-inset-bottom) + 5.5rem));
+}
+
+@media (min-width: 1024px) {
+  .dock-safe-pb {
+    padding-bottom: max(7rem, calc(env(safe-area-inset-bottom) + 6rem));
+  }
+}
+
+@media (min-width: 1280px) {
+  .dock-safe-pb {
+    padding-bottom: max(7.75rem, calc(env(safe-area-inset-bottom) + 6.75rem));
+  }
 }
 
 @utility section-y {
