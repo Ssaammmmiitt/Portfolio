@@ -165,7 +165,7 @@ export default function Manifesto({ ready }) {
     };
   }, [ready]);
 
-  // Theme toggles only — never tie this to `ready` or scrub replays on intro.
+  // Theme toggles only - never tie this to `ready` or scrub replays on intro.
   useLayoutEffect(() => {
     if (skipThemeRefresh.current) {
       skipThemeRefresh.current = false;
