@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import { MANIFESTO_BODY, MANIFESTO_BODY_HIGHLIGHT, MANIFESTO_LINES } from "../data.js";
 import { useTheme } from "../context/ThemeProvider.jsx";
 import MouseFollowingEyes from "./MouseFollowingEyes.jsx";
-import { gsap } from "../lib/gsap.js";
+import { gsap, ScrollTrigger } from "../lib/gsap.js";
 import {
   isCompactViewport,
   prefersReducedMotion,
@@ -41,7 +41,7 @@ function Line({ line, highlight }) {
   const words = line.split(" ");
 
   return (
-    <h2 className="display-title text-[clamp(2.15rem,11vw,7.8rem)]">
+    <h2 className="display-title text-[clamp(1.85rem,9.5vw,7.8rem)] sm:text-[clamp(2.15rem,11vw,7.8rem)]">
       {words.map((word) => (
         <Word key={`${line}-${word}`} accent={word === highlight}>
           {word}
@@ -75,9 +75,21 @@ function applyManifestoStaticColors(root) {
   gsap.set(softAccents, { color: MANIFESTO_VARS.accentSoft, y: 0, opacity: 1 });
 }
 
+function syncCompactPinHeight(pinEl, stickyEl) {
+  if (!pinEl || !stickyEl || !isCompactViewport()) return;
+
+  const scrollRoom = Math.min(window.innerHeight * 0.2, 140);
+  pinEl.style.height = `${stickyEl.offsetHeight + scrollRoom}px`;
+}
+
+function clearCompactPinHeight(pinEl) {
+  if (pinEl) pinEl.style.height = "";
+}
+
 export default function Manifesto({ ready }) {
   const root = useRef(null);
   const pin = useRef(null);
+  const sticky = useRef(null);
   const timelineRef = useRef(null);
   const colorTweensRef = useRef({ rest: null, soft: null, accent: null });
   const skipThemeRefresh = useRef(true);
@@ -92,6 +104,15 @@ export default function Manifesto({ ready }) {
     const softAccents = root.current.querySelectorAll('[data-accent="soft"]');
     const rest = root.current.querySelectorAll('[data-accent="false"]');
     const compact = isCompactViewport();
+
+    syncCompactPinHeight(pin.current, sticky.current);
+
+    const onResize = () => {
+      syncCompactPinHeight(pin.current, sticky.current);
+      ScrollTrigger.refresh();
+    };
+
+    window.addEventListener("resize", onResize);
 
     const ctx = gsap.context(() => {
       if (prefersReducedMotion()) {
@@ -136,6 +157,8 @@ export default function Manifesto({ ready }) {
     }, root);
 
     return () => {
+      window.removeEventListener("resize", onResize);
+      clearCompactPinHeight(pin.current);
       timelineRef.current = null;
       colorTweensRef.current = { rest: null, soft: null, accent: null };
       ctx.revert();
@@ -167,9 +190,12 @@ export default function Manifesto({ ready }) {
     <section id="manifesto" ref={root} className="relative overflow-x-clip bg-background">
       <div
         ref={pin}
-        className="relative h-[165vh] motion-reduce:h-auto sm:h-[190vh] md:h-[220vh] lg:h-[240vh]"
+        className="relative max-sm:h-auto motion-reduce:h-auto sm:h-[152vh] md:h-[220vh] lg:h-[240vh]"
       >
-        <div className="sticky top-0 flex min-h-dvh items-start overflow-x-clip pt-[max(5.5rem,calc(env(safe-area-inset-top)+4.25rem))] pb-10 sm:items-center sm:py-20 lg:py-28 motion-reduce:relative motion-reduce:py-20">
+        <div
+          ref={sticky}
+          className="sticky top-0 flex flex-col items-start overflow-x-clip pt-[max(4.75rem,calc(env(safe-area-inset-top)+3.5rem))] pb-4 sm:min-h-dvh sm:items-center sm:pb-10 sm:py-20 lg:py-28 motion-reduce:relative motion-reduce:py-16"
+        >
           <div className="noise pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay" />
           <div
             className="pointer-events-none absolute top-1/2 right-[clamp(1rem,3vw,4rem)] z-10 hidden -translate-y-1/2 xl:block"
@@ -178,20 +204,20 @@ export default function Manifesto({ ready }) {
             <MouseFollowingEyes />
           </div>
           <div className="wrap relative w-full min-w-0">
-            <div className="mb-8 flex items-end justify-between gap-8 sm:mb-10 md:mb-12 lg:mb-14">
+            <div className="mb-6 flex items-end justify-between gap-6 sm:mb-10 sm:gap-8 md:mb-12 lg:mb-14">
               <p className="kicker mb-0!">manifesto</p>
               <p className="hidden max-w-xs text-right text-xs leading-relaxed tracking-[0.18em] text-faint uppercase md:block">
                 Scroll  -  the words come alive
               </p>
             </div>
 
-            <div className="relative flex flex-col gap-1 lg:max-w-[92%] xl:max-w-none xl:pr-[11rem]">
+            <div className="relative flex flex-col gap-0.5 sm:gap-1 lg:max-w-[92%] xl:max-w-none xl:pr-[11rem]">
               {MANIFESTO_LINES.map((entry) => (
                 <Line key={entry.line} {...entry} />
               ))}
             </div>
 
-            <p className="mt-8 max-w-3xl text-[clamp(1rem,2.4vw,1.65rem)] leading-[1.55] font-light text-soft sm:mt-10 md:mt-14 lg:mt-16">
+            <p className="mt-5 max-w-3xl text-[clamp(1rem,2.4vw,1.65rem)] leading-[1.55] font-light text-soft sm:mt-10 md:mt-14 lg:mt-16">
               {bodyWords.map(({ word, index, softAccent }) => (
                 <Word key={`${word}-${index}`} softAccent={softAccent}>
                   {word}

@@ -8,6 +8,7 @@ import { cn } from "../lib/utils.js";
 import Logo from "./Logo";
 import SocialLinks from "./SocialLinks";
 import ThemeToggle from "./ThemeToggle";
+import CvDownloadButton from "./CvDownloadButton.jsx";
 
 const easeOut = [0.22, 1, 0.36, 1];
 
@@ -67,7 +68,7 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
           visible && show ? "pointer-events-auto" : "pointer-events-none"
         )}
       >
-        <div className="wrap flex items-center justify-between gap-4 pt-[max(1.25rem,calc(env(safe-area-inset-top)+0.65rem))] sm:pt-[max(1.75rem,calc(env(safe-area-inset-top)+0.85rem))] pb-4">
+        <div className="wrap flex items-center justify-between gap-3 pt-[max(1.35rem,calc(env(safe-area-inset-top)+0.85rem))] pb-3.5 sm:gap-4 sm:pt-[max(1.75rem,calc(env(safe-area-inset-top)+0.85rem))] sm:pb-4">
           <a
             href="#hero"
             className="nav-link nav-interactive nav-brand inline-flex min-h-11 min-w-11 items-center py-2"
@@ -86,6 +87,14 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
                 {link.label}
               </a>
             ))}
+            <CvDownloadButton
+              className={cn(
+                "nav-interactive nav-interactive-cta shrink-0",
+                isLight
+                  ? "border-border-strong text-text hover:border-nav-fg-hover"
+                  : "border-white text-white hover:border-nav-fg-hover"
+              )}
+            />
             <ThemeToggle
               className={cn(
                 "nav-interactive nav-interactive-cta shrink-0",
@@ -114,6 +123,12 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
           </div>
 
           <div className="flex items-center gap-3 lg:hidden">
+            <CvDownloadButton
+              className={cn(
+                "nav-interactive nav-interactive-cta",
+                isLight ? "border-border-strong text-text" : "border-white text-white"
+              )}
+            />
             <ThemeToggle
               className={cn(
                 "nav-interactive nav-interactive-cta",
@@ -170,7 +185,10 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
               transition={{ delay: 0.35, ease: easeOut }}
               className="mt-6 flex flex-col items-center gap-5"
             >
-              <ThemeToggle />
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <CvDownloadButton className="nav-interactive nav-interactive-cta border-border px-4 py-2 text-paper hover:border-acid hover:text-acid" />
+                <ThemeToggle className="nav-interactive nav-interactive-cta border-border px-4 py-2 text-paper hover:border-acid hover:text-acid" />
+              </div>
               <SocialLinks
                 size={28}
                 includeEmail={false}

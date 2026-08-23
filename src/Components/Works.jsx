@@ -1,10 +1,13 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { PROJECTS } from "../data.js";
+import { FiFileText } from "react-icons/fi";
+import { CV, PROJECTS } from "../data.js";
 import { useTheme } from "../context/ThemeProvider.jsx";
 import { useReveal } from "../hooks/useReveal.js";
+import { hasCv } from "../lib/cv.js";
 import { gsap } from "../lib/gsap.js";
 import { cn } from "../lib/utils.js";
 import { canHoverFine, prefersReducedMotion } from "../lib/motion.js";
+import CvViewerModal from "./CvViewerModal.jsx";
 
 function ProjectPreview({ project }) {
   const accent = project.color || "var(--theme-accent)";
@@ -41,6 +44,8 @@ export default function Works({ ready }) {
   const listRef = useRef(null);
   const nameRefs = useRef([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [cvOpen, setCvOpen] = useState(false);
+  const [cvCollapsed, setCvCollapsed] = useState(false);
   const { theme } = useTheme();
   const isLight = theme === "light";
   const activeProject = hoveredIndex != null ? PROJECTS[hoveredIndex] : PROJECTS[0];
@@ -113,15 +118,41 @@ export default function Works({ ready }) {
     });
   }, [hoveredIndex]);
 
+  const handleViewCv = () => {
+    if (cvOpen && cvCollapsed) {
+      setCvCollapsed(false);
+      return;
+    }
+    setCvOpen(true);
+    setCvCollapsed(false);
+  };
+
+  const handleCloseCv = () => {
+    setCvOpen(false);
+    setCvCollapsed(false);
+  };
+
   return (
     <section id="works" ref={root} className="section-y relative overflow-x-clip bg-background">
       <div className="wrap">
-        <div className="section-head">
-          <p className="reveal-kicker kicker">selected works</p>
-          <h2 className="reveal-title display-title text-[clamp(2.6rem,9vw,6.5rem)] text-paper">
-            Check out my projects
-            <span className="mt-2 block text-faint">See my expertise</span>
-          </h2>
+        <div className="section-head flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
+          <div className="min-w-0">
+            <p className="reveal-kicker kicker">selected works</p>
+            <h2 className="reveal-title display-title text-[clamp(2.6rem,9vw,6.5rem)] text-paper">
+              Check out my projects
+              <span className="mt-2 block text-faint">See my expertise</span>
+            </h2>
+          </div>
+          {hasCv() && (
+            <button
+              type="button"
+              onClick={handleViewCv}
+              className="reveal-item inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-2 rounded-full border border-border-strong px-5 py-2.5 text-sm font-medium tracking-wide text-paper uppercase transition-colors hover:border-acid hover:bg-acid/10 hover:text-acid sm:mt-10 sm:w-auto md:mt-12"
+            >
+              <FiFileText size={18} aria-hidden="true" />
+              View {CV.label}
+            </button>
+          )}
         </div>
 
         <div
@@ -171,6 +202,12 @@ export default function Works({ ready }) {
           </div>
         </div>
       </div>
+      <CvViewerModal
+        open={cvOpen}
+        collapsed={cvCollapsed}
+        onCollapsedChange={setCvCollapsed}
+        onClose={handleCloseCv}
+      />
     </section>
   );
 }

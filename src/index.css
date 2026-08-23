@@ -44,6 +44,13 @@
   --theme-manifesto-accent: #22d3ee;
   --theme-manifesto-accent-soft: #67e8f9;
   --theme-manifesto-muted: #2a2a2a;
+  --theme-cv-pill-bg: #121212;
+  --theme-cv-pill-fg: #f4f1eb;
+  --theme-cv-pill-kicker: #67e8f9;
+  --theme-cv-pill-border: rgb(34 211 238 / 0.52);
+  --theme-cv-pill-btn-fg: rgb(244 241 235 / 0.88);
+  --theme-cv-pill-btn-border: rgb(255 255 255 / 0.24);
+  --theme-cv-pill-shadow: 0 18px 52px rgb(0 0 0 / 0.58), 0 0 0 1px rgb(34 211 238 / 0.28);
 }
 
 html.light {
@@ -70,18 +77,25 @@ html.light {
   --theme-accent: #b45309;
   --theme-accent-soft: #d97706;
   --theme-accent-fg: #ffffff;
-  --theme-dock-bg: rgb(246 242 235 / 0.92);
-  --theme-dock-border: rgb(41 37 36 / 0.14);
-  --theme-dock-item-bg: rgb(255 255 255 / 0.72);
-  --theme-dock-item-border: rgb(41 37 36 / 0.12);
-  --theme-dock-label-bg: rgb(255 255 255 / 0.96);
-  --theme-dock-label-border: rgb(41 37 36 / 0.12);
+  --theme-dock-bg: rgb(255 255 255 / 0.97);
+  --theme-dock-border: rgb(41 37 36 / 0.22);
+  --theme-dock-item-bg: rgb(255 255 255 / 0.88);
+  --theme-dock-item-border: rgb(41 37 36 / 0.16);
+  --theme-dock-label-bg: rgb(255 255 255 / 0.98);
+  --theme-dock-label-border: rgb(41 37 36 / 0.16);
   --theme-dock-fg: #292524;
-  --theme-dock-shadow: 0 18px 50px rgb(41 37 36 / 0.12);
+  --theme-dock-shadow: 0 20px 56px rgb(41 37 36 / 0.16), 0 0 0 1px rgb(41 37 36 / 0.06);
   --theme-dock-glow-hover: 0 0 16px rgb(180 83 9 / 0.42), 0 0 30px rgb(146 64 14 / 0.18);
   --theme-manifesto-accent: #7c2d12;
   --theme-manifesto-accent-soft: #9a3412;
   --theme-manifesto-muted: #78716c;
+  --theme-cv-pill-bg: #ffffff;
+  --theme-cv-pill-fg: #1c1917;
+  --theme-cv-pill-kicker: #b45309;
+  --theme-cv-pill-border: rgb(180 83 9 / 0.48);
+  --theme-cv-pill-btn-fg: rgb(41 37 36 / 0.84);
+  --theme-cv-pill-btn-border: rgb(41 37 36 / 0.22);
+  --theme-cv-pill-shadow: 0 18px 52px rgb(41 37 36 / 0.24), 0 0 0 1px rgb(180 83 9 / 0.22);
 }
 
 @theme {
@@ -312,6 +326,13 @@ html.light .logo-invert {
     padding: 0.75rem 2.75rem 1rem;
     border-radius: 1.65rem;
   }
+}
+
+html.light .dock-shell {
+  backdrop-filter: blur(20px);
+  box-shadow:
+    var(--theme-dock-shadow),
+    inset 0 1px 0 rgb(255 255 255 / 0.85);
 }
 
 .dock-shell::-webkit-scrollbar {
@@ -627,4 +648,33 @@ html.has-smooth-cursor .scroll-to-top-btn {
 
 .spline-panel {
   touch-action: pan-y;
+}
+
+.cv-viewer-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.cv-viewer-pill {
+  background: var(--theme-cv-pill-bg);
+  border: 1px solid var(--theme-cv-pill-border);
+  box-shadow: var(--theme-cv-pill-shadow);
+}
+
+.cv-viewer-pill-kicker {
+  color: var(--theme-cv-pill-kicker);
+}
+
+.cv-viewer-pill-title {
+  color: var(--theme-cv-pill-fg);
+}
+
+.cv-viewer-pill-btn {
+  border-color: var(--theme-cv-pill-btn-border);
+  color: var(--theme-cv-pill-btn-fg);
+}
+
+.cv-viewer-pill-btn:hover {
+  border-color: var(--theme-accent);
+  color: var(--theme-accent);
 }

@@ -36,7 +36,7 @@ export default function Marquee() {
   return (
     <section
       ref={root}
-      className="relative overflow-hidden border-y border-border bg-background py-6 sm:py-8 md:py-10"
+      className="relative overflow-hidden border-y border-border bg-background py-4 sm:py-8 md:py-10"
       aria-hidden="true"
     >
       <div className="flex w-max animate-marquee motion-reduce:animate-none">

@@ -189,7 +189,7 @@ export default function SmoothCursor({
         translateY: "-50%",
         rotate: rotation,
         scale,
-        zIndex: 10003,
+        zIndex: 10010,
         pointerEvents: "none",
         willChange: "transform",
         opacity: isVisible ? 1 : 0,

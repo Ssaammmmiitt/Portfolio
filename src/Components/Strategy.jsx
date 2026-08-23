@@ -41,14 +41,26 @@ function StrategyCard({ index, item, compact = false }) {
       </div>
 
       <p
-        className="relative font-condensed text-[0.6rem] font-medium tracking-[0.2em] uppercase sm:text-[0.65rem] sm:tracking-[0.28em]"
+        className={`relative font-condensed font-medium uppercase ${
+          compact
+            ? "text-[clamp(1.15rem,5.5vw,1.55rem)] tracking-[0.12em]"
+            : "text-[0.6rem] tracking-[0.2em] sm:text-[0.65rem] sm:tracking-[0.28em]"
+        }`}
         style={{ color: item.accent }}
       >
         {n}  -  {item.kicker}
       </p>
 
-      <div className="relative mt-auto max-w-xl pt-6">
-        <h3 className="display-title text-[clamp(1.35rem,3.8vw,2.25rem)]">{item.title}</h3>
+      <div className={`relative mt-auto max-w-xl ${compact ? "pt-4" : "pt-6"}`}>
+        <h3
+          className={`display-title ${
+            compact
+              ? "text-[clamp(1.85rem,7.5vw,2.65rem)] leading-[1.05]"
+              : "text-[clamp(1.35rem,3.8vw,2.25rem)]"
+          }`}
+        >
+          {item.title}
+        </h3>
         <p className="mt-2 text-[0.82rem] leading-relaxed opacity-75 sm:text-[0.88rem] md:text-[0.92rem]">
           {item.text}
         </p>

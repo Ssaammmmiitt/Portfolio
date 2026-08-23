@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
-import { FiBriefcase, FiHome, FiMail, FiMoon, FiSun, FiUser } from "react-icons/fi";
+import { FiBriefcase, FiDownload, FiHome, FiMail, FiMoon, FiSun, FiUser } from "react-icons/fi";
+import { CV } from "../data.js";
 import { useTheme } from "../context/ThemeProvider.jsx";
 import { scrollToHash } from "../lib/scrollTo.js";
 import Dock from "./Dock.jsx";
@@ -99,6 +100,15 @@ export default function NavDock({ visible = false }) {
         label: "Contact",
         onClick: () => scrollToHash("#contact"),
       },
+      ...(CV.url
+        ? [
+            {
+              icon: <FiDownload size={dockSize.iconSize} />,
+              label: `Download ${CV.label}`,
+              onClick: () => window.open(CV.url, "_blank", "noopener,noreferrer"),
+            },
+          ]
+        : []),
       {
         icon: isDark ? <FiSun size={dockSize.iconSize} /> : <FiMoon size={dockSize.iconSize} />,
         label: isDark ? "Light mode" : "Dark mode",

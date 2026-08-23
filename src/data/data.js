@@ -11,6 +11,23 @@ export const AVAILABILITY ="Open to software engineering, full-stack & applied A
 export const EMAIL = "poudyal.sammit@gmail.com";
 
 // ─────────────────────────────────────────────
+// CV / RESUME
+// Option A (local): put PDF in public/ and set url to "/Your-Name-CV.pdf"
+// Option B (Google Drive):
+//   1. Upload PDF → Share → Anyone with the link (Viewer)
+//   2. Copy FILE_ID from: https://drive.google.com/file/d/FILE_ID/view
+//   3. url: "https://drive.google.com/uc?export=download&id=FILE_ID"
+// Leave url empty to hide the navbar download button.
+// ─────────────────────────────────────────────
+
+export const CV = {
+  url: "https://drive.google.com/uc?export=download&id=13r-2zeAWLLvWh4Ix_zfXw-y3mjHn2keh",
+  previewUrl: "https://drive.google.com/file/d/13r-2zeAWLLvWh4Ix_zfXw-y3mjHn2keh/preview",
+  fileName: "Sammit-Poudyal-CV.pdf",
+  label: "CV",
+};
+
+// ─────────────────────────────────────────────
 // TECHNICAL TOOLKIT
 // Keep this evidence-based.
 // Don't list technologies you cannot confidently discuss.
@@ -62,6 +79,7 @@ export const CODE_DATA = [
 // ─────────────────────────────────────────────
 
 export const MARQUEE = [
+  "Frontend Development",
   "Full-Stack Systems",
   "Applied AI",
   "Machine Learning",
@@ -115,9 +133,9 @@ export const STRATEGY = [
     title: "build the whole system",
     kicker: "Think end to end",
     text: "I enjoy working across the full journey of a product - from interfaces and APIs to data, models, infrastructure, and intelligent features. Understanding how these pieces connect helps me make better technical decisions and build more coherent systems.",
-    bg: "#1c1917",
-    fg: "#f5f0e8",
-    accent: "#a8a29e",
+    bg: "#e8e1d6",
+    fg: "#292524",
+    accent: "#b45309",
   },
   {
     title: "intelligence with purpose",
@@ -131,9 +149,9 @@ export const STRATEGY = [
     title: "measure what matters",
     kicker: "Evidence over assumptions",
     text: "A system is not finished because it runs. I believe in evaluating performance with meaningful evidence - whether that means model quality, application reliability, usability, or the outcome the product is meant to improve.",
-    bg: "#e8e1d6",
-    fg: "#292524",
-    accent: "#b45309",
+    bg: "#1c1917",
+    fg: "#f5f0e8",
+    accent: "#a8a29e",
   },
   {
     title: "learn by building",
