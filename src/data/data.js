@@ -21,9 +21,9 @@ export const EMAIL = "poudyal.sammit@gmail.com";
 // ─────────────────────────────────────────────
 
 export const CV = {
-  url: "https://drive.google.com/uc?export=download&id=13r-2zeAWLLvWh4Ix_zfXw-y3mjHn2keh",
-  previewUrl: "https://drive.google.com/file/d/13r-2zeAWLLvWh4Ix_zfXw-y3mjHn2keh/preview",
-  fileName: "Sammit-Poudyal-CV.pdf",
+  url: "https://drive.google.com/uc?export=download&id=1nmZGZihr1EPadtMwdiKaFTNtk1E99YES",
+  previewUrl: "https://drive.google.com/file/d/1nmZGZihr1EPadtMwdiKaFTNtk1E99YES/preview",
+  fileName: "Resume-S.pdf",
   label: "CV",
 };
 
