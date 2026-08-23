@@ -4,6 +4,7 @@ import {
   CODE_DATA,
   CONTACT_TOPICS,
   EMAIL,
+  LEADERSHIP,
   MANIFESTO_LINES,
   NAV_LINKS,
   PROJECTS,
@@ -28,7 +29,12 @@ describe("site data", () => {
 
   it("defines content sections used by the app", () => {
     expect(STRATEGY.length).toBe(5);
-    expect(PROJECTS.length).toBeGreaterThan(0);
+    expect(PROJECTS.length).toBe(7);
+    expect(PROJECTS.every((project) => project.github?.startsWith("https://github.com/"))).toBe(
+      true
+    );
+    expect(PROJECTS.every((project) => project.summary?.length > 0)).toBe(true);
+    expect(LEADERSHIP.length).toBe(5);
     expect(STATS.length).toBeGreaterThan(0);
     expect(CODE_DATA.length).toBeGreaterThan(0);
     expect(BUDGETS.length).toBeGreaterThan(0);

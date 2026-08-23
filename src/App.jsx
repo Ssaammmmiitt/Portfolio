@@ -10,6 +10,7 @@ import Stack from "./Components/Stack.jsx";
 import Stats from "./Components/Stats.jsx";
 import Works from "./Components/Works.jsx";
 import About from "./Components/About.jsx";
+import Leadership from "./Components/Leadership.jsx";
 import Contact from "./Components/Contact.jsx";
 import Footer from "./Components/Footer.jsx";
 import Preloader from "./Components/Preloader.jsx";
@@ -105,6 +106,7 @@ export default function App() {
         <Stack ready={preloaderDone} />
         <Strategy ready={preloaderDone} />
         <Stats ready={preloaderDone} />
+        <Leadership ready={preloaderDone} />
         <About ready={preloaderDone} />
         <Contact ready={preloaderDone} />
       </main>

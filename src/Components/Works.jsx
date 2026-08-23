@@ -1,7 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { FiFileText } from "react-icons/fi";
+import { FiFileText, FiGithub } from "react-icons/fi";
 import { CV, PROJECTS } from "../data.js";
-import { useTheme } from "../context/ThemeProvider.jsx";
 import { useReveal } from "../hooks/useReveal.js";
 import { hasCv } from "../lib/cv.js";
 import { gsap } from "../lib/gsap.js";
@@ -9,55 +8,110 @@ import { cn } from "../lib/utils.js";
 import { canHoverFine, prefersReducedMotion } from "../lib/motion.js";
 import CvViewerModal from "./CvViewerModal.jsx";
 
-function ProjectPreview({ project }) {
+function parseStack(tag) {
+  return tag.split("·").map((item) => item.trim()).filter(Boolean);
+}
+
+function ProjectStackChips({ tag, className }) {
+  const items = parseStack(tag);
+
+  return (
+    <ul className={cn("work-stack-chips", className)}>
+      {items.map((item) => (
+        <li key={item} className="work-stack-chip">
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function ProjectImagePreview({ project }) {
   const accent = project.color || "var(--theme-accent)";
 
   return (
-    <div className="flex size-full flex-col overflow-hidden rounded-lg border border-border/50 bg-background">
+    <div className="work-preview-card overflow-hidden rounded-xl border border-border/60 bg-background shadow-lg shadow-black/10">
       <div
-        className="flex min-h-0 flex-1 items-center justify-center p-3"
+        className="flex aspect-[4/3] items-center justify-center p-4"
         style={{ background: project.thumbnail ? "var(--theme-muted)" : accent }}
       >
         {project.thumbnail ? (
           <img
             src={project.thumbnail}
-            alt={`${project.name} preview`}
+            alt=""
             className="max-h-full max-w-full object-contain"
             loading="lazy"
             decoding="async"
           />
         ) : null}
       </div>
-      <div className="shrink-0 border-t border-border/50 bg-background p-4">
-        <p className="font-condensed text-[0.65rem] uppercase tracking-[0.22em] text-faint">
-          {project.tag}
-        </p>
-        <p className="mt-2 text-sm leading-snug text-paper">{project.title}</p>
-      </div>
     </div>
+  );
+}
+
+function ProjectStackPreview({ project }) {
+  const accent = project.color || "var(--theme-accent)";
+
+  return (
+    <div
+      className="work-preview-card work-preview-stack rounded-xl border p-4 shadow-lg shadow-black/10"
+      style={{
+        borderColor: `color-mix(in srgb, ${accent} 55%, var(--theme-border))`,
+        background: `linear-gradient(145deg, color-mix(in srgb, ${accent} 16%, var(--theme-background)) 0%, var(--theme-background) 72%)`,
+      }}
+    >
+      <p
+        className="meta-label tracking-[0.2em]"
+        style={{ color: accent }}
+      >
+        Stack
+      </p>
+      <ProjectStackChips tag={project.tag} className="mt-3" />
+      <p
+        className="meta-label mt-3.5 tracking-[0.18em]"
+        style={{ color: `color-mix(in srgb, ${accent} 72%, var(--theme-subtle))` }}
+      >
+        {project.year}
+      </p>
+    </div>
+  );
+}
+
+function ProjectGithubLink({ href, name, className }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Open ${name} on GitHub`}
+      className={cn("work-github-link", className)}
+      onClick={(event) => event.stopPropagation()}
+    >
+      <FiGithub size={17} aria-hidden="true" />
+      <span className="sr-only">GitHub</span>
+    </a>
   );
 }
 
 export default function Works({ ready }) {
   const root = useRef(null);
-  const modal = useRef(null);
+  const previewWrap = useRef(null);
   const listRef = useRef(null);
   const nameRefs = useRef([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [cvOpen, setCvOpen] = useState(false);
   const [cvCollapsed, setCvCollapsed] = useState(false);
-  const { theme } = useTheme();
-  const isLight = theme === "light";
+
   const activeProject = hoveredIndex != null ? PROJECTS[hoveredIndex] : PROJECTS[0];
 
   useReveal(root, ready);
 
   useLayoutEffect(() => {
-    if (!ready || !root.current || !modal.current) return;
+    if (!ready || !root.current || !previewWrap.current) return;
 
     const ctx = gsap.context(() => {
       if (canHoverFine()) {
-        gsap.set(modal.current, { scale: 0, opacity: 0 });
+        gsap.set(previewWrap.current, { scale: 0, opacity: 0 });
       }
 
       if (prefersReducedMotion()) return;
@@ -84,10 +138,10 @@ export default function Works({ ready }) {
   }, [ready]);
 
   useLayoutEffect(() => {
-    if (!modal.current || !listRef.current || !canHoverFine()) return;
+    if (!previewWrap.current || !listRef.current || !canHoverFine()) return;
 
     if (hoveredIndex == null) {
-      gsap.to(modal.current, {
+      gsap.to(previewWrap.current, {
         scale: 0,
         opacity: 0,
         duration: 0.35,
@@ -101,14 +155,14 @@ export default function Works({ ready }) {
 
     const nameRect = nameEl.getBoundingClientRect();
     const containerRect = listRef.current.getBoundingClientRect();
-    const gap = 20;
-    const modalWidth = modal.current.offsetWidth;
-    const maxX = Math.max(0, containerRect.width - modalWidth - 8);
+    const gap = 28;
+    const wrapWidth = previewWrap.current.offsetWidth;
+    const maxX = Math.max(0, containerRect.width - wrapWidth - 8);
     const x = Math.min(nameRect.right - containerRect.left + gap, maxX);
-    const modalHeight = modal.current.offsetHeight;
-    const y = nameRect.top - containerRect.top + nameRect.height / 2 - modalHeight / 2;
+    const wrapHeight = previewWrap.current.offsetHeight;
+    const y = nameRect.top - containerRect.top + nameRect.height / 2 - wrapHeight / 2;
 
-    gsap.to(modal.current, {
+    gsap.to(previewWrap.current, {
       x,
       y,
       scale: 1,
@@ -140,7 +194,7 @@ export default function Works({ ready }) {
             <p className="reveal-kicker kicker">selected works</p>
             <h2 className="reveal-title display-title text-[clamp(2.6rem,9vw,6.5rem)] text-paper">
               Check out my projects
-              <span className="mt-2 block text-faint">See my expertise</span>
+              <span className="mt-2 block text-subtle">See my expertise</span>
             </h2>
           </div>
           {hasCv() && (
@@ -157,48 +211,51 @@ export default function Works({ ready }) {
 
         <div
           ref={listRef}
-          className="relative"
+          className="work-list relative mt-10 md:mt-14"
           onMouseLeave={() => setHoveredIndex(null)}
         >
           {PROJECTS.map((project, index) => (
-            <a
+            <article
               key={project.name}
-              href="#contact"
-              className="work-row group flex min-h-14 min-w-0 items-center justify-between gap-4 border-t border-border py-5 last:border-b sm:py-7 md:py-8"
+              className="work-row group flex min-w-0 items-start justify-between gap-4 border-t border-border py-6 last:border-b sm:items-center sm:gap-5 md:py-8 lg:py-9"
               onMouseEnter={() => setHoveredIndex(index)}
               onFocus={() => setHoveredIndex(index)}
               onBlur={() => setHoveredIndex(null)}
             >
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 flex flex-col gap-3 md:gap-3.5">
                 <h3
                   ref={(el) => {
                     nameRefs.current[index] = el;
                   }}
-                  className="display-title inline-block text-[clamp(1.7rem,6vw,4rem)] leading-none text-paper lg:transition-transform lg:duration-300 lg:group-hover:translate-x-3 lg:group-hover:text-faint"
+                  className="display-title text-[clamp(1.7rem,6vw,4rem)] leading-none text-paper transition-[transform,color] duration-300 lg:group-hover:translate-x-2 lg:group-hover:text-subtle"
                 >
                   {project.name}
                 </h3>
-                <span className="mt-2 block font-condensed text-[0.65rem] tracking-[0.18em] text-faint uppercase sm:text-xs sm:tracking-[0.22em] lg:mt-0 lg:inline lg:ml-4">
-                  {project.tag} · {project.year}
-                </span>
+
+                <p className="work-summary max-w-3xl text-sm leading-relaxed text-subtle md:text-[0.95rem] lg:group-hover:text-paper">
+                  {project.summary}
+                </p>
+
+                <ProjectStackChips tag={project.tag} className="lg:hidden" />
+                <span className="meta-label lg:hidden">{project.year}</span>
+                <span className="meta-label hidden lg:inline">{project.year}</span>
               </div>
-              <span className="flex shrink-0 items-center gap-2 text-[0.65rem] tracking-[0.2em] text-faint uppercase sm:text-xs">
-                View
-                <img
-                  src="/images/arrow-right.svg"
-                  alt=""
-                  className={cn("w-3", !isLight && "invert")}
-                />
-              </span>
-            </a>
+
+              <ProjectGithubLink
+                href={project.github}
+                name={project.name}
+                className="mt-1 shrink-0 sm:mt-0"
+              />
+            </article>
           ))}
 
           <div
-            ref={modal}
-            className="pointer-events-none absolute top-0 left-0 z-20 hidden h-[min(18rem,36vh)] w-[min(22rem,44vw)] overflow-hidden lg:block"
+            ref={previewWrap}
+            className="work-preview-wrap pointer-events-none absolute top-0 left-0 z-20 hidden w-[min(20rem,40vw)] flex-col gap-3 lg:flex"
             aria-hidden={hoveredIndex == null}
           >
-            <ProjectPreview project={activeProject} />
+            <ProjectImagePreview project={activeProject} />
+            <ProjectStackPreview project={activeProject} />
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@ const applyTheme = (theme) => {
 
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) {
-    meta.setAttribute("content", theme === "light" ? "#f6f2eb" : "#050505");
+    meta.setAttribute("content", theme === "light" ? "#f1f5f9" : "#050505");
   }
 };
 

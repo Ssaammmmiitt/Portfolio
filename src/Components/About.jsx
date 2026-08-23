@@ -57,7 +57,7 @@ function HighlightText({ texts, ready }) {
       {texts.map((text) => (
         <p
           key={text.slice(0, 32)}
-          className="text-base leading-[1.75] text-pretty sm:text-lg sm:leading-[1.8]"
+          className="text-[1.0625rem] leading-[1.75] text-pretty sm:text-[1.125rem] sm:leading-[1.8]"
         >
           {splitWords(text).map((word, i, list) => (
             <span key={`${word}-${i}`} data-word="" className="text-[var(--theme-muted-word)]">

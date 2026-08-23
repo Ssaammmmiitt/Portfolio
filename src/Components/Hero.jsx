@@ -108,9 +108,9 @@ export default function Hero({ animate, instant, onIntroReady }) {
           "xl:pt-[38vh] xl:pb-44"
         )}
       >
-        <div className="flex flex-1 flex-col justify-center gap-8 max-md:max-w-lg max-md:mx-auto md:justify-between md:gap-0">
-          <div className="flex shrink-0 flex-col items-center text-center">
-            <h1 className="order-1 display-title flex max-w-full flex-wrap justify-center gap-x-[0.14em] text-[clamp(2.5rem,11.5vw,13rem)] leading-[0.82] tracking-wide text-paper sm:gap-x-[0.18em] sm:text-[clamp(2.85rem,12vw,13rem)] sm:leading-[0.8] md:order-2 md:text-[clamp(3.2rem,16vw,13rem)]">
+        <div className="flex flex-1 flex-col justify-center gap-8 max-md:mx-auto max-md:w-full md:justify-between md:gap-0">
+          <div className="flex shrink-0 flex-col items-center text-center max-md:w-full">
+            <h1 className="order-1 display-title flex w-full max-w-full flex-wrap justify-center gap-x-[0.12em] text-[clamp(3.15rem,15vw,4.85rem)] leading-[0.78] tracking-wide text-paper sm:gap-x-[0.18em] sm:text-[clamp(2.85rem,12vw,13rem)] sm:leading-[0.8] md:order-2 md:text-[clamp(3.2rem,16vw,13rem)]">
               {names.map((part) => (
                 <span key={part}>
                   <GibberishSplitChars
@@ -122,7 +122,7 @@ export default function Hero({ animate, instant, onIntroReady }) {
                 </span>
               ))}
             </h1>
-            <p className="order-2 mt-3 max-w-[22rem] text-pretty font-condensed text-[clamp(0.62rem,2.6vw,1.05rem)] uppercase leading-relaxed tracking-[0.18em] text-subtle sm:mt-3.5 sm:max-w-none sm:tracking-[0.32em] md:order-1 md:mt-0 md:mb-3 md:tracking-[0.45em] lg:mb-3.5">
+            <p className="order-2 mt-3 max-w-[22rem] text-pretty font-condensed text-[clamp(0.78rem,2.8vw,1.125rem)] uppercase leading-relaxed tracking-[0.18em] text-subtle sm:mt-3.5 sm:max-w-none sm:tracking-[0.32em] md:order-1 md:mt-0 md:mb-3 md:tracking-[0.45em] lg:mb-3.5">
               <SplitChars text={ROLE} className="hero-sub-letter" instant={instant} />
             </p>
           </div>
@@ -133,7 +133,7 @@ export default function Hero({ animate, instant, onIntroReady }) {
                 <p
                   key={item}
                   className={cn(
-                    "hero-meta min-w-0 text-xs leading-relaxed text-subtle sm:text-sm",
+                    "hero-meta min-w-0 text-sm leading-relaxed text-soft sm:text-base",
                     "max-md:mx-auto max-md:max-w-xs max-md:text-center max-md:text-pretty",
                     i === 1 && "sm:text-right lg:text-center",
                     i === 2 && "sm:col-span-2 lg:col-span-1 lg:text-right",
@@ -149,15 +149,15 @@ export default function Hero({ animate, instant, onIntroReady }) {
 
         <p
           className={cn(
-            "hero-scroll shrink-0 pt-5 text-center font-condensed text-[0.65rem] tracking-[0.28em] text-acid uppercase",
+            "hero-scroll shrink-0 pt-5 text-center font-condensed text-xs tracking-[0.28em] text-acid uppercase",
             "pb-[max(0.75rem,env(safe-area-inset-bottom))]",
-            "sm:pt-6 sm:text-[0.7rem] sm:tracking-[0.36em]",
+            "sm:pt-6 sm:text-sm sm:tracking-[0.36em]",
             "md:pt-8 md:tracking-[0.4em]",
             instant ? "opacity-100" : "opacity-0"
           )}
         >
           Scroll to enter{" "}
-          <span className="text-faint normal-case tracking-[0.22em] sm:tracking-[0.24em]">(spacebar)</span>
+          <span className="text-subtle normal-case tracking-[0.22em] sm:tracking-[0.24em]">(spacebar)</span>
         </p>
       </div>
     </section>

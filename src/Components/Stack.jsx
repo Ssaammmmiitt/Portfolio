@@ -46,10 +46,10 @@ function CodeColumn({ rows }) {
             key={row.name}
             className="reveal-item grid grid-cols-1 items-baseline gap-2 border-b border-border py-4 sm:grid-cols-12 sm:gap-0 sm:py-5"
           >
-            <span className="font-condensed text-[0.65rem] uppercase tracking-[0.22em] text-faint sm:col-span-4 sm:text-xs sm:tracking-[0.28em]">
+            <span className="font-condensed meta-label sm:col-span-4 sm:tracking-[0.28em]">
               {row.name}
             </span>
-            <span className="flex flex-wrap gap-x-4 gap-y-2 text-[0.98rem] text-soft sm:col-span-8 sm:gap-x-5 sm:text-[1.05rem]">
+            <span className="flex flex-wrap gap-x-4 gap-y-2 text-base text-soft sm:col-span-8 sm:gap-x-5 sm:text-[1.125rem]">
               {row.items.map((item, i) => (
                 <span key={item} className="inline-flex items-center gap-2">
                   {item}

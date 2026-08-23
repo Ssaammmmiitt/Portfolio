@@ -217,7 +217,7 @@ export default function Manifesto({ ready }) {
               ))}
             </div>
 
-            <p className="mt-5 max-w-3xl text-[clamp(1rem,2.4vw,1.65rem)] leading-[1.55] font-light text-soft sm:mt-10 md:mt-14 lg:mt-16">
+            <p className="mt-5 max-w-3xl text-[clamp(1.0625rem,2.5vw,1.75rem)] leading-[1.55] font-light text-soft sm:mt-10 md:mt-14 lg:mt-16">
               {bodyWords.map(({ word, index, softAccent }) => (
                 <Word key={`${word}-${index}`} softAccent={softAccent}>
                   {word}

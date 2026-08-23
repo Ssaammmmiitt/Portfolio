@@ -125,9 +125,9 @@ export const STRATEGY = [
     title: "problem before technology",
     kicker: "Start with why",
     text: "The best solution does not begin with a framework or a model. I start by understanding the problem, the people using the system, and the constraints involved before deciding what technology belongs in the solution.",
-    bg: "#0c0c0c",
-    fg: "#f4f1eb",
-    accent: "#22d3ee",
+    bg: "#0c4a6e",
+    fg: "#f0f9ff",
+    accent: "#7dd3fc",
   },
   {
     title: "build the whole system",
@@ -173,103 +173,124 @@ export const STRATEGY = [
 export const PROJECTS = [
   {
     name: "Prometheus",
-
-    title: "Daily Wildfire Risk Forecasting for Nepal",
-
-    description:
-      "A 1 km wildfire forecasting system combining satellite observations, weather, vegetation, terrain, fire history, machine learning, and an interactive forecasting interface.",
-
-    year: "2026",
-
-    tag: "Machine Learning",
-
+    title: "Daily Wildfire Risk Forecast for Nepal",
+    summary:
+      "Calibrated 1 km next-day and 7-day fire-probability maps for Nepal's pre-monsoon season, shipped as GeoTIFF forecasts with a FastAPI + React map UI.",
+    year: "2025–2026",
+    tag: "Python · LightGBM · FastAPI · React",
     bg: "bg-zinc-900",
-
     color: "#22d3ee",
-
     thumbnail: "/images/Prometheus.png",
-
+    github: "https://github.com/Ssaammmmiitt/Prometheus",
     featured: true,
   },
-
   {
     name: "NepAI",
-
-    title: "Exploring Nepal's Stock Market Through Data and AI",
-
-    description:
-      "A modern dashboard for exploring NEPSE data, market movements, portfolios, technical indicators, and AI-powered insights.",
-
+    title: "NEPSE Stock Analysis Dashboard",
+    summary:
+      "Responsive NEPSE dashboard with market overviews, portfolio tracking, technical indicators, and AI prediction overlays on interactive charts.",
     year: "2026",
-
-    tag: "Data Product",
-
+    tag: "React · TypeScript · Zustand · Tailwind CSS",
     bg: "bg-neutral-800",
-
     color: "#7c9cff",
-
     thumbnail: "/images/NepAI.png",
-
+    github: "https://github.com/Ssaammmmiitt/NepAI",
     featured: true,
   },
-
   {
     name: "NoteMerge",
-
-    title: "Turning Fragmented Notes into Structured Knowledge",
-
-    description:
-      "An AI - powered application that combines summarization, semantic similarity, and topic clustering to organize and reduce redundant information.",
-
+    title: "AI-Powered Note Merging & Summarization",
+    summary:
+      "Merges and summarizes fragmented notes using transformers and BERTopic semantic clustering in a FastAPI + React full-stack app.",
     year: "2025",
-
-    tag: "Applied AI",
-
+    tag: "Python · FastAPI · React · PyTorch · BERTopic · SBERT",
     bg: "bg-zinc-800",
-
     color: "#ff6b8a",
-
     thumbnail: "/images/Note-Merge.png",
-
+    github: "https://github.com/Note-Merge/Note-Merge",
     featured: true,
   },
-
+  {
+    name: "Covify 3D",
+    title: "Interactive 3D Spotify Visualizer",
+    summary:
+      "Three.js album-art sphere and drop layouts with Spotify PKCE auth, queue control, and cross-platform Tauri desktop builds.",
+    year: "2026",
+    tag: "Three.js · Tauri · Alpine.js · Spotify API",
+    bg: "bg-zinc-900",
+    color: "#1ed760",
+    thumbnail: "/images/Covify.png",
+    github: "https://github.com/Ssaammmmiitt/Covify",
+  },
+  {
+    name: "TamangNetra",
+    title: "Layout-Preserving Document Translation",
+    summary:
+      "Trilingual English–Nepali–Tamang translator with hybrid PDF pipelines that preserve tables, graphics, and math across PDF, DOCX, and spreadsheets.",
+    year: "2026",
+    tag: "Python · FastAPI · PyMuPDF · ReportLab · Google TMT Hackathon",
+    bg: "bg-neutral-800",
+    color: "#4285f4",
+    thumbnail: "/images/TamangNetra.png",
+    github: "https://github.com/Ssaammmmiitt/TamangNetra",
+  },
   {
     name: "Contrace",
-
-    title: "A Full-Stack Platform Enhanced with NLP",
-
-    description:
-      "A React and Django application combining full-stack development with natural language processing for content organization and discovery.",
-
+    title: "Blog Platform with NLP Keyword Extraction",
+    summary:
+      "Full-stack content platform with TF-IDF and YAKE keyword extraction to power search, tagging, and recommendations.",
     year: "2024",
-
-    tag: "Full Stack",
-
+    tag: "React · Django · Python · NLP",
     bg: "bg-zinc-900",
-
     color: "#5eead4",
-
     thumbnail: "/images/Contrace.png",
+    github: "https://github.com/Kasmik004/Contrace",
   },
-
   {
     name: "WorkSpot",
-
-    title: "Exploring Workspaces and Opportunities in One Place",
-
-    description:
-      "A web platform built around responsive interfaces, dynamic data, APIs, and scalable application structure.",
-
+    title: "Workspace & Job Exploration Platform",
+    summary:
+      "Unified interface to browse workspaces and job opportunities with responsive React UI and Node.js APIs.",
     year: "2023",
-
-    tag: "Web Application",
-
+    tag: "React · Node.js · APIs",
     bg: "bg-neutral-800",
-
     color: "#f3ece4",
-
     thumbnail: "/images/WorkSpot.png",
+    github: "https://github.com/Ssaammmmiitt/WorkSpot",
+  },
+];
+
+// ─────────────────────────────────────────────
+// LEADERSHIP / EXTRACURRICULAR
+// ─────────────────────────────────────────────
+
+export const LEADERSHIP = [
+  {
+    year: "2026",
+    role: "Track winner",
+    event: "Infinity Hackathon",
+    detail: "Smart and Secure Future",
+    highlight: true,
+  },
+  {
+    year: "2025",
+    role: "Logistics Lead",
+    event: "Hackathon · KU IT Meet",
+  },
+  {
+    year: "2025",
+    role: "Event Manager",
+    event: "Valorant IT Meet Competition",
+  },
+  {
+    year: "2024",
+    role: "Logistics Member",
+    event: "Hackathon · KU IT Meet",
+  },
+  {
+    year: "2023",
+    role: "Volunteer",
+    event: "KU IT Meet",
   },
 ];
 
@@ -316,10 +337,10 @@ export const CULTURE_DATA = [
 // ─────────────────────────────────────────────
 
 export const STATS = [
-  { value: "6+", label: "Projects built" },
+  { value: "8+", label: "Projects built" },
   { value: "3+", label: "Years building" },
-  { value: "15+", label: "Technologies" },
-  { value: "AI", label: "Core focus" },
+  { value: "20+", label: "Technologies" },
+  { value: "AI/Frontend", label: "Core focus" },
 ];
 
 // ─────────────────────────────────────────────

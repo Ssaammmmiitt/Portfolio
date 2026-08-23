@@ -7,8 +7,8 @@ describe("Stats", () => {
   it("renders stat values and labels", () => {
     render(<Stats ready={false} />);
     STATS.forEach(({ value, label }) => {
-      expect(screen.getByText(value)).toBeInTheDocument();
-      expect(screen.getByText(label)).toBeInTheDocument();
+      const card = screen.getByText(label).closest(".reveal-item");
+      expect(card).toHaveTextContent(value);
     });
   });
 });

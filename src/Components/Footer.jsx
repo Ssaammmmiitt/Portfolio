@@ -29,10 +29,10 @@ function Clock({ city, tz }) {
 
   return (
     <div className="reveal-item min-w-0">
-      <p className="font-condensed text-[0.65rem] uppercase tracking-[0.22em] text-faint sm:text-xs sm:tracking-[0.28em]">
+      <p className="meta-label tracking-[0.22em] sm:tracking-[0.28em]">
         {city}
       </p>
-      <p className="mt-1.5 text-sm tabular-nums text-soft sm:mt-2 sm:text-base">{time}</p>
+      <p className="mt-1.5 text-base tabular-nums text-soft sm:mt-2 sm:text-lg">{time}</p>
     </div>
   );
 }
@@ -147,7 +147,7 @@ export default function Footer({ ready = true }) {
           >
             <Logo size={40} invertIcon={!isLight} showWordmark />
           </a>
-          <p className="text-xs tracking-wide text-faint sm:text-right">
+          <p className="text-sm tracking-wide text-subtle sm:text-right">
             ©2026 All Rights Reserved
           </p>
         </div>
