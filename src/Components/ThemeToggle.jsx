@@ -8,7 +8,15 @@ const ThemeToggle = ({ className = "" }) => {
   return (
     <button
       type="button"
-      onClick={toggleTheme}
+      onClick={(event) => {
+        toggleTheme();
+        event.currentTarget.blur();
+      }}
+      onKeyDown={(event) => {
+        if (event.code !== "Space" && event.key !== " ") return;
+        event.preventDefault();
+        event.currentTarget.blur();
+      }}
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
       className={`nav-interactive inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-medium ${className || "border-border-strong bg-background/50 text-text hover:border-text/40"}`}
     >

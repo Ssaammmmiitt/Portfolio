@@ -7,6 +7,10 @@ export function prefersReducedMotion() {
   export function isCompactViewport() {
     return typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches;
   }
+
+  export function isPhoneViewport() {
+    return typeof window !== "undefined" && window.matchMedia("(max-width: 639px)").matches;
+  }
   
   export function canHoverFine() {
     return (
@@ -95,11 +99,11 @@ export function syncScrollTriggers() {
         ScrollTrigger.update();
       }
 
+      // Restoring scroll is only needed when Lenis owns the scroller.
+      // On native mobile it fights the user (iOS URL-bar resize / rubber-band).
       if (lenis) {
         lenis.scrollTo(scrollY, { immediate: true });
         lenis.emit?.("scroll");
-      } else if (Math.abs(window.scrollY - scrollY) > 1) {
-        window.scrollTo(0, scrollY);
       }
     });
   }, 50);

@@ -88,7 +88,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative w-full overflow-x-clip bg-background text-text">
+    <div className="relative w-full bg-background text-text">
       {!preloaderDone && <Preloader onDone={finishIntro} />}
       <SmoothCursor />
       <div

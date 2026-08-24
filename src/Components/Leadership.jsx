@@ -86,10 +86,10 @@ export default function Leadership({ ready }) {
 
       gsap.fromTo(
         items,
-        { opacity: 0, x: -28 },
+        { opacity: 0, y: 24 },
         {
           opacity: 1,
-          x: 0,
+          y: 0,
           duration: 0.85,
           stagger: 0.12,
           ease: "power3.out",

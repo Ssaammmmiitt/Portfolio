@@ -45,13 +45,14 @@ export function useLenis(enabled, initialScroll = 0, spaceScrollEnabled = true) 
       };
       window.addEventListener("scroll", onScroll, { passive: true });
       window.addEventListener("pagehide", persistNative);
-      window.addEventListener("orientationchange", refresh);
+      const onOrientation = () => window.setTimeout(refresh, 180);
+      window.addEventListener("orientationchange", onOrientation);
       requestAnimationFrame(refresh);
       return () => {
         persistNative();
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("pagehide", persistNative);
-        window.removeEventListener("orientationchange", refresh);
+        window.removeEventListener("orientationchange", onOrientation);
       };
     }
 
@@ -74,7 +75,7 @@ export function useLenis(enabled, initialScroll = 0, spaceScrollEnabled = true) 
     });
 
     const onKeyDown = (event) => {
-      if (isEditableTarget(event.target) || isInteractiveTarget(event.target)) return;
+      if (isEditableTarget(event.target)) return;
 
       const step = window.innerHeight * KEYBOARD_SCROLL_RATIO;
       let delta = 0;
@@ -84,14 +85,29 @@ export function useLenis(enabled, initialScroll = 0, spaceScrollEnabled = true) 
           event.preventDefault();
           return;
         }
+        // Focused nav/theme/dock controls must not steal Space from page scroll.
+        const chrome = event.target instanceof Element
+          ? event.target.closest("button, [role='button'], a")
+          : null;
+        const inForm = event.target instanceof Element && Boolean(event.target.closest("form"));
+        if (chrome && !inForm) {
+          event.preventDefault();
+          chrome.blur?.();
+        } else if (isInteractiveTarget(event.target)) {
+          return;
+        }
         delta = event.shiftKey ? -step : step;
       } else if (event.code === "PageDown") {
+        if (isInteractiveTarget(event.target)) return;
         delta = step;
       } else if (event.code === "PageUp") {
+        if (isInteractiveTarget(event.target)) return;
         delta = -step;
       } else if (event.code === "ArrowDown") {
+        if (isInteractiveTarget(event.target)) return;
         delta = step * 0.35;
       } else if (event.code === "ArrowUp") {
+        if (isInteractiveTarget(event.target)) return;
         delta = -step * 0.35;
       } else {
         return;

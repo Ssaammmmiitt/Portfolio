@@ -18,4 +18,16 @@ describe("ThemeToggle", () => {
     await user.click(button);
     expect(document.documentElement.classList.contains("light")).toBe(false);
   });
+
+  it("does not toggle theme when Space is pressed after click", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<ThemeToggle />);
+
+    const button = screen.getByRole("button");
+    await user.click(button);
+    expect(document.documentElement.classList.contains("light")).toBe(true);
+
+    await user.keyboard(" ");
+    expect(document.documentElement.classList.contains("light")).toBe(true);
+  });
 });

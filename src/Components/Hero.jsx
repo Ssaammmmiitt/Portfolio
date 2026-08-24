@@ -1,8 +1,8 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import { GibberishSplitChars } from "./GibberishText.jsx";
 import { AVAILABILITY, LOCATION, NAME, ROLE } from "../data.js";
 import { gsap } from "../lib/gsap.js";
-import { isCompactViewport, prefersReducedMotion, syncScrollTriggers } from "../lib/motion.js";
+import { isCompactViewport, isPhoneViewport, prefersReducedMotion, syncScrollTriggers } from "../lib/motion.js";
 import { cn } from "../lib/utils.js";
 
 function SplitChars({ text, className, instant }) {
@@ -25,6 +25,24 @@ export default function Hero({ animate, instant, onIntroReady }) {
   const root = useRef(null);
   const names = NAME.split(" ");
   const nameSettled = instant || prefersReducedMotion();
+  const [phone, setPhone] = useState(() => isPhoneViewport());
+  const [compact, setCompact] = useState(() => isCompactViewport());
+
+  useEffect(() => {
+    const phoneQuery = window.matchMedia("(max-width: 639px)");
+    const compactQuery = window.matchMedia("(max-width: 1023px)");
+    const update = () => {
+      setPhone(phoneQuery.matches);
+      setCompact(compactQuery.matches);
+    };
+    update();
+    phoneQuery.addEventListener("change", update);
+    compactQuery.addEventListener("change", update);
+    return () => {
+      phoneQuery.removeEventListener("change", update);
+      compactQuery.removeEventListener("change", update);
+    };
+  }, []);
 
   useLayoutEffect(() => {
     if (!animate || !root.current) return;
@@ -37,7 +55,7 @@ export default function Hero({ animate, instant, onIntroReady }) {
       introReady();
     }
 
-    const compact = isCompactViewport();
+    const introCompact = isCompactViewport();
 
     const ctx = gsap.context(() => {
       if (!instant && !prefersReducedMotion()) {
@@ -47,45 +65,50 @@ export default function Hero({ animate, instant, onIntroReady }) {
         });
         tl.to(".hero-sub-letter", {
           y: "0%",
-          duration: compact ? 0.8 : 1.15,
-          stagger: { each: compact ? 0.018 : 0.028, from: "center" },
+          duration: introCompact ? 0.8 : 1.15,
+          stagger: { each: introCompact ? 0.018 : 0.028, from: "center" },
         })
           .to(
             ".hero-name-letter",
             {
               y: "0%",
-              duration: compact ? 1.05 : 1.55,
-              stagger: { each: compact ? 0.02 : 0.032, from: "center" },
+              duration: introCompact ? 1.05 : 1.55,
+              stagger: { each: introCompact ? 0.02 : 0.032, from: "center" },
             },
             0.08
           )
           .to(
             ".hero-meta, .hero-scroll",
             { y: 0, opacity: 1, duration: 0.7, stagger: 0.1, ease: "power3.out" },
-            compact ? 0.85 : 1.35
+            introCompact ? 0.85 : 1.35
           );
-      }
-
-      if (!prefersReducedMotion()) {
-        gsap.to(".hero-stage", {
-          scale: compact ? 0.92 : 0.78,
-          y: compact ? -24 : -64,
-          opacity: compact ? 0.35 : 0.2,
-          ease: "none",
-          scrollTrigger: {
-            trigger: root.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: compact ? 0.4 : 0.8,
-          },
-        });
       }
     }, root);
 
-    syncScrollTriggers();
-
     return () => ctx.revert();
   }, [animate, instant, onIntroReady]);
+
+  useLayoutEffect(() => {
+    if (!animate || !root.current || prefersReducedMotion() || phone) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(".hero-stage", {
+        scale: compact ? 0.94 : 0.78,
+        y: compact ? -16 : -64,
+        opacity: compact ? 0.45 : 0.2,
+        ease: "none",
+        scrollTrigger: {
+          trigger: root.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: compact ? 0.25 : 0.8,
+        },
+      });
+    }, root);
+
+    syncScrollTriggers();
+    return () => ctx.revert();
+  }, [animate, phone, compact]);
 
   return (
     <section id="hero" ref={root} className="relative min-h-dvh w-full overflow-x-clip bg-background">

@@ -48,7 +48,7 @@ function DockItem({
   const scale = useSpring(targetScale, spring);
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" || e.key === " ") {
+    if (e.key === "Enter") {
       e.preventDefault();
       onClick?.();
     }
@@ -151,7 +151,7 @@ export default function Dock({
       <div
         onMouseMove={(event) => mouseX.set(event.clientX)}
         onMouseLeave={() => mouseX.set(Infinity)}
-        className={cn("dock-shell", className)}
+        className={cn("dock-shell pointer-events-auto", className)}
         style={{ height: panelHeight }}
         role="toolbar"
         aria-label="Site navigation dock"

@@ -73,6 +73,7 @@ vi.mock("../lib/gsap.js", () => ({
     fromTo: vi.fn(() => ({ kill: vi.fn() })),
     timeline: vi.fn(() => ({
       to: vi.fn().mockReturnThis(),
+      duration: vi.fn(() => 1),
       kill: vi.fn(),
     })),
     utils: { toArray: (sel) => Array.from(document.querySelectorAll(sel)) },

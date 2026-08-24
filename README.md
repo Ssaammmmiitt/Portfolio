@@ -1,6 +1,8 @@
-# Sammit Poudyal  -  Portfolio
+# Sammit Poudyal — Portfolio
 
-Personal portfolio site built with React and Vite.
+Personal portfolio for Sammit Poudyal (full-stack / applied AI). Built with React 19, Vite, GSAP, Lenis, and Tailwind CSS v4.
+
+Live content (projects, copy, CV, contact topics) lives in [`src/data/data.js`](src/data/data.js). Architecture notes are in [`STRUCTURE.md`](STRUCTURE.md).
 
 ## Quick start
 
@@ -26,9 +28,15 @@ Open the local URL shown in the terminal.
 
 ## Configuration
 
-- **Content**  -  edit copy, projects, nav links, and form options in `src/data/data.js`.
-- **Contact form**  -  create a `.env` file with `VITE_WEB3FORMS_ACCESS_KEY` and `VITE_HCAPTCHA_SITE_KEY`.
+- **Content** — edit copy, projects, leadership, nav links, and form options in `src/data/data.js`.
+- **CV** — set `CV.url` (Drive download) and `CV.previewUrl` (Drive iframe preview). Leave `url` empty to hide download/view controls.
+- **Contact form** — create a `.env` file with `VITE_WEB3FORMS_ACCESS_KEY` and `VITE_HCAPTCHA_SITE_KEY`.
+- **Theme** — light/dark via `ThemeProvider`. Dark accent is cyan; light accent is teal on a cool slate background.
+
+## Page order
+
+Hero → Manifesto → Marquee → Works → Stack → Strategy → Stats → Leadership → About → Contact → Footer
 
 ## Deploy
 
-Static output goes to `dist/`. The project is set up for GitHub Pages via `npm run deploy`.
+Static output goes to `dist/`. Publish with `npm run deploy` (GitHub Pages).

@@ -134,12 +134,15 @@ export default function Stack({ ready }) {
   useReveal(root, ready);
 
   return (
-    <section id="stack" ref={root} className="section-y overflow-x-clip bg-background">
+    <section id="stack" ref={root} className="section-y relative bg-background">
       <div className="wrap grid min-w-0 items-start gap-12 md:grid-cols-2 md:gap-x-12 lg:gap-x-20 xl:gap-x-28">
         <CodeColumn rows={CODE_DATA} />
 
-        <div className="reveal-item min-w-0 md:sticky md:top-8 md:self-start lg:top-28 md:pl-2 lg:pl-6">
-          <SplinePanel ready={ready} />
+        {/* Sticky must not share a GSAP transform (reveal-item) — that kills position:sticky. */}
+        <div className="min-w-0 md:sticky md:top-24 md:self-start lg:top-28 md:pl-2 lg:pl-6">
+          <div className="reveal-item">
+            <SplinePanel ready={ready} />
+          </div>
         </div>
       </div>
     </section>

@@ -78,57 +78,48 @@ function StrategyCard({ index, item, compact = false }) {
   );
 }
 
-function StackedStrategy({ ready, open }) {
-  const root = useRef(null);
-
+function MobileStrategyList({ ready, open, listRef }) {
   useLayoutEffect(() => {
-    if (!ready || !open || !root.current) return;
+    if (!ready || !open || !listRef.current) return;
 
-    const compact = isCompactViewport();
+    const alreadySeen = isAlreadyInView(listRef.current);
 
     const ctx = gsap.context(() => {
-      const slides = gsap.utils.toArray(".approach-slide");
-      if (prefersReducedMotion()) return;
+      const cards = gsap.utils.toArray(".approach-mobile-card");
 
-      slides.forEach((slide, index) => {
-        const card = slide.querySelector(".approach-card");
-        const isLast = index === slides.length - 1;
+      if (prefersReducedMotion() || alreadySeen) {
+        gsap.set(cards, { y: 0, opacity: 1 });
+        return;
+      }
 
-        gsap.fromTo(
-          card,
-          { scale: 1, opacity: 1 },
-          {
-            scale: isLast ? 1 : compact ? 0.9 : 0.86,
-            opacity: isLast ? 1 : 0.65,
-            ease: "none",
-            transformOrigin: "center center",
-            scrollTrigger: {
-              trigger: slide,
-              start: "top center",
-              end: "bottom top",
-              scrub: compact ? 0.3 : 0.55,
-            },
-          }
-        );
-      });
-    }, root);
+      gsap.fromTo(
+        cards,
+        { y: 28, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          stagger: 0.08,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: listRef.current,
+            start: "top 82%",
+            once: true,
+          },
+        }
+      );
+    }, listRef);
 
     syncScrollTriggers();
 
     return () => ctx.revert();
-  }, [ready, open]);
+  }, [ready, open, listRef]);
 
   return (
-    <div ref={root} className="relative pb-[6svh] sm:pb-[8svh]">
+    <div ref={listRef} className="flex flex-col gap-4 sm:gap-5">
       {STRATEGY.map((item, i) => (
-        <article
-          key={item.title}
-          className="approach-slide relative h-[34svh] sm:h-[36svh]"
-          style={{ zIndex: i + 1 }}
-        >
-          <div className="sticky top-[calc(50svh-min(14svh,160px))] flex justify-center px-3 sm:px-[4vw]">
-            <StrategyCard index={i} item={item} compact />
-          </div>
+        <article key={item.title} className="approach-mobile-card">
+          <StrategyCard index={i} item={item} />
         </article>
       ))}
     </div>
@@ -188,6 +179,7 @@ function GridStrategy({ ready, open, gridRef }) {
 export default function Strategy({ ready }) {
   const root = useRef(null);
   const gridRef = useRef(null);
+  const listRef = useRef(null);
   const panelRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [wideLayout, setWideLayout] = useState(false);
@@ -221,7 +213,7 @@ export default function Strategy({ ready }) {
       id="strategy"
       ref={root}
       className={cn(
-        "relative overflow-x-clip bg-background",
+        "relative bg-background",
         open ? "section-y" : "py-10 sm:py-12 md:py-14"
       )}
     >
@@ -291,7 +283,7 @@ export default function Strategy({ ready }) {
                     </div>
                   </div>
                 ) : (
-                  <StackedStrategy ready={ready} open={open} />
+                  <MobileStrategyList ready={ready} open={open} listRef={listRef} />
                 )}
               </div>
             ) : null}

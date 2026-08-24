@@ -118,9 +118,9 @@ export default function Works({ ready }) {
 
       gsap.fromTo(
         ".work-row",
-        { x: -32, opacity: 0 },
+        { y: 20, opacity: 0 },
         {
-          x: 0,
+          y: 0,
           opacity: 1,
           duration: 0.85,
           stagger: 0.08,
