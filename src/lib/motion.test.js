@@ -16,10 +16,10 @@ describe("scroll text colors", () => {
     });
   });
 
-  it("returns slate/teal palette for light mode", () => {
+  it("returns soft stone / teal palette for light mode", () => {
     expect(getScrollTextColors("light")).toEqual({
-      paper: "#0f172a",
-      mutedWord: "#94a3b8",
+      paper: "#1c1917",
+      mutedWord: "#a8a29e",
     });
   });
 });

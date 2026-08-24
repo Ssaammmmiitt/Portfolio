@@ -25,15 +25,19 @@ function EyeShell({ selfRef, pupilRef, isDark }) {
   return (
     <div
       ref={selfRef}
-      className={`relative flex h-20 w-20 items-center justify-center rounded-full border-[3px] border-neutral-900/80 bg-white xl:h-24 xl:w-24 ${
-        isDark ? "shadow-[0_0_28px_rgb(255_255_255/0.18)]" : "shadow-[0_0_20px_rgb(41_37_36/0.1)]"
+      className={`relative flex h-20 w-20 items-center justify-center rounded-full border-[3px] border-neutral-900/80 xl:h-24 xl:w-24 ${
+        isDark ? "shadow-[0_0_28px_rgb(255_255_255/0.18)]" : "shadow-[0_0_20px_rgb(28_25_23/0.1)]"
       }`}
+      style={{ background: "var(--theme-eye-sclera)" }}
     >
       <div
         ref={pupilRef}
         className="absolute h-7 w-7 rounded-full bg-neutral-950 xl:h-8 xl:w-8"
       >
-        <div className="absolute right-1 bottom-1 h-2.5 w-2.5 rounded-full bg-white/90 xl:h-3 xl:w-3" />
+        <div
+          className="absolute right-1 bottom-1 h-2.5 w-2.5 rounded-full xl:h-3 xl:w-3"
+          style={{ background: "color-mix(in srgb, var(--theme-eye-sclera) 92%, white)" }}
+        />
       </div>
     </div>
   );

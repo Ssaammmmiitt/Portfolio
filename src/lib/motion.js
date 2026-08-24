@@ -40,10 +40,10 @@ export const MANIFESTO_COLORS = {
     accentSoft: "#67e8f9",
   },
   light: {
-    paper: "#0f172a",
-    mutedWord: "#94a3b8",
-    accent: "#0e7490",
-    accentSoft: "#0891b2",
+    paper: "#1c1917",
+    mutedWord: "#a8a29e",
+    accent: "#0f766e",
+    accentSoft: "#0d9488",
   },
 };
 
@@ -70,8 +70,8 @@ export const SCROLL_TEXT_COLORS = {
     mutedWord: "#2a2a2a",
   },
   light: {
-    paper: "#0f172a",
-    mutedWord: "#94a3b8",
+    paper: "#1c1917",
+    mutedWord: "#a8a29e",
   },
 };
 

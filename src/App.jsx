@@ -14,7 +14,6 @@ import Leadership from "./Components/Leadership.jsx";
 import Contact from "./Components/Contact.jsx";
 import Footer from "./Components/Footer.jsx";
 import Preloader from "./Components/Preloader.jsx";
-import SmoothCursor from "./Components/SmoothCursor.jsx";
 import CvViewerModal from "./Components/CvViewerModal.jsx";
 import { useLenis } from "./hooks/useLenis.js";
 import { useInPageNav } from "./hooks/useInPageNav.js";
@@ -112,7 +111,6 @@ export default function App() {
   return (
     <div className="relative w-full bg-background text-text">
       {!preloaderDone && <Preloader onDone={finishIntro} />}
-      <SmoothCursor active={!(cvOpen && !cvCollapsed)} />
       <div
         ref={progressRef}
         className="fixed top-0 left-0 z-10002 h-px w-full origin-left scale-x-0 bg-linear-to-r from-acid via-paper to-primary"
