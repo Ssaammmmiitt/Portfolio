@@ -102,3 +102,11 @@ vi.mock("@hcaptcha/react-hcaptcha", () => ({
 vi.mock("@splinetool/react-spline", () => ({
   default: () => React.createElement("div", { "data-testid": "spline-mock" }, "Spline scene"),
 }));
+
+vi.mock("../shaders/structure-flow/StructureFlowCollection.jsx", () => ({
+  StructureFlowCollection: () =>
+    React.createElement("div", {
+      "data-testid": "structure-flow",
+      className: "threeui-background structure-flow",
+    }),
+}));

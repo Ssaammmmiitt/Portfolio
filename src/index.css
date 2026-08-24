@@ -7,6 +7,7 @@
 @import "@fontsource/oswald/500.css";
 @import "@fontsource/bungee/400.css";
 @import "lenis/dist/lenis.css";
+@import "./shaders/threeui.css";
 
 :root {
   --theme-background: #050505;
@@ -73,8 +74,15 @@ html.light {
   --theme-nav-fg: #0f172a;
   --theme-nav-fg-hover: #0891b2;
   --theme-nav-border: rgb(15 23 42 / 0.14);
-  --theme-hero-radial: radial-gradient(ellipse at center, #e8f0f8 0%, #f1f5f9 62%);
-  --theme-hero-fade: linear-gradient(to top, var(--theme-background), transparent 50%, rgb(241 245 249 / 0.9));
+  --theme-hero-radial: radial-gradient(ellipse at center, #dbe7ef 0%, transparent 58%);
+  --theme-hero-fade: linear-gradient(
+    to top,
+    var(--theme-background) 0%,
+    rgb(241 245 249 / 0.45) 10%,
+    transparent 26%,
+    transparent 72%,
+    rgb(241 245 249 / 0.35) 100%
+  );
   --theme-muted-word: #94a3b8;
   --theme-card-fg: #0f172a;
   --logo-bg: #ffffff;
@@ -245,6 +253,28 @@ html.light .logo-invert {
 
 .hero-fade {
   background: var(--theme-hero-fade);
+}
+
+html.light .hero-radial {
+  opacity: 0.18;
+}
+
+html.light .hero-fade {
+  opacity: 0.72;
+}
+
+html.light #hero .noise {
+  opacity: 0.04;
+}
+
+.hero-spacebar-hint {
+  display: none;
+}
+
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .hero-spacebar-hint {
+    display: inline;
+  }
 }
 
 .nav-shell {

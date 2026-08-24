@@ -4,6 +4,8 @@ import { AVAILABILITY, LOCATION, NAME, ROLE } from "../data.js";
 import { gsap } from "../lib/gsap.js";
 import { isCompactViewport, isPhoneViewport, prefersReducedMotion, syncScrollTriggers } from "../lib/motion.js";
 import { cn } from "../lib/utils.js";
+import { useTheme } from "../context/ThemeProvider.jsx";
+import { StructureFlowCollection } from "../shaders/structure-flow/StructureFlowCollection.jsx";
 
 function SplitChars({ text, className, instant }) {
   return (
@@ -23,6 +25,7 @@ const META = [LOCATION, "Specialized in AI, Frontend & Backend", AVAILABILITY];
 
 export default function Hero({ animate, instant, onIntroReady }) {
   const root = useRef(null);
+  const { theme } = useTheme();
   const names = NAME.split(" ");
   const nameSettled = instant || prefersReducedMotion();
   const [phone, setPhone] = useState(() => isPhoneViewport());
@@ -112,10 +115,20 @@ export default function Hero({ animate, instant, onIntroReady }) {
 
   return (
     <section id="hero" ref={root} className="relative min-h-dvh w-full overflow-x-clip bg-background">
-      <div className="absolute inset-0">
-        <div className="hero-radial absolute inset-0" />
-        <div className="animate-drift orb absolute top-[18%] left-[8%] size-[min(62vw,22rem)] rounded-full bg-primary/25 blur-[60px] md:top-[10%] md:left-[12%] md:size-[min(70vw,28rem)] md:blur-[140px]" />
-        <div className="animate-drift orb absolute right-[6%] bottom-[10%] hidden size-[32vw] rounded-full bg-acid/20 blur-[120px] [animation-delay:-6s] md:block" />
+      <div className="pointer-events-none absolute inset-0 z-0 min-h-dvh w-full" aria-hidden="true">
+        <StructureFlowCollection
+          className="h-full min-h-dvh w-full"
+          color={theme === "light" ? 0x0f766e : 0xa5f3fc}
+          opacity={theme === "light" ? 0.36 : 0.48}
+          pointSize={theme === "light" ? 0.14 : 0.08}
+          blending={theme === "light" ? "normal" : "additive"}
+          maskStart={theme === "light" ? 0.06 : 0.2}
+          maskSolid={theme === "light" ? 0.28 : 0.5}
+          count={phone ? 4500 : compact ? 8000 : 15000}
+        />
+      </div>
+      <div className="absolute inset-0 z-[1]">
+        <div className="hero-radial absolute inset-0 opacity-40" />
         <div className="hero-fade absolute inset-0" />
         <div className="noise pointer-events-none absolute inset-0 opacity-[0.07] mix-blend-overlay" />
       </div>
@@ -179,8 +192,11 @@ export default function Hero({ animate, instant, onIntroReady }) {
             instant ? "opacity-100" : "opacity-0"
           )}
         >
-          Scroll to enter{" "}
-          <span className="text-subtle normal-case tracking-[0.22em] sm:tracking-[0.24em]">(spacebar)</span>
+          Scroll to enter
+          <span className="hero-spacebar-hint text-subtle normal-case tracking-[0.22em] sm:tracking-[0.24em]">
+            {" "}
+            (spacebar)
+          </span>
         </p>
       </div>
     </section>
