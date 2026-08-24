@@ -36,17 +36,33 @@ export function StructureFlowBackground({ className = "", ...props }) {
     };
 
     const resizeObserver = new ResizeObserver(resize);
-    const intersection = new IntersectionObserver(([entry]) => {
-      visible = entry?.isIntersecting ?? true;
-      if (visible && !frame && !reduced) frame = requestAnimationFrame(tick);
-      if (!visible && frame) {
+    // Pause once the hero mostly leaves the viewport so manifesto scroll isn't competing for GPU.
+    const intersection = new IntersectionObserver(
+      ([entry]) => {
+        visible = (entry?.intersectionRatio ?? 0) > 0.12;
+        if (visible && !frame && !reduced && !document.hidden) {
+          frame = requestAnimationFrame(tick);
+        }
+        if (!visible && frame) {
+          cancelAnimationFrame(frame);
+          frame = 0;
+        }
+      },
+      { threshold: [0, 0.12, 0.25, 0.5], rootMargin: "0px 0px -18% 0px" }
+    );
+
+    const onVisibility = () => {
+      if (document.hidden && frame) {
         cancelAnimationFrame(frame);
         frame = 0;
+      } else if (!document.hidden && visible && !frame && !reduced) {
+        frame = requestAnimationFrame(tick);
       }
-    });
+    };
 
     resizeObserver.observe(host);
     intersection.observe(host);
+    document.addEventListener("visibilitychange", onVisibility);
     resize();
     if (reduced) {
       renderer.render();
@@ -56,6 +72,7 @@ export function StructureFlowBackground({ className = "", ...props }) {
 
     return () => {
       if (frame) cancelAnimationFrame(frame);
+      document.removeEventListener("visibilitychange", onVisibility);
       resizeObserver.disconnect();
       intersection.disconnect();
       renderer.dispose();

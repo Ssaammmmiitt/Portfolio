@@ -15,7 +15,7 @@ export const STRUCTURE_FLOW_DEFAULTS = {
   maskStart: 0.2,
   maskSolid: 0.5,
   color: 0xffffff,
-  count: 15000,
+  count: 5500,
   blending: "additive",
 };
 
@@ -29,12 +29,23 @@ export function createStructureFlowRenderer(canvas, getOptions) {
   camera.position.z = 30;
   camera.position.y = 5;
 
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const compact =
+    typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches;
+  const maxDpr = compact ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    alpha: true,
+    antialias: false,
+    powerPreference: "high-performance",
+    stencil: false,
+    depth: false,
+  });
+  renderer.setPixelRatio(maxDpr);
   renderer.setClearColor(0x000000, 0);
 
   const initial = getOptions();
-  const count = Math.max(500, Math.floor(initial.count || STRUCTURE_FLOW_DEFAULTS.count));
+  const count = Math.max(400, Math.floor(initial.count || STRUCTURE_FLOW_DEFAULTS.count));
   const geometry = new THREE.BufferGeometry();
   const positions = new Float32Array(count * 3);
   const radius = 25;
@@ -57,9 +68,15 @@ export function createStructureFlowRenderer(canvas, getOptions) {
     opacity: initial.opacity,
     blending: BLEND_MODES[initial.blending] ?? THREE.AdditiveBlending,
     depthWrite: false,
+    sizeAttenuation: true,
   });
   const particles = new THREE.Points(geometry, material);
   scene.add(particles);
+
+  let lastColor = initial.color;
+  let lastSize = initial.pointSize;
+  let lastOpacity = initial.opacity;
+  let lastBlending = initial.blending;
 
   return {
     resize(width, height) {
@@ -71,10 +88,22 @@ export function createStructureFlowRenderer(canvas, getOptions) {
       const options = getOptions();
       particles.rotation.y += 0.0008 * options.speed;
       particles.rotation.z += 0.0002 * options.speed;
-      material.size = options.pointSize;
-      material.opacity = options.opacity;
-      material.color.setHex(options.color);
-      material.blending = BLEND_MODES[options.blending] ?? THREE.AdditiveBlending;
+      if (options.pointSize !== lastSize) {
+        material.size = options.pointSize;
+        lastSize = options.pointSize;
+      }
+      if (options.opacity !== lastOpacity) {
+        material.opacity = options.opacity;
+        lastOpacity = options.opacity;
+      }
+      if (options.color !== lastColor) {
+        material.color.setHex(options.color);
+        lastColor = options.color;
+      }
+      if (options.blending !== lastBlending) {
+        material.blending = BLEND_MODES[options.blending] ?? THREE.AdditiveBlending;
+        lastBlending = options.blending;
+      }
       renderer.render(scene, camera);
     },
     dispose() {

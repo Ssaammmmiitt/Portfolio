@@ -6,6 +6,7 @@ import { isCompactViewport, isPhoneViewport, prefersReducedMotion, syncScrollTri
 import { cn } from "../lib/utils.js";
 import { useTheme } from "../context/ThemeProvider.jsx";
 import { StructureFlowCollection } from "../shaders/structure-flow/StructureFlowCollection.jsx";
+import { getStructureFlowCount } from "../shaders/structure-flow/structureFlowBudget.js";
 
 function SplitChars({ text, className, instant }) {
   return (
@@ -124,7 +125,7 @@ export default function Hero({ animate, instant, onIntroReady }) {
           blending={theme === "light" ? "normal" : "additive"}
           maskStart={theme === "light" ? 0.06 : 0.2}
           maskSolid={theme === "light" ? 0.28 : 0.5}
-          count={phone ? 4500 : compact ? 8000 : 15000}
+          count={getStructureFlowCount({ phone, compact })}
         />
       </div>
       <div className="absolute inset-0 z-[1]">

@@ -161,7 +161,7 @@ export default function Manifesto({ ready }) {
           trigger: phone ? root.current : pinEl,
           start: "top 65%",
           end: phone ? "bottom 42%" : "bottom bottom",
-          scrub: phone ? 0.28 : compact ? 0.28 : 0.4,
+          scrub: phone ? 0.18 : compact ? 0.18 : 0.22,
           invalidateOnRefresh: true,
         },
       });

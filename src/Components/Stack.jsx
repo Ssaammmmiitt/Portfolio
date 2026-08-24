@@ -1,6 +1,7 @@
 import { Component, lazy, Suspense, useEffect, useRef, useState } from "react";
 import { CODE_DATA } from "../data.js";
 import { useReveal } from "../hooks/useReveal.js";
+import { isPhoneViewport } from "../lib/motion.js";
 import { scrollByDelta } from "../lib/scrollTo.js";
 
 const SPLINE_SCENE = "/spline/stack.splinecode";
@@ -85,7 +86,7 @@ function SplinePanel({ ready }) {
   }, []);
 
   useEffect(() => {
-    if (!ready) {
+    if (!ready || isPhoneViewport()) {
       setLoadScene(false);
       return;
     }
@@ -100,7 +101,7 @@ function SplinePanel({ ready }) {
           observer.disconnect();
         }
       },
-      { rootMargin: "160px", threshold: 0.01 }
+      { rootMargin: "120px", threshold: 0.01 }
     );
 
     observer.observe(panel);

@@ -5,6 +5,7 @@ import { isCompactViewport, syncScrollTriggers } from "../lib/motion.js";
 import { saveScroll } from "../lib/visitCache.js";
 
 const KEYBOARD_SCROLL_RATIO = 0.52;
+const SCROLL_PERSIST_MS = 200;
 
 function isEditableTarget(target) {
   if (!target || !(target instanceof Element)) return false;
@@ -26,6 +27,29 @@ function isInteractiveTarget(target) {
   );
 }
 
+function createScrollPersister() {
+  let lastY = 0;
+  let timer = 0;
+
+  return {
+    queue(y) {
+      lastY = y;
+      if (timer) return;
+      timer = window.setTimeout(() => {
+        timer = 0;
+        saveScroll(lastY);
+      }, SCROLL_PERSIST_MS);
+    },
+    flush(y = lastY) {
+      if (timer) {
+        window.clearTimeout(timer);
+        timer = 0;
+      }
+      saveScroll(y);
+    },
+  };
+}
+
 export function useLenis(enabled, initialScroll = 0, spaceScrollEnabled = true) {
   const spaceScrollRef = useRef(spaceScrollEnabled);
   spaceScrollRef.current = spaceScrollEnabled;
@@ -33,7 +57,7 @@ export function useLenis(enabled, initialScroll = 0, spaceScrollEnabled = true) 
   useEffect(() => {
     if (!enabled) return;
 
-    const persistNative = () => saveScroll(window.scrollY);
+    const persistScroll = createScrollPersister();
     const refresh = () => syncScrollTriggers();
 
     const coarse = window.matchMedia("(pointer: coarse)").matches;
@@ -41,28 +65,31 @@ export function useLenis(enabled, initialScroll = 0, spaceScrollEnabled = true) 
       if (initialScroll > 0) window.scrollTo(0, initialScroll);
       const onScroll = () => {
         ScrollTrigger.update();
-        saveScroll(window.scrollY);
+        persistScroll.queue(window.scrollY);
       };
-      window.addEventListener("scroll", onScroll, { passive: true });
-      window.addEventListener("pagehide", persistNative);
+      const onPageHide = () => persistScroll.flush(window.scrollY);
       const onOrientation = () => window.setTimeout(refresh, 180);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("pagehide", onPageHide);
       window.addEventListener("orientationchange", onOrientation);
       requestAnimationFrame(refresh);
       return () => {
-        persistNative();
+        persistScroll.flush(window.scrollY);
         window.removeEventListener("scroll", onScroll);
-        window.removeEventListener("pagehide", persistNative);
+        window.removeEventListener("pagehide", onPageHide);
         window.removeEventListener("orientationchange", onOrientation);
       };
     }
 
     const compact = isCompactViewport();
     const lenis = new Lenis({
-      duration: compact ? 0.95 : 1.1,
+      // Slightly snappier easing keeps scroll feeling locked to the wheel on mid GPUs.
+      duration: compact ? 0.85 : 0.95,
       smoothWheel: true,
       syncTouch: false,
-      wheelMultiplier: compact ? 0.78 : 0.68,
+      wheelMultiplier: compact ? 0.82 : 0.74,
       touchMultiplier: 1,
+      autoResize: true,
     });
 
     if (initialScroll > 0) {
@@ -71,7 +98,7 @@ export function useLenis(enabled, initialScroll = 0, spaceScrollEnabled = true) 
 
     lenis.on("scroll", (event) => {
       ScrollTrigger.update();
-      saveScroll(event.scroll);
+      persistScroll.queue(event.scroll);
     });
 
     const onKeyDown = (event) => {
@@ -115,14 +142,14 @@ export function useLenis(enabled, initialScroll = 0, spaceScrollEnabled = true) 
 
       event.preventDefault();
       lenis.scrollTo(lenis.scroll + delta, {
-        duration: compact ? 0.75 : 0.85,
+        duration: compact ? 0.65 : 0.75,
         easing: (t) => Math.min(1, 1.001 - (1 - t) ** 3),
       });
     };
 
-    const persist = () => saveScroll(lenis.scroll);
+    const onPageHide = () => persistScroll.flush(lenis.scroll);
     window.addEventListener("keydown", onKeyDown);
-    window.addEventListener("pagehide", persist);
+    window.addEventListener("pagehide", onPageHide);
     window.addEventListener("orientationchange", refresh);
 
     const ticker = (time) => {
@@ -140,10 +167,10 @@ export function useLenis(enabled, initialScroll = 0, spaceScrollEnabled = true) 
     window.__lenis = lenis;
 
     return () => {
-      persist();
+      persistScroll.flush(lenis.scroll);
       delete window.__lenis;
       window.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("pagehide", persist);
+      window.removeEventListener("pagehide", onPageHide);
       window.removeEventListener("orientationchange", refresh);
       gsap.ticker.remove(ticker);
       lenis.destroy();
