@@ -15,11 +15,13 @@ import Contact from "./Components/Contact.jsx";
 import Footer from "./Components/Footer.jsx";
 import Preloader from "./Components/Preloader.jsx";
 import SmoothCursor from "./Components/SmoothCursor.jsx";
+import CvViewerModal from "./Components/CvViewerModal.jsx";
 import { useLenis } from "./hooks/useLenis.js";
 import { useInPageNav } from "./hooks/useInPageNav.js";
 import { useScrollNav } from "./hooks/useScrollNav.js";
 import { useThemeScrollSync } from "./hooks/useThemeScrollSync.js";
 import { gsap } from "./lib/gsap.js";
+import { hasCv } from "./lib/cv.js";
 import {
   disableBrowserScrollRestore,
   hasVisited,
@@ -37,11 +39,31 @@ export default function App() {
   });
   const [preloaderDone, setPreloaderDone] = useState(returning);
   const [spaceScrollEnabled, setSpaceScrollEnabled] = useState(returning);
+  const [cvOpen, setCvOpen] = useState(false);
+  const [cvCollapsed, setCvCollapsed] = useState(false);
   const progressRef = useRef(null);
 
   const enableSpaceScroll = useCallback(() => {
     setSpaceScrollEnabled(true);
   }, []);
+
+  const openCv = useCallback(() => {
+    setCvOpen(true);
+    setCvCollapsed(false);
+  }, []);
+
+  const closeCv = useCallback(() => {
+    setCvOpen(false);
+    setCvCollapsed(false);
+  }, []);
+
+  const handleViewCv = useCallback(() => {
+    if (cvOpen && cvCollapsed) {
+      setCvCollapsed(false);
+      return;
+    }
+    openCv();
+  }, [cvOpen, cvCollapsed, openCv]);
 
   useLayoutEffect(() => {
     disableBrowserScrollRestore();
@@ -90,19 +112,24 @@ export default function App() {
   return (
     <div className="relative w-full bg-background text-text">
       {!preloaderDone && <Preloader onDone={finishIntro} />}
-      <SmoothCursor />
+      <SmoothCursor active={!(cvOpen && !cvCollapsed)} />
       <div
         ref={progressRef}
         className="fixed top-0 left-0 z-10002 h-px w-full origin-left scale-x-0 bg-linear-to-r from-acid via-paper to-primary"
       />
-      <Navbar visible={preloaderDone} instant={returning} show={showTopNav} />
+      <Navbar
+        visible={preloaderDone}
+        instant={returning}
+        show={showTopNav}
+        onViewCv={handleViewCv}
+      />
       <NavDock visible={preloaderDone && showDock} />
       <ScrollToTop enabled={preloaderDone} />
       <main className="flex flex-col">
         <Hero animate={preloaderDone} instant={returning} onIntroReady={enableSpaceScroll} />
         <Manifesto ready={preloaderDone} />
         <Marquee />
-        <Works ready={preloaderDone} />
+        <Works ready={preloaderDone} onViewCv={handleViewCv} />
         <Stack ready={preloaderDone} />
         <Strategy ready={preloaderDone} />
         <Stats ready={preloaderDone} />
@@ -111,6 +138,14 @@ export default function App() {
         <Contact ready={preloaderDone} />
       </main>
       <Footer ready={preloaderDone} />
+      {hasCv() && (
+        <CvViewerModal
+          open={cvOpen}
+          collapsed={cvCollapsed}
+          onCollapsedChange={setCvCollapsed}
+          onClose={closeCv}
+        />
+      )}
     </div>
   );
 }

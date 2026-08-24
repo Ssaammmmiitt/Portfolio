@@ -74,6 +74,8 @@ function DefaultCursorSVG() {
 export default function SmoothCursor({
   cursor = <DefaultCursorSVG />,
   springConfig = DEFAULT_SPRING,
+  /** When false, hide the custom cursor and restore the native system cursor. */
+  active = true,
 }) {
   const lastMousePos = useRef({ x: 0, y: 0 });
   const velocity = useRef({ x: 0, y: 0 });
@@ -82,6 +84,7 @@ export default function SmoothCursor({
   const accumulatedRotation = useRef(0);
   const [isEnabled, setIsEnabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const isActive = active && isEnabled;
 
   const cursorX = useSpring(0, springConfig);
   const cursorY = useSpring(0, springConfig);
@@ -107,7 +110,11 @@ export default function SmoothCursor({
   }, []);
 
   useEffect(() => {
-    if (!isEnabled) return;
+    if (!isActive) {
+      setIsVisible(false);
+      document.documentElement.classList.remove("has-smooth-cursor");
+      return;
+    }
 
     let timeout = null;
     let rafId = 0;
@@ -175,9 +182,9 @@ export default function SmoothCursor({
       if (rafId) cancelAnimationFrame(rafId);
       if (timeout !== null) clearTimeout(timeout);
     };
-  }, [cursorX, cursorY, rotation, scale, isEnabled]);
+  }, [cursorX, cursorY, rotation, scale, isActive]);
 
-  if (!isEnabled) return null;
+  if (!isActive) return null;
 
   return (
     <motion.div

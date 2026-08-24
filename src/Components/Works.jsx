@@ -6,7 +6,6 @@ import { hasCv } from "../lib/cv.js";
 import { gsap } from "../lib/gsap.js";
 import { cn } from "../lib/utils.js";
 import { canHoverFine, prefersReducedMotion } from "../lib/motion.js";
-import CvViewerModal from "./CvViewerModal.jsx";
 
 function parseStack(tag) {
   return tag.split("·").map((item) => item.trim()).filter(Boolean);
@@ -93,14 +92,12 @@ function ProjectGithubLink({ href, name, className }) {
   );
 }
 
-export default function Works({ ready }) {
+export default function Works({ ready, onViewCv }) {
   const root = useRef(null);
   const previewWrap = useRef(null);
   const listRef = useRef(null);
   const nameRefs = useRef([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [cvOpen, setCvOpen] = useState(false);
-  const [cvCollapsed, setCvCollapsed] = useState(false);
 
   const activeProject = hoveredIndex != null ? PROJECTS[hoveredIndex] : PROJECTS[0];
 
@@ -172,20 +169,6 @@ export default function Works({ ready }) {
     });
   }, [hoveredIndex]);
 
-  const handleViewCv = () => {
-    if (cvOpen && cvCollapsed) {
-      setCvCollapsed(false);
-      return;
-    }
-    setCvOpen(true);
-    setCvCollapsed(false);
-  };
-
-  const handleCloseCv = () => {
-    setCvOpen(false);
-    setCvCollapsed(false);
-  };
-
   return (
     <section id="works" ref={root} className="section-y relative overflow-x-clip bg-background">
       <div className="wrap">
@@ -200,7 +183,7 @@ export default function Works({ ready }) {
           {hasCv() && (
             <button
               type="button"
-              onClick={handleViewCv}
+              onClick={onViewCv}
               className="reveal-item inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-2 rounded-full border border-border-strong px-5 py-2.5 text-sm font-medium tracking-wide text-paper uppercase transition-colors hover:border-acid hover:bg-acid/10 hover:text-acid sm:mt-10 sm:w-auto md:mt-12"
             >
               <FiFileText size={18} aria-hidden="true" />
@@ -259,12 +242,6 @@ export default function Works({ ready }) {
           </div>
         </div>
       </div>
-      <CvViewerModal
-        open={cvOpen}
-        collapsed={cvCollapsed}
-        onCollapsedChange={setCvCollapsed}
-        onClose={handleCloseCv}
-      />
     </section>
   );
 }

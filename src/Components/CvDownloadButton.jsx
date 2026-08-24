@@ -2,10 +2,11 @@ import { FiDownload } from "react-icons/fi";
 import { CV } from "../data.js";
 import { cn } from "../lib/utils.js";
 
-export default function CvDownloadButton({ className = "" }) {
+export default function CvDownloadButton({ className = "", label }) {
   if (!CV.url) return null;
 
   const isLocal = CV.url.startsWith("/");
+  const text = label ?? CV.label;
 
   return (
     <a
@@ -18,7 +19,7 @@ export default function CvDownloadButton({ className = "" }) {
       )}
     >
       <FiDownload size={18} aria-hidden="true" />
-      <span className="hidden sm:inline">{CV.label}</span>
+      <span className="hidden sm:inline">{text}</span>
     </a>
   );
 }

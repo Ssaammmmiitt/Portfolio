@@ -8,11 +8,20 @@ import { cn } from "../lib/utils.js";
 import Logo from "./Logo";
 import SocialLinks from "./SocialLinks";
 import ThemeToggle from "./ThemeToggle";
+import CvViewButton from "./CvViewButton.jsx";
 import CvDownloadButton from "./CvDownloadButton.jsx";
 
 const easeOut = [0.22, 1, 0.36, 1];
 
-const Navbar = ({ visible = true, instant = false, show = true }) => {
+const navCtaClass = (isLight) =>
+  cn(
+    "nav-interactive nav-interactive-cta shrink-0",
+    isLight
+      ? "border-border-strong text-text hover:border-nav-fg-hover"
+      : "border-white text-white hover:border-nav-fg-hover"
+  );
+
+const Navbar = ({ visible = true, instant = false, show = true, onViewCv }) => {
   const root = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const { theme } = useTheme();
@@ -87,22 +96,9 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
                 {link.label}
               </a>
             ))}
-            <CvDownloadButton
-              className={cn(
-                "nav-interactive nav-interactive-cta shrink-0",
-                isLight
-                  ? "border-border-strong text-text hover:border-nav-fg-hover"
-                  : "border-white text-white hover:border-nav-fg-hover"
-              )}
-            />
-            <ThemeToggle
-              className={cn(
-                "nav-interactive nav-interactive-cta shrink-0",
-                isLight
-                  ? "border-border-strong text-text hover:border-nav-fg-hover"
-                  : "border-white text-white hover:border-nav-fg-hover"
-              )}
-            />
+            <CvViewButton className={navCtaClass(isLight)} onOpen={onViewCv} />
+            <CvDownloadButton className={navCtaClass(isLight)} />
+            <ThemeToggle className={navCtaClass(isLight)} />
             <SocialLinks
               size={20}
               linkClassName="nav-link nav-interactive inline-flex"
@@ -123,6 +119,13 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
           </div>
 
           <div className="flex items-center gap-3 lg:hidden">
+            <CvViewButton
+              className={cn(
+                "nav-interactive nav-interactive-cta",
+                isLight ? "border-border-strong text-text" : "border-white text-white"
+              )}
+              onOpen={onViewCv}
+            />
             <CvDownloadButton
               className={cn(
                 "nav-interactive nav-interactive-cta",
@@ -186,6 +189,13 @@ const Navbar = ({ visible = true, instant = false, show = true }) => {
               className="mt-6 flex flex-col items-center gap-5"
             >
               <div className="flex flex-wrap items-center justify-center gap-3">
+                <CvViewButton
+                  className="nav-interactive nav-interactive-cta border-border px-4 py-2 text-paper hover:border-acid hover:text-acid"
+                  onOpen={() => {
+                    setMenuOpen(false);
+                    onViewCv?.();
+                  }}
+                />
                 <CvDownloadButton className="nav-interactive nav-interactive-cta border-border px-4 py-2 text-paper hover:border-acid hover:text-acid" />
                 <ThemeToggle className="nav-interactive nav-interactive-cta border-border px-4 py-2 text-paper hover:border-acid hover:text-acid" />
               </div>
