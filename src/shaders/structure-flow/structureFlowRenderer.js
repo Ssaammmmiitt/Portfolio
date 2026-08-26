@@ -1,11 +1,4 @@
-import * as THREE from "three128";
-
 /** @typedef {{ speed: number; pointSize: number; opacity: number; maskStart: number; maskSolid: number; color: number; count: number; blending: "additive" | "normal" }} StructureFlowOptions */
-
-const BLEND_MODES = {
-  additive: THREE.AdditiveBlending,
-  normal: THREE.NormalBlending,
-};
 
 /** @type {StructureFlowOptions} */
 export const STRUCTURE_FLOW_DEFAULTS = {
@@ -19,97 +12,120 @@ export const STRUCTURE_FLOW_DEFAULTS = {
   blending: "additive",
 };
 
+function hexToRgb(hex) {
+  const value = hex >>> 0;
+  return {
+    r: (value >> 16) & 255,
+    g: (value >> 8) & 255,
+    b: value & 255,
+  };
+}
+
 /**
+ * Lightweight Canvas 2D particle field (no Three.js).
+ * Avoids the duplicate-Three conflict with Spline's bundled runtime.
  * @param {HTMLCanvasElement} canvas
  * @param {() => StructureFlowOptions} getOptions
  */
 export function createStructureFlowRenderer(canvas, getOptions) {
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
-  camera.position.z = 30;
-  camera.position.y = 5;
-
-  const compact =
-    typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches;
-  const maxDpr = compact ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
-
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    alpha: true,
-    antialias: false,
-    powerPreference: "high-performance",
-    stencil: false,
-    depth: false,
-  });
-  renderer.setPixelRatio(maxDpr);
-  renderer.setClearColor(0x000000, 0);
+  const ctx = canvas.getContext("2d", { alpha: true, desynchronized: true });
+  if (!ctx) {
+    throw new Error("2d context unavailable");
+  }
 
   const initial = getOptions();
   const count = Math.max(400, Math.floor(initial.count || STRUCTURE_FLOW_DEFAULTS.count));
-  const geometry = new THREE.BufferGeometry();
-  const positions = new Float32Array(count * 3);
   const radius = 25;
+  const points = new Float32Array(count * 3);
 
   for (let index = 0; index < count; index += 1) {
     const u = Math.random();
-    Math.random(); // The canonical renderer sampled v even though it did not use it.
+    Math.random();
     const theta = u * 2 * Math.PI;
     const phi = Math.acos(Math.random() * 0.8 + 0.2);
-    positions[index * 3] = radius * Math.sin(phi) * Math.cos(theta);
-    positions[index * 3 + 1] = radius * Math.cos(phi) - 20;
-    positions[index * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
+    points[index * 3] = radius * Math.sin(phi) * Math.cos(theta);
+    points[index * 3 + 1] = radius * Math.cos(phi) - 20;
+    points[index * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
   }
 
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  const material = new THREE.PointsMaterial({
-    size: initial.pointSize,
-    color: initial.color,
-    transparent: true,
-    opacity: initial.opacity,
-    blending: BLEND_MODES[initial.blending] ?? THREE.AdditiveBlending,
-    depthWrite: false,
-    sizeAttenuation: true,
-  });
-  const particles = new THREE.Points(geometry, material);
-  scene.add(particles);
+  let width = 1;
+  let height = 1;
+  let dpr = 1;
+  let rotY = 0;
+  let rotZ = 0;
 
-  let lastColor = initial.color;
-  let lastSize = initial.pointSize;
-  let lastOpacity = initial.opacity;
-  let lastBlending = initial.blending;
+  const project = (x, y, z) => {
+    const cosY = Math.cos(rotY);
+    const sinY = Math.sin(rotY);
+    const cosZ = Math.cos(rotZ);
+    const sinZ = Math.sin(rotZ);
+
+    let x1 = x * cosY - z * sinY;
+    let z1 = x * sinY + z * cosY;
+    let y1 = y * cosZ - z1 * sinZ;
+    z1 = y * sinZ + z1 * cosZ;
+
+    // Match the old PerspectiveCamera(60) + camera.z=30 feel.
+    const fov = 60 * (Math.PI / 180);
+    const fl = height / (2 * Math.tan(fov / 2));
+    const camZ = 30;
+    const depth = z1 + camZ;
+    if (depth <= 0.15) return null;
+
+    const scale = fl / depth;
+    return {
+      x: width / 2 + x1 * scale,
+      y: height / 2 - (y1 - 5) * scale,
+      size: Math.max(0.35, scale * 0.085),
+    };
+  };
 
   return {
-    resize(width, height) {
-      camera.aspect = width / Math.max(1, height);
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height, false);
+    resize(nextWidth, nextHeight) {
+      width = Math.max(1, nextWidth);
+      height = Math.max(1, nextHeight);
+      const compact =
+        typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches;
+      dpr = Math.min(window.devicePixelRatio || 1, compact ? 1 : 1.5);
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     },
     render() {
       const options = getOptions();
-      particles.rotation.y += 0.0008 * options.speed;
-      particles.rotation.z += 0.0002 * options.speed;
-      if (options.pointSize !== lastSize) {
-        material.size = options.pointSize;
-        lastSize = options.pointSize;
+      rotY += 0.0008 * options.speed;
+      rotZ += 0.0002 * options.speed;
+
+      ctx.clearRect(0, 0, width, height);
+      const { r, g, b } = hexToRgb(options.color);
+      const alpha = Math.max(0.05, Math.min(1, options.opacity));
+      const sizeMul = Math.max(0.5, options.pointSize / 0.08);
+
+      if (options.blending === "additive") {
+        ctx.globalCompositeOperation = "lighter";
+      } else {
+        ctx.globalCompositeOperation = "source-over";
       }
-      if (options.opacity !== lastOpacity) {
-        material.opacity = options.opacity;
-        lastOpacity = options.opacity;
+
+      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+
+      for (let index = 0; index < count; index += 1) {
+        const projected = project(
+          points[index * 3],
+          points[index * 3 + 1],
+          points[index * 3 + 2]
+        );
+        if (!projected) continue;
+        const size = projected.size * sizeMul;
+        ctx.fillRect(projected.x - size / 2, projected.y - size / 2, size, size);
       }
-      if (options.color !== lastColor) {
-        material.color.setHex(options.color);
-        lastColor = options.color;
-      }
-      if (options.blending !== lastBlending) {
-        material.blending = BLEND_MODES[options.blending] ?? THREE.AdditiveBlending;
-        lastBlending = options.blending;
-      }
-      renderer.render(scene, camera);
+
+      ctx.globalCompositeOperation = "source-over";
     },
     dispose() {
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
+      ctx.clearRect(0, 0, width, height);
     },
   };
 }

@@ -9,7 +9,7 @@ export function getStructureFlowCount({ phone = false, compact = false } = {}) {
   const memory = typeof navigator !== "undefined" ? navigator.deviceMemory || 4 : 4;
   const lowEnd = cores <= 4 || memory <= 4;
 
-  if (phone) return lowEnd ? 1200 : 1800;
-  if (compact) return lowEnd ? 2200 : 3200;
-  return lowEnd ? 3800 : 5500;
+  if (phone) return lowEnd ? 900 : 1400;
+  if (compact) return lowEnd ? 1600 : 2400;
+  return lowEnd ? 2800 : 4000;
 }

@@ -31,6 +31,7 @@ export default function Hero({ animate, instant, onIntroReady }) {
   const nameSettled = instant || prefersReducedMotion();
   const [phone, setPhone] = useState(() => isPhoneViewport());
   const [compact, setCompact] = useState(() => isCompactViewport());
+  const [flowActive, setFlowActive] = useState(true);
 
   useEffect(() => {
     const phoneQuery = window.matchMedia("(max-width: 639px)");
@@ -46,6 +47,22 @@ export default function Hero({ animate, instant, onIntroReady }) {
       phoneQuery.removeEventListener("change", update);
       compactQuery.removeEventListener("change", update);
     };
+  }, []);
+
+  useEffect(() => {
+    const node = root.current;
+    if (!node) return undefined;
+
+    // Fully unmount the particle field once the hero has mostly left,
+    // so Manifesto scroll/scrub is not competing for main-thread time.
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setFlowActive((entry?.intersectionRatio ?? 0) > 0.04);
+      },
+      { threshold: [0, 0.04, 0.12, 0.25], rootMargin: "0px 0px -42% 0px" }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
   }, []);
 
   useLayoutEffect(() => {
@@ -117,16 +134,18 @@ export default function Hero({ animate, instant, onIntroReady }) {
   return (
     <section id="hero" ref={root} className="relative min-h-dvh w-full overflow-x-clip bg-background">
       <div className="pointer-events-none absolute inset-0 z-0 min-h-dvh w-full" aria-hidden="true">
-        <StructureFlowCollection
-          className="h-full min-h-dvh w-full"
-          color={theme === "light" ? 0x0f766e : 0xa5f3fc}
-          opacity={theme === "light" ? 0.36 : 0.48}
-          pointSize={theme === "light" ? 0.14 : 0.08}
-          blending={theme === "light" ? "normal" : "additive"}
-          maskStart={theme === "light" ? 0.06 : 0.2}
-          maskSolid={theme === "light" ? 0.28 : 0.5}
-          count={getStructureFlowCount({ phone, compact })}
-        />
+        {flowActive ? (
+          <StructureFlowCollection
+            className="h-full min-h-dvh w-full"
+            color={theme === "light" ? 0x0f766e : 0xa5f3fc}
+            opacity={theme === "light" ? 0.36 : 0.48}
+            pointSize={theme === "light" ? 0.14 : 0.08}
+            blending={theme === "light" ? "normal" : "additive"}
+            maskStart={theme === "light" ? 0.06 : 0.2}
+            maskSolid={theme === "light" ? 0.28 : 0.5}
+            count={getStructureFlowCount({ phone, compact })}
+          />
+        ) : null}
       </div>
       <div className="absolute inset-0 z-[1]">
         <div className="hero-radial absolute inset-0 opacity-40" />

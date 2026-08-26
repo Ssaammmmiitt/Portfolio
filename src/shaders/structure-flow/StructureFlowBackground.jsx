@@ -24,6 +24,18 @@ export function StructureFlowBackground({ className = "", ...props }) {
     let visible = true;
     const reduced = prefersReducedMotion();
 
+    const stop = () => {
+      if (frame) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+      }
+    };
+
+    const start = () => {
+      if (frame || reduced || document.hidden || !visible) return;
+      frame = requestAnimationFrame(tick);
+    };
+
     const resize = () => {
       const bounds = host.getBoundingClientRect();
       renderer.resize(bounds.width, bounds.height);
@@ -36,42 +48,30 @@ export function StructureFlowBackground({ className = "", ...props }) {
     };
 
     const resizeObserver = new ResizeObserver(resize);
-    // Pause once the hero mostly leaves the viewport so manifesto scroll isn't competing for GPU.
+    // Drop the loop early when scrolling into Manifesto so scrub + Lenis stay smooth.
     const intersection = new IntersectionObserver(
       ([entry]) => {
-        visible = (entry?.intersectionRatio ?? 0) > 0.12;
-        if (visible && !frame && !reduced && !document.hidden) {
-          frame = requestAnimationFrame(tick);
-        }
-        if (!visible && frame) {
-          cancelAnimationFrame(frame);
-          frame = 0;
-        }
+        visible = (entry?.intersectionRatio ?? 0) > 0.05;
+        if (visible) start();
+        else stop();
       },
-      { threshold: [0, 0.12, 0.25, 0.5], rootMargin: "0px 0px -18% 0px" }
+      { threshold: [0, 0.05, 0.15, 0.35], rootMargin: "0px 0px -35% 0px" }
     );
 
     const onVisibility = () => {
-      if (document.hidden && frame) {
-        cancelAnimationFrame(frame);
-        frame = 0;
-      } else if (!document.hidden && visible && !frame && !reduced) {
-        frame = requestAnimationFrame(tick);
-      }
+      if (document.hidden) stop();
+      else start();
     };
 
     resizeObserver.observe(host);
     intersection.observe(host);
     document.addEventListener("visibilitychange", onVisibility);
     resize();
-    if (reduced) {
-      renderer.render();
-    } else {
-      frame = requestAnimationFrame(tick);
-    }
+    if (reduced) renderer.render();
+    else start();
 
     return () => {
-      if (frame) cancelAnimationFrame(frame);
+      stop();
       document.removeEventListener("visibilitychange", onVisibility);
       resizeObserver.disconnect();
       intersection.disconnect();

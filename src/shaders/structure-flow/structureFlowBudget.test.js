@@ -9,6 +9,6 @@ describe("getStructureFlowCount", () => {
 
     expect(phone).toBeLessThan(compact);
     expect(compact).toBeLessThanOrEqual(desktop);
-    expect(desktop).toBeLessThanOrEqual(5500);
+    expect(desktop).toBeLessThanOrEqual(4000);
   });
 });
