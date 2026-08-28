@@ -278,7 +278,7 @@ export const LEADERSHIP = [
     event: "Hackathon · KU IT Meet",
   },
   {
-    year: "2025",
+    year: "2024",
     role: "Event Manager",
     event: "Valorant IT Meet Competition",
   },
