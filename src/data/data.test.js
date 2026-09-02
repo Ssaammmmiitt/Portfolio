@@ -29,7 +29,7 @@ describe("site data", () => {
 
   it("defines content sections used by the app", () => {
     expect(STRATEGY.length).toBe(5);
-    expect(PROJECTS.length).toBe(7);
+    expect(PROJECTS.length).toBe(9);
     expect(PROJECTS.every((project) => project.github?.startsWith("https://github.com/"))).toBe(
       true
     );

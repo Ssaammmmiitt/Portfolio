@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { FiFileText, FiGithub } from "react-icons/fi";
 import { CV, PROJECTS } from "../data.js";
 import { useReveal } from "../hooks/useReveal.js";
@@ -27,20 +27,27 @@ function ProjectStackChips({ tag, className }) {
 
 function ProjectImagePreview({ project }) {
   const accent = project.color || "var(--theme-accent)";
+  const [imageError, setImageError] = useState(false);
+  const showImage = Boolean(project.thumbnail) && !imageError;
+
+  useEffect(() => {
+    setImageError(false);
+  }, [project.thumbnail, project.name]);
 
   return (
     <div className="work-preview-card overflow-hidden rounded-xl border border-border/60 bg-background shadow-lg shadow-black/10">
       <div
         className="flex aspect-[4/3] items-center justify-center p-4"
-        style={{ background: project.thumbnail ? "var(--theme-muted)" : accent }}
+        style={{ background: showImage ? "var(--theme-muted)" : accent }}
       >
-        {project.thumbnail ? (
+        {showImage ? (
           <img
             src={project.thumbnail}
             alt=""
             className="max-h-full max-w-full object-contain"
             loading="lazy"
             decoding="async"
+            onError={() => setImageError(true)}
           />
         ) : null}
       </div>
@@ -76,7 +83,7 @@ function ProjectStackPreview({ project }) {
   );
 }
 
-function ProjectGithubLink({ href, name, className }) {
+function ProjectGithubLink({ href, name, className, onHover }) {
   return (
     <a
       href={href}
@@ -84,6 +91,8 @@ function ProjectGithubLink({ href, name, className }) {
       rel="noopener noreferrer"
       aria-label={`Open ${name} on GitHub`}
       className={cn("work-github-link", className)}
+      onMouseEnter={onHover}
+      onFocus={onHover}
       onClick={(event) => event.stopPropagation()}
     >
       <FiGithub size={17} aria-hidden="true" />
@@ -201,11 +210,13 @@ export default function Works({ ready, onViewCv }) {
             <article
               key={project.name}
               className="work-row group flex min-w-0 items-start justify-between gap-4 border-t border-border py-6 last:border-b sm:items-center sm:gap-5 md:py-8 lg:py-9"
-              onMouseEnter={() => setHoveredIndex(index)}
-              onFocus={() => setHoveredIndex(index)}
-              onBlur={() => setHoveredIndex(null)}
+              onMouseLeave={() => setHoveredIndex(null)}
             >
-              <div className="min-w-0 flex-1 flex flex-col gap-3 md:gap-3.5">
+              <div
+                className="min-w-0 flex-1 flex flex-col gap-3 md:gap-3.5"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onFocus={() => setHoveredIndex(index)}
+              >
                 <h3
                   ref={(el) => {
                     nameRefs.current[index] = el;
@@ -228,6 +239,7 @@ export default function Works({ ready, onViewCv }) {
                 href={project.github}
                 name={project.name}
                 className="mt-1 shrink-0 sm:mt-0"
+                onHover={() => setHoveredIndex(null)}
               />
             </article>
           ))}

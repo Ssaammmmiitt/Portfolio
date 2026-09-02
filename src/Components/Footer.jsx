@@ -3,6 +3,7 @@ import { FiDownload } from "react-icons/fi";
 import { CLOCKS, CV, NAME, NAV_LINKS, SOCIALS } from "../data.js";
 import { useTheme } from "../context/ThemeProvider.jsx";
 import { useReveal } from "../hooks/useReveal.js";
+import { getCvDownloadLinkProps } from "../lib/cv.js";
 import { gsap } from "../lib/gsap.js";
 import { isAlreadyInView } from "../lib/visitCache.js";
 import Logo from "./Logo";
@@ -71,6 +72,8 @@ export default function Footer({ ready = true }) {
     return () => ctx.revert();
   }, [ready]);
 
+  const cvDownloadLinkProps = getCvDownloadLinkProps();
+
   return (
     <footer
       id="footer"
@@ -109,11 +112,9 @@ export default function Footer({ ready = true }) {
                 {link.label}
               </a>
             ))}
-            {CV.url ? (
+            {cvDownloadLinkProps ? (
               <a
-                href={CV.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                {...cvDownloadLinkProps}
                 className="reveal-item underline-link inline-flex min-h-11 w-fit max-w-full items-center gap-2 py-0.5 text-[0.95rem] capitalize text-soft sm:text-base"
               >
                 <FiDownload size={16} aria-hidden="true" className="shrink-0" />

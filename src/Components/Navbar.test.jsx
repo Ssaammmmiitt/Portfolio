@@ -13,7 +13,7 @@ describe("Navbar CV buttons", () => {
     expect(desktopNav).toBeTruthy();
 
     const view = within(desktopNav).getByRole("button", { name: `View ${CV.label}` });
-    const download = within(desktopNav).getByRole("link", { name: `Download ${CV.label}` });
+    const download = within(desktopNav).getByRole("button", { name: `Download ${CV.label}` });
 
     expect(view.compareDocumentPosition(download) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
@@ -25,7 +25,7 @@ describe("Navbar CV buttons", () => {
     expect(mobileNav).toBeTruthy();
 
     const view = within(mobileNav).getByRole("button", { name: `View ${CV.label}` });
-    const download = within(mobileNav).getByRole("link", { name: `Download ${CV.label}` });
+    const download = within(mobileNav).getByRole("button", { name: `Download ${CV.label}` });
 
     expect(view.compareDocumentPosition(download) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });

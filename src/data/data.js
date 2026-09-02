@@ -12,18 +12,13 @@ export const EMAIL = "poudyal.sammit@gmail.com";
 
 // ─────────────────────────────────────────────
 // CV / RESUME
-// Option A (local): put PDF in public/ and set url to "/Your-Name-CV.pdf"
-// Option B (Google Drive):
-//   1. Upload PDF → Share → Anyone with the link (Viewer)
-//   2. Copy FILE_ID from: https://drive.google.com/file/d/FILE_ID/view
-//   3. url: "https://drive.google.com/uc?export=download&id=FILE_ID"
-// Leave url empty to hide the navbar download button.
+// Put your PDF in public/CV/ and set url to its public path (e.g. "/CV/Sammit-CV.pdf").
+// Leave url empty to hide download/view controls.
 // ─────────────────────────────────────────────
 
 export const CV = {
-  url: "https://drive.google.com/uc?export=download&id=1nmZGZihr1EPadtMwdiKaFTNtk1E99YES",
-  previewUrl: "https://drive.google.com/file/d/1nmZGZihr1EPadtMwdiKaFTNtk1E99YES/preview",
-  fileName: "Resume-S.pdf",
+  url: "/CV/Sammit-CV.pdf",
+  fileName: "Sammit-CV.pdf",
   label: "CV",
 };
 
@@ -36,40 +31,61 @@ export const CV = {
 export const CODE_DATA = [
   {
     name: "languages",
-    items: ["TypeScript", "JavaScript", "Python", "C++", "SQL"],
+    items: ["Python", "TypeScript", "JavaScript", "HTML/CSS", "C++", "C", "SQL"],
   },
-
   {
     name: "frontend",
     items: ["React", "Next.js", "React Native", "Tailwind CSS"],
   },
-
   {
     name: "backend",
     items: ["Node.js", "Express", "FastAPI", "Django", "REST APIs"],
   },
-
-  {
-    name: "data",
-    items: ["PostgreSQL", "MongoDB", "MySQL", "SQLite", "Firebase", "Prisma"],
-  },
-
   {
     name: "ai / ml",
     items: [
+      "LLM Integration",
+      "RAG",
+      "Vector Embeddings",
       "PyTorch",
       "TensorFlow",
-      "Scikit-learn",
+      "scikit-learn",
       "LightGBM",
       "NLP",
       "Deep Learning",
       "Computer Vision",
+      "Sentence-Transformers",
     ],
   },
-
   {
-    name: "engineering",
-    items: ["Git", "GitHub", "Docker", "FastAPI", "Google Cloud", "Postman"],
+    name: "data",
+    items: ["NumPy", "Pandas", "Matplotlib", "Feature Engineering"],
+  },
+  {
+    name: "databases",
+    items: [
+      "PostgreSQL (Supabase/pgvector)",
+      "MongoDB",
+      "MySQL",
+      "Firebase",
+      "SQLite",
+      "Prisma",
+    ],
+  },
+  {
+    name: "tools & devops",
+    items: [
+      "Git",
+      "GitHub",
+      "GitHub Actions",
+      "CI/CD",
+      "Docker",
+      "Vercel",
+      "Render",
+      "Railway",
+      "Google Cloud Platform",
+      "Postman",
+    ],
   },
 ];
 
@@ -172,6 +188,19 @@ export const STRATEGY = [
 
 export const PROJECTS = [
   {
+    name: "Skim",
+    title: "Automated News Digest & RAG Q&A",
+    summary:
+      "Python ingestion pipeline (feedparser, Sentence-Transformers, GitHub Actions) feeding MiniLM pgvector embeddings and PostgreSQL FTS into source-cited Gemini/Groq answers via a Next.js 16 dashboard with Supabase auth and admin moderation on Vercel.",
+    year: "2026",
+    tag: "Python · Next.js · TypeScript · Supabase/pgvector · Groq/Gemini LLM APIs",
+    bg: "bg-zinc-900",
+    color: "#0d9488",
+    thumbnail: "/images/Skim.png",
+    github: "https://github.com/Ssaammmmiitt/Skim",
+    featured: true,
+  },
+  {
     name: "Prometheus",
     title: "Daily Wildfire Risk Forecast for Nepal",
     summary:
@@ -199,11 +228,11 @@ export const PROJECTS = [
   },
   {
     name: "NoteMerge",
-    title: "AI-Powered Note Merging & Summarization",
+    title: "AI-Powered Document Processing & Study Guides",
     summary:
-      "Merges and summarizes fragmented notes using transformers and BERTopic semantic clustering in a FastAPI + React full-stack app.",
+      "Full-stack app that merges PDF/DOCX/PPTX lecture notes into structured, math-rendered study guides with Gemini/Groq LLM fallback, live progress streaming, and Markdown/HTML/PDF export—deployed on Vercel, Oracle Cloud, and MongoDB Atlas.",
     year: "2025",
-    tag: "Python · FastAPI · React · PyTorch · BERTopic · SBERT",
+    tag: "Python · FastAPI · Next.js · MongoDB · Docling/PyMuPDF",
     bg: "bg-zinc-800",
     color: "#ff6b8a",
     thumbnail: "/images/Note-Merge.png",
@@ -233,6 +262,18 @@ export const PROJECTS = [
     color: "#4285f4",
     thumbnail: "/images/TamangNetra.png",
     github: "https://github.com/Ssaammmmiitt/TamangNetra",
+  },
+  {
+    name: "Skill Forge",
+    title: "Gamified Adaptive Learning Platform",
+    summary:
+      "Gamified adaptive learning platform with ML-powered learning-style personalization (decision tree + PyTorch MLP) driving quiz difficulty, RPG progression, and skill recommendations.",
+    year: "2026",
+    tag: "React · FastAPI · PyTorch · scikit-learn · SQLAlchemy",
+    bg: "bg-zinc-900",
+    color: "#c084fc",
+    thumbnail: "/images/Skill-Forge.png",
+    github: "https://github.com/Ssaammmmiitt/Skill-Forge",
   },
   {
     name: "Contrace",
@@ -337,7 +378,7 @@ export const CULTURE_DATA = [
 // ─────────────────────────────────────────────
 
 export const STATS = [
-  { value: "8+", label: "Projects built" },
+  { value: "9+", label: "Projects built" },
   { value: "3+", label: "Years building" },
   { value: "20+", label: "Technologies" },
   { value: "AI/Frontend", label: "Core focus" },

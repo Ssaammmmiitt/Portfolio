@@ -10,7 +10,13 @@ import {
   FiZoomOut,
 } from "react-icons/fi";
 import { CV, NAME } from "../data.js";
-import { getCvPreviewUrl } from "../lib/cv.js";
+import {
+  CV_ERROR_MESSAGES,
+  getCvDownloadLinkProps,
+  getCvPreviewUrl,
+  triggerCvDownload,
+  verifyCvAvailability,
+} from "../lib/cv.js";
 import { cn } from "../lib/utils.js";
 
 const easeOut = [0.22, 1, 0.36, 1];
@@ -18,6 +24,7 @@ const ZOOM_MIN = 0.6;
 const ZOOM_MAX = 2;
 const ZOOM_STEP = 0.15;
 const IFRAME_HEIGHT = 1200;
+const PREVIEW_LOAD_TIMEOUT_MS = 12000;
 
 function ToolbarButton({ label, onClick, children, className }) {
   return (
@@ -43,8 +50,43 @@ export default function CvViewerModal({
 }) {
   const [mounted, setMounted] = useState(false);
   const [zoom, setZoom] = useState(1);
+  const [previewState, setPreviewState] = useState("idle");
+  const [previewError, setPreviewError] = useState("");
+  const [downloadError, setDownloadError] = useState("");
   const panelRef = useRef(null);
   const previewUrl = getCvPreviewUrl();
+  const downloadLinkProps = getCvDownloadLinkProps();
+
+  const resetPreviewState = useCallback(() => {
+    setPreviewState("idle");
+    setPreviewError("");
+    setDownloadError("");
+  }, []);
+
+  const loadPreview = useCallback(async () => {
+    if (!previewUrl) {
+      setPreviewState("error");
+      setPreviewError(CV_ERROR_MESSAGES.notConfigured);
+      return;
+    }
+
+    setPreviewState("checking");
+    setPreviewError("");
+
+    try {
+      const availability = await verifyCvAvailability();
+      if (!availability.ok) {
+        setPreviewState("error");
+        setPreviewError(availability.error);
+        return;
+      }
+
+      setPreviewState("loading");
+    } catch {
+      setPreviewState("error");
+      setPreviewError(CV_ERROR_MESSAGES.loadFailed);
+    }
+  }, [previewUrl]);
 
   useEffect(() => {
     setMounted(true);
@@ -54,8 +96,14 @@ export default function CvViewerModal({
     if (!open) {
       onCollapsedChange?.(false);
       setZoom(1);
+      resetPreviewState();
+      return;
     }
-  }, [open, onCollapsedChange]);
+
+    if (!collapsed) {
+      loadPreview();
+    }
+  }, [open, collapsed, onCollapsedChange, resetPreviewState, loadPreview]);
 
   useEffect(() => {
     if (!open) return;
@@ -107,9 +155,45 @@ export default function CvViewerModal({
 
   const expand = useCallback(() => setCollapsed(false), [setCollapsed]);
 
+  const handleDownload = useCallback(async () => {
+    setDownloadError("");
+
+    try {
+      const result = await triggerCvDownload();
+      if (!result.ok) {
+        setDownloadError(result.error);
+      }
+    } catch {
+      setDownloadError(CV_ERROR_MESSAGES.downloadFailed);
+    }
+  }, []);
+
+  const handlePreviewError = useCallback(() => {
+    setPreviewState("error");
+    setPreviewError(CV_ERROR_MESSAGES.loadFailed);
+  }, []);
+
+  useEffect(() => {
+    if (!open || collapsed || previewState !== "loading") return;
+
+    const timeoutId = window.setTimeout(() => {
+      setPreviewState("error");
+      setPreviewError(CV_ERROR_MESSAGES.previewTimeout);
+    }, PREVIEW_LOAD_TIMEOUT_MS);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [open, collapsed, previewState, previewUrl]);
+
+  const handlePreviewLoad = useCallback(() => {
+    setPreviewState("ready");
+    setPreviewError("");
+  }, []);
+
   if (!mounted || !previewUrl) return null;
 
-  const isLocal = CV.url.startsWith("/");
+  const showIframe = previewState === "loading" || previewState === "ready";
+  const showPreviewError = previewState === "error";
+  const showPreviewLoading = previewState === "checking";
 
   return createPortal(
     <AnimatePresence>
@@ -199,19 +283,17 @@ export default function CvViewerModal({
                     <ToolbarButton
                       label="Download CV"
                       className="hidden sm:inline-flex"
-                      onClick={() => window.open(CV.url, "_blank", "noopener,noreferrer")}
+                      onClick={handleDownload}
                     >
                       <FiDownload size={16} />
                     </ToolbarButton>
-                    <a
-                      href={CV.url}
-                      {...(isLocal
-                        ? { download: CV.fileName }
-                        : { target: "_blank", rel: "noopener noreferrer" })}
+                    <button
+                      type="button"
+                      onClick={handleDownload}
                       className="inline-flex min-h-9 items-center rounded-full border border-border-strong px-3 text-xs font-medium text-soft transition-colors hover:border-acid hover:text-acid sm:hidden"
                     >
                       PDF
-                    </a>
+                    </button>
                   </>
                 )}
 
@@ -235,21 +317,65 @@ export default function CvViewerModal({
 
             {!collapsed && (
               <div className="cv-viewer-scroll min-h-0 flex-1 overflow-auto bg-muted/20">
-                <div
-                  className="mx-auto origin-top p-3 transition-transform duration-200 sm:p-4"
-                  style={{
-                    transform: `scale(${zoom})`,
-                    width: zoom < 1 ? `${100 / zoom}%` : "100%",
-                  }}
-                >
-                  <iframe
-                    src={previewUrl}
-                    title={`${NAME} CV preview`}
-                    className="w-full rounded-lg border border-border bg-background"
-                    style={{ height: IFRAME_HEIGHT }}
-                    loading="lazy"
-                  />
-                </div>
+                {showPreviewLoading ? (
+                  <div className="flex h-full min-h-[16rem] flex-col items-center justify-center gap-3 p-6 text-center">
+                    <div className="size-8 animate-pulse rounded-full bg-border" aria-hidden="true" />
+                    <p className="text-sm text-subtle">Loading CV preview…</p>
+                  </div>
+                ) : null}
+
+                {showPreviewError ? (
+                  <div
+                    role="alert"
+                    className="flex h-full min-h-[16rem] flex-col items-center justify-center gap-4 p-6 text-center"
+                  >
+                    <p className="max-w-md text-sm text-subtle">{previewError}</p>
+                    <div className="flex flex-wrap items-center justify-center gap-2">
+                      <button
+                        type="button"
+                        onClick={loadPreview}
+                        className="inline-flex min-h-9 items-center rounded-full border border-border-strong px-4 text-sm font-medium text-soft transition-colors hover:border-acid hover:text-acid"
+                      >
+                        Try again
+                      </button>
+                      {downloadLinkProps ? (
+                        <button
+                          type="button"
+                          onClick={handleDownload}
+                          className="inline-flex min-h-9 items-center rounded-full border border-border-strong px-4 text-sm font-medium text-soft transition-colors hover:border-acid hover:text-acid"
+                        >
+                          Download PDF
+                        </button>
+                      ) : null}
+                    </div>
+                  </div>
+                ) : null}
+
+                {showIframe ? (
+                  <div
+                    className="mx-auto origin-top p-3 transition-transform duration-200 sm:p-4"
+                    style={{
+                      transform: `scale(${zoom})`,
+                      width: zoom < 1 ? `${100 / zoom}%` : "100%",
+                    }}
+                  >
+                    <iframe
+                      src={previewUrl}
+                      title={`${NAME} CV preview`}
+                      className="w-full rounded-lg border border-border bg-background"
+                      style={{ height: IFRAME_HEIGHT }}
+                      loading="lazy"
+                      onLoad={handlePreviewLoad}
+                      onError={handlePreviewError}
+                    />
+                  </div>
+                ) : null}
+
+                {downloadError ? (
+                  <p role="alert" className="px-4 pb-4 text-center text-xs text-red-400">
+                    {downloadError}
+                  </p>
+                ) : null}
               </div>
             )}
 
