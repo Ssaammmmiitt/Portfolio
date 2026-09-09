@@ -77,25 +77,33 @@ const Navbar = ({ visible = true, instant = false, show = true, onViewCv }) => {
           visible && show ? "pointer-events-auto" : "pointer-events-none"
         )}
       >
-        <div className="wrap flex items-center justify-between gap-3 pt-[max(1.35rem,calc(env(safe-area-inset-top)+0.85rem))] pb-3.5 sm:gap-4 sm:pt-[max(1.75rem,calc(env(safe-area-inset-top)+0.85rem))] sm:pb-4">
-          <a
-            href="#hero"
-            className="nav-link nav-interactive nav-brand inline-flex min-h-11 min-w-11 items-center py-2"
-            aria-label="Sammit Poudyal  -  Home"
-          >
-            <Logo size={40} invertIcon={!isLight} showWordmark />
-          </a>
+        <div className="nav-bar-inner wrap flex items-center justify-between gap-3 pt-[max(1.35rem,calc(env(safe-area-inset-top)+0.85rem))] pb-3.5 sm:gap-4 sm:pt-[max(1.75rem,calc(env(safe-area-inset-top)+0.85rem))] sm:pb-4">
+          <div className="nav-primary flex min-w-0 items-center gap-3 lg:gap-4 xl:gap-5">
+            <a
+              href="#hero"
+              className="nav-link nav-interactive nav-brand inline-flex min-h-11 min-w-11 shrink-0 items-center py-2"
+              aria-label="Sammit Poudyal  -  Home"
+            >
+              <Logo size={40} invertIcon={!isLight} showWordmark />
+            </a>
 
-          <div className="hidden min-w-0 lg:flex lg:items-center lg:gap-5 xl:gap-8">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="nav-link nav-interactive shrink-0 text-base font-medium uppercase tracking-[0.18em] lg:text-lg"
-              >
-                {link.label}
-              </a>
-            ))}
+            <nav
+              aria-label="Primary"
+              className="nav-primary-links hidden min-w-0 lg:flex lg:items-center lg:gap-5 xl:gap-8"
+            >
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="nav-link nav-interactive shrink-0 font-heading text-base uppercase tracking-[0.18em] lg:text-lg"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+          </div>
+
+          <div className="nav-desktop-cta hidden shrink-0 lg:ml-auto lg:flex lg:items-center lg:gap-5 xl:gap-8">
             <CvViewButton className={navCtaClass(isLight)} onOpen={onViewCv} />
             <CvDownloadButton className={navCtaClass(isLight)} />
             <ThemeToggle className={navCtaClass(isLight)} />
@@ -108,7 +116,7 @@ const Navbar = ({ visible = true, instant = false, show = true, onViewCv }) => {
             <a
               href="#contact"
               className={cn(
-                "nav-link nav-interactive nav-interactive-cta hidden min-h-11 shrink-0 items-center rounded-full border px-3.5 text-xs font-medium sm:px-4 sm:text-sm xl:inline-flex",
+                "nav-link nav-interactive nav-interactive-cta hidden min-h-11 shrink-0 items-center rounded-full border px-3.5 font-sans text-xs font-normal sm:px-4 sm:text-sm xl:inline-flex",
                 isLight
                   ? "border-border-strong hover:border-nav-fg-hover hover:bg-text/10 hover:text-nav-fg-hover"
                   : "border-white hover:border-nav-fg-hover hover:bg-white/10 hover:text-nav-fg-hover"
@@ -118,7 +126,7 @@ const Navbar = ({ visible = true, instant = false, show = true, onViewCv }) => {
             </a>
           </div>
 
-          <div className="flex items-center gap-3 lg:hidden">
+          <div className="nav-mobile-actions flex items-center gap-3 lg:hidden">
             <CvViewButton
               className={cn(
                 "nav-interactive nav-interactive-cta",
@@ -167,7 +175,7 @@ const Navbar = ({ visible = true, instant = false, show = true, onViewCv }) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08, duration: 0.35, ease: easeOut }}
-                className="nav-interactive font-display text-2xl uppercase tracking-widest text-paper sm:text-3xl"
+                className="nav-interactive font-heading text-2xl uppercase tracking-widest text-paper sm:text-3xl"
               >
                 {link.label}
               </motion.a>
@@ -178,7 +186,7 @@ const Navbar = ({ visible = true, instant = false, show = true, onViewCv }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: NAV_LINKS.length * 0.08, duration: 0.35, ease: easeOut }}
-              className="nav-interactive nav-interactive-cta mt-2 inline-flex min-h-11 items-center rounded-full border border-border px-5 text-sm font-medium text-paper hover:border-acid hover:text-acid"
+              className="nav-interactive nav-interactive-cta mt-2 inline-flex min-h-11 items-center rounded-full border border-border px-5 font-sans text-sm font-normal text-paper hover:border-acid hover:text-acid"
             >
               Connect with me
             </motion.a>

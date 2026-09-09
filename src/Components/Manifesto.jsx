@@ -42,7 +42,7 @@ function Line({ line, highlight }) {
   const words = line.split(" ");
 
   return (
-    <h2 className="display-title text-[clamp(1.85rem,9.5vw,7.8rem)] sm:text-[clamp(2.15rem,11vw,7.8rem)]">
+    <h2 className="display-title text-[clamp(1.55rem,7.5vw,5.75rem)] sm:text-[clamp(1.85rem,9vw,5.75rem)]">
       {words.map((word) => (
         <Word key={`${line}-${word}`} accent={word === highlight}>
           {word}
@@ -264,7 +264,7 @@ export default function Manifesto({ ready }) {
 
             <p
               data-body=""
-              className="mt-5 max-w-3xl text-[clamp(1.0625rem,2.5vw,1.75rem)] leading-[1.75] font-light text-pretty text-soft sm:mt-8 md:mt-10 lg:mt-12 sm:leading-[1.8]"
+              className="mt-5 max-w-3xl font-sans text-[clamp(1.0625rem,2.5vw,1.75rem)] leading-[1.75] font-normal text-pretty text-soft sm:mt-8 md:mt-10 lg:mt-12 sm:leading-[1.8]"
             >
               {bodyWords.map(({ word, index, softAccent }) => (
                 <Word key={`${word}-${index}`} softAccent={softAccent}>

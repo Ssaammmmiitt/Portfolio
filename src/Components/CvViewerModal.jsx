@@ -241,7 +241,7 @@ export default function CvViewerModal({
                   onClick={expand}
                   className="min-w-0 flex-1 text-left"
                 >
-                  <p className="cv-viewer-pill-kicker truncate font-condensed text-[0.68rem] uppercase tracking-[0.22em] sm:text-xs sm:tracking-[0.28em]">
+                  <p className="cv-viewer-pill-kicker truncate font-heading text-[0.68rem] uppercase tracking-[0.22em] sm:text-xs sm:tracking-[0.28em]">
                     Resume
                   </p>
                   <p className="cv-viewer-pill-title truncate text-sm font-semibold sm:text-[0.95rem]">
@@ -250,7 +250,7 @@ export default function CvViewerModal({
                 </button>
               ) : (
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-condensed text-[0.65rem] uppercase tracking-[0.22em] text-faint sm:text-xs sm:tracking-[0.28em]">
+                  <p className="truncate font-heading text-[0.65rem] uppercase tracking-[0.22em] text-faint sm:text-xs sm:tracking-[0.28em]">
                     Resume
                   </p>
                   <p className="truncate text-sm font-medium text-paper sm:text-base">

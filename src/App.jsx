@@ -5,7 +5,6 @@ import ScrollToTop from "./Components/ScrollToTop.jsx";
 import Hero from "./Components/Hero.jsx";
 import Manifesto from "./Components/Manifesto.jsx";
 import Marquee from "./Components/Marquee.jsx";
-import Strategy from "./Components/Strategy.jsx";
 import Stack from "./Components/Stack.jsx";
 import Stats from "./Components/Stats.jsx";
 import Works from "./Components/Works.jsx";
@@ -37,13 +36,13 @@ export default function App() {
     };
   });
   const [preloaderDone, setPreloaderDone] = useState(returning);
-  const [spaceScrollEnabled, setSpaceScrollEnabled] = useState(returning);
+  const [scrollUnlocked, setScrollUnlocked] = useState(returning);
   const [cvOpen, setCvOpen] = useState(false);
   const [cvCollapsed, setCvCollapsed] = useState(false);
   const progressRef = useRef(null);
 
-  const enableSpaceScroll = useCallback(() => {
-    setSpaceScrollEnabled(true);
+  const unlockScroll = useCallback(() => {
+    setScrollUnlocked(true);
   }, []);
 
   const openCv = useCallback(() => {
@@ -71,23 +70,25 @@ export default function App() {
     }
   }, [returning, savedScroll]);
 
-  useLenis(preloaderDone, savedScroll, spaceScrollEnabled);
+  useLenis(preloaderDone, savedScroll, scrollUnlocked);
   useInPageNav(preloaderDone);
   const { showTopNav, showDock } = useScrollNav(preloaderDone);
   useThemeScrollSync();
 
   useEffect(() => {
-    document.body.style.overflow = preloaderDone ? "" : "hidden";
+    // Hide overflow until preloader finishes AND hero intro unlocks scroll.
+    document.body.style.overflow = preloaderDone && scrollUnlocked ? "" : "hidden";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [preloaderDone]);
+  }, [preloaderDone, scrollUnlocked]);
 
   useEffect(() => {
-    if (!preloaderDone || returning) return;
-    const id = window.setTimeout(enableSpaceScroll, 2000);
+    if (!preloaderDone || returning || scrollUnlocked) return;
+    // Safety unlock if hero intro callback is delayed/missed.
+    const id = window.setTimeout(unlockScroll, 3200);
     return () => window.clearTimeout(id);
-  }, [preloaderDone, returning, enableSpaceScroll]);
+  }, [preloaderDone, returning, scrollUnlocked, unlockScroll]);
 
   useEffect(() => {
     if (!preloaderDone || !progressRef.current) return;
@@ -124,12 +125,12 @@ export default function App() {
       <NavDock visible={preloaderDone && showDock} />
       <ScrollToTop enabled={preloaderDone} />
       <main className="flex flex-col">
-        <Hero animate={preloaderDone} instant={returning} onIntroReady={enableSpaceScroll} />
+        <Hero animate={preloaderDone} instant={returning} onIntroReady={unlockScroll} />
         <Manifesto ready={preloaderDone} />
         <Marquee />
         <Works ready={preloaderDone} onViewCv={handleViewCv} />
         <Stack ready={preloaderDone} />
-        <Strategy ready={preloaderDone} />
+        {/* <Strategy ready={preloaderDone} /> */}
         <Stats ready={preloaderDone} />
         <Leadership ready={preloaderDone} />
         <About ready={preloaderDone} />

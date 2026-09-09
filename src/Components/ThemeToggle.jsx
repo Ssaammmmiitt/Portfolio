@@ -18,7 +18,7 @@ const ThemeToggle = ({ className = "" }) => {
         event.currentTarget.blur();
       }}
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
-      className={`nav-interactive inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-medium ${className || "border-border-strong bg-background/50 text-text hover:border-text/40"}`}
+      className={`nav-interactive inline-flex items-center gap-2 rounded-full border px-3 py-2 font-sans text-sm font-normal ${className || "border-border-strong bg-background/50 text-text hover:border-text/40"}`}
     >
       {isDark ? <FiSun size={18} /> : <FiMoon size={18} />}
       <span className="hidden sm:inline">{isDark ? "Light" : "Dark"}</span>

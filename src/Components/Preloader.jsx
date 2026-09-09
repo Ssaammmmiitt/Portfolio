@@ -52,11 +52,11 @@ export default function Preloader({ onDone }) {
       className="fixed inset-0 z-10000 flex h-dvh w-full items-center justify-center overflow-hidden bg-background"
     >
       <div ref={label} className="flex flex-col items-center gap-6 text-text">
-        <p className="flex items-center gap-3 px-6 text-center font-display text-3xl tracking-wide sm:text-4xl md:text-5xl">
+        <p className="flex items-center gap-3 px-6 text-center font-heading text-3xl tracking-wide sm:text-4xl md:text-5xl">
           <span className="block size-2.5 bg-acid" />
           {NAME}
         </p>
-        <p ref={count} className="font-condensed text-sm tracking-[0.4em] text-subtle">
+        <p ref={count} className="font-heading text-sm tracking-[0.4em] text-subtle">
           00
         </p>
       </div>

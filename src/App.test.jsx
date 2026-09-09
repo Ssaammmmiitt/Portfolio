@@ -14,7 +14,6 @@ describe("App", () => {
 
     expect(screen.getByRole("banner")).toBeInTheDocument();
     expect(document.getElementById("manifesto")).toBeInTheDocument();
-    expect(document.getElementById("strategy")).toBeInTheDocument();
     expect(document.getElementById("works")).toBeInTheDocument();
     expect(document.getElementById("stack")).toBeInTheDocument();
     expect(document.getElementById("contact")).toBeInTheDocument();
@@ -22,9 +21,7 @@ describe("App", () => {
     const main = document.querySelector("main");
     const worksIndex = Array.from(main.children).findIndex((el) => el.id === "works");
     const stackIndex = Array.from(main.children).findIndex((el) => el.id === "stack");
-    const strategyIndex = Array.from(main.children).findIndex((el) => el.id === "strategy");
     expect(worksIndex).toBeGreaterThan(-1);
     expect(stackIndex).toBeGreaterThan(worksIndex);
-    expect(strategyIndex).toBeGreaterThan(stackIndex);
   });
 });

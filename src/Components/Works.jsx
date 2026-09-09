@@ -183,7 +183,9 @@ export default function Works({ ready, onViewCv }) {
       <div className="wrap">
         <div className="section-head flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
           <div className="min-w-0">
-            <p className="reveal-kicker kicker">selected works</p>
+            <p className="reveal-kicker kicker text-[1rem] tracking-[0.2em] sm:text-[1.125rem] sm:tracking-[0.26em]">
+              selected works
+            </p>
             <h2 className="reveal-title display-title text-[clamp(2.6rem,9vw,6.5rem)] text-paper">
               Check out my projects
               <span className="mt-2 block text-subtle">See my expertise</span>
@@ -226,7 +228,7 @@ export default function Works({ ready, onViewCv }) {
                   {project.name}
                 </h3>
 
-                <p className="work-summary max-w-3xl text-sm leading-relaxed text-subtle md:text-[0.95rem] lg:group-hover:text-paper">
+                <p className="work-summary max-w-3xl font-sans text-sm leading-relaxed text-subtle md:text-[0.95rem] lg:group-hover:text-paper">
                   {project.summary}
                 </p>
 

@@ -1,11 +1,4 @@
 @import "tailwindcss";
-@import "@fontsource/outfit/400.css";
-@import "@fontsource/outfit/500.css";
-@import "@fontsource/outfit/600.css";
-@import "@fontsource/bebas-neue/400.css";
-@import "@fontsource/oswald/400.css";
-@import "@fontsource/oswald/500.css";
-@import "@fontsource/bungee/400.css";
 @import "lenis/dist/lenis.css";
 @import "./shaders/threeui.css";
 
@@ -122,10 +115,23 @@ html.light {
 }
 
 @theme {
-  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Bebas Neue", Impact, sans-serif;
-  --font-condensed: "Oswald", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "bungee", sans-serif;
+  /* Geist Pixel — normal / UI body text */
+  --font-sans: "Geist Pixel", ui-sans-serif, system-ui, sans-serif;
+  /* Figtree — optional readable UI fallback */
+  --font-figtree: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  /* Boogaloo — optional accent */
+  --font-boogaloo: "Boogaloo", ui-sans-serif, system-ui, sans-serif;
+  /* Dosis 800 — large display titles */
+  --font-display: "Dosis", ui-sans-serif, system-ui, sans-serif;
+  /* Fredoka — soft accents */
+  --font-condensed: "Fredoka", ui-sans-serif, system-ui, sans-serif;
+  /* Bungee — capitals / brand uppercase */
+  --font-heading: "Bungee", ui-sans-serif, system-ui, sans-serif;
+  --font-fredoka: "Fredoka", ui-sans-serif, system-ui, sans-serif;
+  /* Economica — hero role / condensed display */
+  --font-economica: "Economica", ui-sans-serif, system-ui, sans-serif;
+  /* Oswald — alternate condensed */
+  --font-oswald: "Oswald", ui-sans-serif, system-ui, sans-serif;
   --color-background: var(--theme-background);
   --color-text: var(--theme-text);
   --color-primary: #ff2d1a;
@@ -199,7 +205,11 @@ html.light {
     overflow: visible;
     background-color: var(--theme-background);
     font-family: var(--font-sans);
-    font-size: 1rem;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "ELSH" 0;
+    font-size: 1.0625rem;
     line-height: 1.65;
     color: var(--theme-text);
     -webkit-font-smoothing: antialiased;
@@ -340,6 +350,40 @@ html.light #hero .noise {
 
 .nav-border {
   border-color: var(--theme-nav-border);
+}
+
+.nav-bar-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.nav-primary {
+  flex: 0 1 auto;
+}
+
+/* Small gap only between SAMMIT and HOME — keep Contact with the links. */
+.nav-primary-links {
+  margin-left: 0;
+}
+
+.nav-desktop-cta {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+html.scroll-locked,
+html.scroll-locked body {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+@media (min-width: 1024px) {
+  .nav-desktop-cta {
+    /* Light separation from primary links without pulling Contact over */
+    padding-left: 0.75rem;
+    margin-left: max(1.25rem, 3vw);
+  }
 }
 
 .dock-shell {
@@ -679,9 +723,9 @@ html.light .dock-shell {
 
 @utility kicker {
   margin-bottom: 1.25rem;
-  font-family: var(--font-condensed);
+  font-family: var(--font-heading);
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--theme-subtle);
@@ -696,8 +740,9 @@ html.light .dock-shell {
 }
 
 @utility meta-label {
-  font-family: var(--font-condensed);
+  font-family: var(--font-heading);
   font-size: 0.8125rem;
+  font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--theme-subtle);
@@ -711,6 +756,11 @@ html.light .dock-shell {
 }
 
 @utility body-copy {
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "ELSH" 0;
   font-size: 1rem;
   line-height: 1.7;
   color: var(--theme-soft);
@@ -724,9 +774,96 @@ html.light .dock-shell {
 
 @utility display-title {
   font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
   text-transform: uppercase;
   line-height: 0.85;
   text-wrap: balance;
+}
+
+/* Google Fonts utility classes */
+.figtree-body {
+  font-family: "Figtree", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.boogaloo-body {
+  font-family: "Boogaloo", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.geist-pixel-body {
+  font-family: "Geist Pixel", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "ELSH" 0;
+}
+
+.font-sans {
+  font-optical-sizing: auto;
+  font-variation-settings: "ELSH" 0;
+}
+
+.figtree-medium {
+  font-family: "Figtree", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.figtree-semibold {
+  font-family: "Figtree", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.dosis-display {
+  font-family: "Dosis", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.fredoka-label {
+  font-family: "Fredoka", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+.fredoka-soft {
+  font-family: "Fredoka", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+.bungee-regular {
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.economica-role {
+  font-family: "Economica", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.oswald-label {
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
 }
 
 @utility noise {
@@ -801,6 +938,55 @@ html.light .dock-shell {
   color: var(--theme-accent);
 }
 
+.contact-submit {
+  width: fit-content;
+  max-width: max-content;
+  min-width: 0;
+  background-color: var(--theme-accent);
+  color: var(--theme-accent-fg);
+  font-weight: 800;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-accent) 35%, transparent);
+  transition:
+    background-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease,
+    filter 220ms ease;
+}
+
+.contact-submit:hover {
+  background-color: var(--theme-accent-soft);
+  color: var(--theme-accent-fg);
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--theme-accent-soft) 55%, transparent),
+    0 10px 28px color-mix(in srgb, var(--theme-accent) 32%, transparent);
+  filter: brightness(1.06);
+}
+
+.contact-submit:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+
+html.light .contact-submit:hover {
+  background-color: #0d9488;
+  color: #f7f5f1;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, #0d9488 50%, transparent),
+    0 10px 26px color-mix(in srgb, #0f766e 28%, transparent);
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-submit,
+  .contact-submit:hover,
+  .contact-submit:active {
+    transform: none;
+    transition: background-color 160ms ease, box-shadow 160ms ease, color 160ms ease;
+  }
+}
+
 html.light .strategy-toggle:hover {
   box-shadow: var(--theme-strategy-shadow);
 }
@@ -823,9 +1009,27 @@ html.light .strategy-toggle:hover {
   box-shadow: var(--theme-strategy-shadow);
 }
 
+.leadership-toggle {
+  background: var(--theme-strategy-bg);
+  border: 1px solid var(--theme-strategy-border);
+  box-shadow: var(--theme-strategy-shadow);
+}
+
+.leadership-toggle:hover,
+.leadership-toggle[aria-expanded="true"] {
+  background: var(--theme-strategy-bg-hover);
+  border-color: var(--theme-strategy-border-hover);
+}
+
+.leadership-panel-open {
+  border: 1px solid var(--theme-strategy-border);
+  background: var(--theme-strategy-bg);
+  box-shadow: var(--theme-strategy-shadow);
+}
+
 .leadership-highlight {
   border-color: var(--theme-strategy-border-hover);
-  background: var(--theme-strategy-bg);
+  background: color-mix(in srgb, var(--theme-strategy-bg-hover) 88%, var(--theme-accent) 12%);
   box-shadow: var(--theme-strategy-shadow);
 }
 
@@ -922,9 +1126,9 @@ html.light .strategy-toggle:hover {
   padding: 0.34rem 0.62rem;
   border-radius: 999px;
   border: 1px solid transparent;
-  font-family: var(--font-condensed, inherit);
+  font-family: var(--font-heading);
   font-size: 0.68rem;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1.2;

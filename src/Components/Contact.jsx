@@ -74,7 +74,7 @@ function ChoiceGroup({ title, name, options, required, error, onClearError }) {
       className="reveal-item"
       aria-describedby={error ? errorId : undefined}
     >
-      <legend className="mb-2.5 max-w-full text-pretty text-base font-medium leading-snug text-paper sm:mb-3 sm:text-[1.0625rem] md:mb-3.5 md:text-lg">
+      <legend className="mb-2.5 max-w-full text-pretty font-sans text-base font-normal leading-snug text-paper sm:mb-3 sm:text-[1.0625rem] md:mb-3.5 md:text-lg">
         {title}
         {required ? <span className="sr-only"> (required)</span> : null}
       </legend>
@@ -215,7 +215,9 @@ export default function Contact({ ready }) {
     >
       <div className="wrap mx-auto w-full max-w-[38rem] lg:max-w-3xl">
         <div className="contact-section-head">
-          <p className="reveal-kicker kicker">Contact</p>
+          <p className="reveal-kicker kicker text-[1rem] tracking-[0.2em] sm:text-[1.125rem] sm:tracking-[0.26em]">
+            Contact
+          </p>
           <h2 className="reveal-title display-title max-w-[18ch] text-[clamp(2rem,8.5vw,4.75rem)] leading-[0.95] text-paper sm:max-w-none lg:text-[clamp(2.35rem,6vw,5rem)]">
             Ready to bring
             <br />
@@ -346,12 +348,14 @@ export default function Contact({ ready }) {
                   ) : null}
                 </div>
               ) : (
-                <button
-                  type="submit"
-                  className="reveal-item inline-flex h-11 w-full min-w-40 items-center justify-center rounded-full bg-acid px-7 text-sm font-medium tracking-wide text-accent-fg uppercase sm:h-12 sm:w-auto sm:min-w-44"
-                >
-                  submit
-                </button>
+                <div className="flex w-full justify-center">
+                  <button
+                    type="submit"
+                    className="contact-submit reveal-item inline-flex h-10 items-center justify-center rounded-full px-4 text-sm font-extrabold tracking-wide uppercase sm:h-10 sm:px-4 md:h-10 md:px-4 lg:h-9 lg:px-3.5 lg:text-[0.8125rem]"
+                  >
+                    submit
+                  </button>
+                </div>
               )}
 
               {error ? (

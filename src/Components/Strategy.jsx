@@ -50,7 +50,7 @@ function StrategyCard({ index, item, compact = false }) {
       </div>
 
       <p
-        className={`relative font-condensed font-medium uppercase ${
+        className={`relative font-heading font-normal uppercase ${
           compact
             ? "text-[clamp(1.15rem,5.5vw,1.55rem)] tracking-[0.12em]"
             : "text-[0.7rem] tracking-[0.18em] sm:text-xs sm:tracking-[0.28em]"
@@ -230,7 +230,7 @@ export default function Strategy({ ready }) {
           <div className="flex shrink-0 items-center justify-between gap-3 lg:flex-col lg:items-end lg:justify-center lg:gap-2.5">
             <span
               className={cn(
-                "font-condensed text-[0.68rem] uppercase tracking-[0.18em] transition-colors duration-200 sm:text-xs sm:tracking-[0.22em]",
+                "font-heading text-[0.68rem] uppercase tracking-[0.18em] transition-colors duration-200 sm:text-xs sm:tracking-[0.22em]",
                 open
                   ? "text-subtle group-hover:text-paper"
                   : "text-faint group-hover:text-acid [@media(hover:hover)]:text-subtle"

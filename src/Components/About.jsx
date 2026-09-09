@@ -57,7 +57,7 @@ function HighlightText({ texts, ready }) {
       {texts.map((text) => (
         <p
           key={text.slice(0, 32)}
-          className="text-[1.0625rem] leading-[1.75] text-pretty sm:text-[1.125rem] sm:leading-[1.8]"
+          className="font-sans text-[1.0625rem] leading-[1.75] text-pretty sm:text-[1.125rem] sm:leading-[1.8]"
         >
           {splitWords(text).map((word, i, list) => (
             <span key={`${word}-${i}`} data-word="" className="text-[var(--theme-muted-word)]">
@@ -78,16 +78,18 @@ export default function About({ ready }) {
   return (
     <section id="about" ref={root} className="section-y relative overflow-x-clip bg-background">
       <div className="wrap">
-        <div className="flex flex-col gap-10 sm:gap-12 lg:flex-row lg:items-start lg:gap-16 xl:gap-20">
+        <div className="flex flex-col gap-14 sm:gap-16 lg:flex-row lg:items-start lg:gap-20 xl:gap-24">
           <div className="w-full shrink-0 lg:w-[min(100%,18rem)] xl:w-[min(100%,22rem)]">
-            <p className="reveal-kicker kicker">about</p>
+            <p className="reveal-kicker kicker text-[1rem] tracking-[0.2em] sm:text-[1.125rem] sm:tracking-[0.26em]">
+              about
+            </p>
             <h2 className="reveal-title display-title text-[clamp(2.75rem,10vw,5.5rem)] text-paper">
               Software
               <span className="mt-1 block text-acid">Engineer</span>
             </h2>
           </div>
 
-          <div className="min-w-0 flex-1 lg:max-w-2xl xl:max-w-xl">
+          <div className="min-w-0 flex-1 pt-2 sm:pt-3 lg:max-w-2xl lg:pt-10 xl:max-w-xl xl:pt-12">
             <HighlightText texts={BIO_TEXTS} ready={ready} />
           </div>
         </div>

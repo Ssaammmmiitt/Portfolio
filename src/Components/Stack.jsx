@@ -36,7 +36,9 @@ function CodeColumn({ rows }) {
   return (
     <div className="flex min-w-0 flex-col">
       <div className="section-head">
-        <p className="reveal-kicker kicker">The code</p>
+        <p className="reveal-kicker kicker text-[1rem] tracking-[0.2em] sm:text-[1.125rem] sm:tracking-[0.26em]">
+          The code
+        </p>
         <h2 className="reveal-title display-title text-[clamp(2.6rem,9vw,5.5rem)] text-paper">
           What <span className="text-acid">I build</span>
         </h2>
@@ -47,10 +49,10 @@ function CodeColumn({ rows }) {
             key={row.name}
             className="reveal-item grid grid-cols-1 items-baseline gap-2 border-b border-border py-4 sm:grid-cols-12 sm:gap-0 sm:py-5"
           >
-            <span className="font-condensed meta-label sm:col-span-4 sm:tracking-[0.28em]">
+            <span className="meta-label text-[0.95rem] tracking-[0.2em] sm:col-span-4 sm:text-[1.05rem] sm:tracking-[0.26em]">
               {row.name}
             </span>
-            <span className="flex flex-wrap gap-x-4 gap-y-2 text-base text-soft sm:col-span-8 sm:gap-x-5 sm:text-[1.125rem]">
+            <span className="flex flex-wrap gap-x-4 gap-y-2 font-sans text-base text-soft sm:col-span-8 sm:gap-x-5 sm:text-[1.125rem]">
               {row.items.map((item, i) => (
                 <span key={item} className="inline-flex items-center gap-2">
                   {item}
