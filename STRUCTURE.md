@@ -78,7 +78,7 @@ Loaded early from `main.jsx` via `visitCache.js`:
 ## Keyboard scroll
 
 - **Space** — page scroll via Lenis (with `(spacebar)` hint in Hero). Fine pointer only.
-- **First visit** — space is blocked until the hero intro completes (~1.5–2s), or immediately on return visits / reduced motion.
+- **First visit** — space scrolls after the preloader finishes (Lenis keyboard handlers). Return visits / reduced motion skip the preloader path as before.
 - **Arrow / Page Up / Down** — after preloader, when Lenis is enabled.
 
 ## Components (active)

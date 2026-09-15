@@ -24,7 +24,7 @@ function SplitChars({ text, className, instant }) {
 
 const META = [LOCATION, "Specialized in AI, Frontend & Backend", AVAILABILITY];
 
-export default function Hero({ animate, instant, onIntroReady }) {
+export default function Hero({ animate, instant }) {
   const root = useRef(null);
   const { theme } = useTheme();
   const names = NAME.split(" ");
@@ -68,12 +68,9 @@ export default function Hero({ animate, instant, onIntroReady }) {
   useLayoutEffect(() => {
     if (!animate || !root.current) return;
 
-    const introReady = () => onIntroReady?.();
-
     if (instant || prefersReducedMotion()) {
       gsap.set(root.current.querySelectorAll(".hero-sub-letter, .hero-name-letter"), { y: "0%" });
       gsap.set(root.current.querySelectorAll(".hero-meta, .hero-scroll"), { y: 0, opacity: 1 });
-      introReady();
       return;
     }
 
@@ -82,7 +79,6 @@ export default function Hero({ animate, instant, onIntroReady }) {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         defaults: { ease: "power4.inOut" },
-        onComplete: introReady,
       });
       tl.to(".hero-sub-letter", {
         y: "0%",
@@ -106,7 +102,7 @@ export default function Hero({ animate, instant, onIntroReady }) {
     }, root);
 
     return () => ctx.revert();
-  }, [animate, instant, onIntroReady]);
+  }, [animate, instant]);
 
   useLayoutEffect(() => {
     if (!animate || !root.current || prefersReducedMotion() || phone) return;

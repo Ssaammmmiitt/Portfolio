@@ -372,12 +372,6 @@ html.light #hero .noise {
   margin-left: auto;
 }
 
-html.scroll-locked,
-html.scroll-locked body {
-  overflow: hidden !important;
-  overscroll-behavior: none;
-}
-
 @media (min-width: 1024px) {
   .nav-desktop-cta {
     /* Light separation from primary links without pulling Contact over */
@@ -938,17 +932,28 @@ html.light .dock-shell {
   color: var(--theme-accent);
 }
 
+.contact-submit-wrap {
+  border-top: 1px solid color-mix(in srgb, var(--theme-border-strong) 80%, transparent);
+  margin-top: 0.25rem;
+  padding-top: 1rem;
+}
+
 .contact-submit {
   width: fit-content;
-  max-width: max-content;
-  min-width: 0;
+  max-width: 100%;
+  min-width: min(16rem, 100%);
   background-color: var(--theme-accent);
   color: var(--theme-accent-fg);
   font-weight: 800;
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-accent) 35%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-paper) 22%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--theme-accent) 55%, transparent),
+    0 8px 28px color-mix(in srgb, var(--theme-accent) 28%, transparent),
+    0 1px 0 color-mix(in srgb, var(--theme-paper) 18%, transparent);
   transition:
     background-color 220ms ease,
     color 220ms ease,
+    border-color 220ms ease,
     box-shadow 220ms ease,
     transform 220ms ease,
     filter 220ms ease;
@@ -957,11 +962,18 @@ html.light .dock-shell {
 .contact-submit:hover {
   background-color: var(--theme-accent-soft);
   color: var(--theme-accent-fg);
+  border-color: color-mix(in srgb, var(--theme-paper) 35%, transparent);
   transform: translateY(-2px);
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--theme-accent-soft) 55%, transparent),
-    0 10px 28px color-mix(in srgb, var(--theme-accent) 32%, transparent);
+    0 0 0 1px color-mix(in srgb, var(--theme-accent-soft) 70%, transparent),
+    0 14px 36px color-mix(in srgb, var(--theme-accent) 38%, transparent),
+    0 1px 0 color-mix(in srgb, var(--theme-paper) 22%, transparent);
   filter: brightness(1.06);
+}
+
+.contact-submit:focus-visible {
+  outline: 2px solid var(--theme-accent-soft);
+  outline-offset: 3px;
 }
 
 .contact-submit:active {
@@ -969,13 +981,30 @@ html.light .dock-shell {
   filter: brightness(0.98);
 }
 
+/* Light: solid teal CTA with clear contrast against stone chips/fields */
+html.light .contact-submit {
+  background-color: #0f766e;
+  color: #f7f5f1;
+  border-color: color-mix(in srgb, #0f766e 70%, #1c1917);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, #0f766e 40%, transparent),
+    0 10px 28px color-mix(in srgb, #0f766e 22%, transparent),
+    0 1px 0 color-mix(in srgb, #ffffff 55%, transparent);
+}
+
 html.light .contact-submit:hover {
   background-color: #0d9488;
   color: #f7f5f1;
+  border-color: #0f766e;
   box-shadow:
-    0 0 0 1px color-mix(in srgb, #0d9488 50%, transparent),
-    0 10px 26px color-mix(in srgb, #0f766e 28%, transparent);
+    0 0 0 1px color-mix(in srgb, #0d9488 55%, transparent),
+    0 14px 34px color-mix(in srgb, #0f766e 26%, transparent),
+    0 1px 0 color-mix(in srgb, #ffffff 70%, transparent);
   filter: none;
+}
+
+html.light .contact-submit:focus-visible {
+  outline-color: #0f766e;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -983,7 +1012,8 @@ html.light .contact-submit:hover {
   .contact-submit:hover,
   .contact-submit:active {
     transform: none;
-    transition: background-color 160ms ease, box-shadow 160ms ease, color 160ms ease;
+    transition: background-color 160ms ease, box-shadow 160ms ease, color 160ms ease,
+      border-color 160ms ease;
   }
 }
 

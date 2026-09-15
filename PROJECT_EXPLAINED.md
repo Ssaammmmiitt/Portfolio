@@ -20,25 +20,33 @@ Interview-ready guide for **this repo only**: how the frontend works, how it tal
 
 ---
 
+
+
 ## 1. One-sentence pitch
 
 **This portfolio** is a single-page React + Vite site that presents Sammit’s work, stack, leadership, and contact flow — with polished scroll/motion UX, a local CV viewer, and form delivery through Web3Forms + hCaptcha (not a self-hosted API).
 
-| Layer | What it is here |
-|-------|-----------------|
-| App | React 19 SPA (no Next.js, no React Router) |
-| Build | Vite 7 → static `dist/` |
-| Styling | Tailwind CSS v4 + CSS variables (dark/light) |
-| Motion | GSAP + ScrollTrigger, Lenis (desktop), Framer Motion (nav/modal) |
-| Content | Hardcoded JS module: `src/data/data.js` |
+
+| Layer     | What it is here                                                     |
+| --------- | ------------------------------------------------------------------- |
+| App       | React 19 SPA (no Next.js, no React Router)                          |
+| Build     | Vite 7 → static `dist/`                                             |
+| Styling   | Tailwind CSS v4 + CSS variables (dark/light)                        |
+| Motion    | GSAP + ScrollTrigger, Lenis (desktop), Framer Motion (nav/modal)    |
+| Content   | Hardcoded JS module: `src/data/data.js`                             |
 | “Backend” | Third-party: Web3Forms submit API + hCaptcha; static assets on host |
-| Deploy | `vite build` + `gh-pages` → GitHub Pages (static hosting) |
+| Deploy    | `vite build` + `gh-pages` → GitHub Pages (static hosting)           |
+
 
 **Important interview framing:** This project is **frontend-first**. Full-stack depth shows up in *integrations* (form POST, captcha, env keys, static asset pipeline), not in your own REST controllers.
 
 ---
 
+
+
 ## 2. Architecture diagrams
+
+
 
 ### 2.1 System overview (production)
 
@@ -73,7 +81,7 @@ Interview-ready guide for **this repo only**: how the frontend works, how it tal
 └──────────────────────────┘
 ```
 
-**Rule to say out loud:** The browser never hits *your* Express/FastAPI server. Secrets that matter for email delivery live in Web3Forms; the public access key is a Vite `VITE_*` env value (acceptable for this pattern; still treat it as semi-public).
+**Rule to say out loud:** The browser never hits *your* Express/FastAPI server. Secrets that matter for email delivery live in Web3Forms; the public access key is a Vite `VITE_`* env value (acceptable for this pattern; still treat it as semi-public).
 
 ### 2.2 Component connection diagram
 
@@ -102,6 +110,8 @@ Data flows one way:
   src/data/data.js  ──import──►  Components (no CMS, no fetch for content)
 ```
 
+
+
 ### 2.3 Service diagram (what each “service” does)
 
 ```text
@@ -124,6 +134,8 @@ Optional / decorative services (client-only):
   • Canvas Structure Flow — particle hero background
 ```
 
+
+
 ### 2.4 Endpoint / network diagram (every real HTTP call)
 
 This app’s network surface is small. Memorize this table for interviews.
@@ -145,13 +157,15 @@ There is **no** `/api/projects`, **no** auth endpoint, **no** database query fro
 
 ---
 
+
+
 ## 3. How each piece connects (simple terms)
 
 Think of the site as **one long page** with a smart shell around it.
 
-1. **`index.html`** loads fonts and mounts React into `#root`.
-2. **`main.jsx`** turns on theme + visit cache, then renders `App`.
-3. **`App.jsx`** is the conductor: preloader → unlock scroll → Lenis → which nav is visible → which section animations may run → CV modal open/close.
+1. `index.html` loads fonts and mounts React into `#root`.
+2. `main.jsx` turns on theme + visit cache, then renders `App`.
+3. `App.jsx` is the conductor: preloader → unlock scroll → Lenis → which nav is visible → which section animations may run → CV modal open/close.
 4. **Each section component** is mostly presentational; it reads constants from `data.js` and animates itself when `ready` / `animate` is true.
 5. **Contact** is the only place that “calls a backend”: validate → cooldown → captcha → `fetch` Web3Forms.
 6. **CV** is not an API: it is a static PDF in `public/CV/` served like any other public file.
@@ -160,95 +174,131 @@ Think of the site as **one long page** with a smart shell around it.
 
 ---
 
+
+
 ## 4. File map (what lives where)
 
 Based on this repository’s `src/` tree (not other projects).
 
 ### Boot & shell
 
-| File | Role in plain English |
-|------|------------------------|
-| `index.html` | Document shell, meta description, Google Fonts link |
-| `src/main.jsx` | React root + ThemeProvider + global CSS |
-| `src/App.jsx` | Layout order, preloader gate, scroll lock, CV modal state |
-| `src/index.css` | Tailwind + theme CSS variables |
-| `vite.config.js` | React plugin, Tailwind plugin, Vitest config |
+
+| File             | Role in plain English                                     |
+| ---------------- | --------------------------------------------------------- |
+| `index.html`     | Document shell, meta description, Google Fonts link       |
+| `src/main.jsx`   | React root + ThemeProvider + global CSS                   |
+| `src/App.jsx`    | Layout order, preloader gate, scroll lock, CV modal state |
+| `src/index.css`  | Tailwind + theme CSS variables                            |
+| `vite.config.js` | React plugin, Tailwind plugin, Vitest config              |
+
+
+
 
 ### Content
 
-| File | Role |
-|------|------|
+
+| File               | Role                                                                                            |
+| ------------------ | ----------------------------------------------------------------------------------------------- |
 | `src/data/data.js` | **Single source of truth** — name, projects, skills, leadership, form options, CV path, socials |
-| `src/data.js` | Short re-export path for imports |
+| `src/data.js`      | Short re-export path for imports                                                                |
+
+
+
 
 ### Components (UI)
 
-| File | Role |
-|------|------|
-| `Hero.jsx` | First viewport: name decode, role, meta, Structure Flow canvas |
-| `Manifesto.jsx` | Sticky manifesto + scroll color scrub; eyes on large screens |
-| `Marquee.jsx` | Infinite capability keywords |
-| `Works.jsx` | Project list, GitHub links, hover previews (desktop), CV CTA |
-| `Stack.jsx` | Skills from `CODE_DATA` + lazy Spline |
-| `Strategy.jsx` | Approach cards (in codebase; may be commented out in App) |
-| `Stats.jsx` | Animated counters |
-| `Leadership.jsx` | Collapsible “beyond the build” timeline |
-| `About.jsx` | Bio with scroll word highlight |
-| `Contact.jsx` | Form UI + hCaptcha + submit |
-| `Footer.jsx` | Links, socials, clocks, compact brand |
-| `Navbar.jsx` / `NavDock.jsx` / `Dock.jsx` | Top nav vs bottom dock |
-| `Preloader.jsx` | First-visit loading screen |
-| `ThemeToggle.jsx` | Light/dark switch |
-| `CvViewerModal.jsx` + CV buttons | Local PDF view/download |
-| `ScrollToTop.jsx`, `SocialLinks.jsx`, `Logo.jsx`, `GibberishText.jsx`, `MouseFollowingEyes.jsx` | Shared chrome / flourish |
+
+| File                                                                                            | Role                                                           |
+| ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `Hero.jsx`                                                                                      | First viewport: name decode, role, meta, Structure Flow canvas |
+| `Manifesto.jsx`                                                                                 | Sticky manifesto + scroll color scrub; eyes on large screens   |
+| `Marquee.jsx`                                                                                   | Infinite capability keywords                                   |
+| `Works.jsx`                                                                                     | Project list, GitHub links, hover previews (desktop), CV CTA   |
+| `Stack.jsx`                                                                                     | Skills from `CODE_DATA` + lazy Spline                          |
+| `Strategy.jsx`                                                                                  | Approach cards (in codebase; may be commented out in App)      |
+| `Stats.jsx`                                                                                     | Animated counters                                              |
+| `Leadership.jsx`                                                                                | Collapsible “beyond the build” timeline                        |
+| `About.jsx`                                                                                     | Bio with scroll word highlight                                 |
+| `Contact.jsx`                                                                                   | Form UI + hCaptcha + submit                                    |
+| `Footer.jsx`                                                                                    | Links, socials, clocks, compact brand                          |
+| `Navbar.jsx` / `NavDock.jsx` / `Dock.jsx`                                                       | Top nav vs bottom dock                                         |
+| `Preloader.jsx`                                                                                 | First-visit loading screen                                     |
+| `ThemeToggle.jsx`                                                                               | Light/dark switch                                              |
+| `CvViewerModal.jsx` + CV buttons                                                                | Local PDF view/download                                        |
+| `ScrollToTop.jsx`, `SocialLinks.jsx`, `Logo.jsx`, `GibberishText.jsx`, `MouseFollowingEyes.jsx` | Shared chrome / flourish                                       |
+
+
+
 
 ### Hooks
 
-| File | Role |
-|------|------|
-| `useLenis.js` | Smooth scroll (desktop); respects unlock + preloader |
-| `useInPageNav.js` | Anchor navigation with offset |
-| `useScrollNav.js` | Swap top navbar ↔ bottom dock |
-| `useThemeScrollSync.js` | Keep ScrollTrigger correct after theme/resize |
-| `useReveal.js` | Section reveal helpers |
+
+| File                    | Role                                                 |
+| ----------------------- | ---------------------------------------------------- |
+| `useLenis.js`           | Smooth scroll (desktop); respects unlock + preloader |
+| `useInPageNav.js`       | Anchor navigation with offset                        |
+| `useScrollNav.js`       | Swap top navbar ↔ bottom dock                        |
+| `useThemeScrollSync.js` | Keep ScrollTrigger correct after theme/resize        |
+| `useReveal.js`          | Section reveal helpers                               |
+
+
+
 
 ### Lib (logic without UI)
 
-| File | Role |
-|------|------|
-| `contactForm.js` | Web3Forms POST, cooldown localStorage |
-| `contactValidation.js` | Client-side field rules |
-| `cv.js` | Preview URL, HEAD check, download helpers |
-| `visitCache.js` | First visit / scroll restore / double-reload reset |
-| `scrollTo.js` | Lenis-aware scrolling |
-| `gsap.js` / `motion.js` / `utils.js` | Animation registration + helpers |
+
+| File                                 | Role                                               |
+| ------------------------------------ | -------------------------------------------------- |
+| `contactForm.js`                     | Web3Forms POST, cooldown localStorage              |
+| `contactValidation.js`               | Client-side field rules                            |
+| `cv.js`                              | Preview URL, HEAD check, download helpers          |
+| `visitCache.js`                      | First visit / scroll restore / double-reload reset |
+| `scrollTo.js`                        | Lenis-aware scrolling                              |
+| `gsap.js` / `motion.js` / `utils.js` | Animation registration + helpers                   |
+
+
+
 
 ### Context & visuals
 
-| File | Role |
-|------|------|
+
+| File                        | Role                                               |
+| --------------------------- | -------------------------------------------------- |
 | `context/ThemeProvider.jsx` | Theme state + `localStorage` key `portfolio-theme` |
-| `shaders/structure-flow/*` | Hero Canvas particle system + performance budget |
+| `shaders/structure-flow/*`  | Hero Canvas particle system + performance budget   |
+
+
+
 
 ### Public assets
 
-| Path | Role |
-|------|------|
-| `public/CV/` | Resume PDF |
-| `public/images/` | Thumbnails / icons |
-| `public/spline/` | Self-hosted Spline scene |
-| `public/favicon.svg` | Favicon |
+
+| Path                 | Role                     |
+| -------------------- | ------------------------ |
+| `public/CV/`         | Resume PDF               |
+| `public/images/`     | Thumbnails / icons       |
+| `public/spline/`     | Self-hosted Spline scene |
+| `public/favicon.svg` | Favicon                  |
+
+
+
 
 ### Quality gate
 
-| Command | Meaning |
-|---------|---------|
-| `npm run test` | Vitest (jsdom; GSAP/Spline/hCaptcha mocked) |
-| `npm run check` | lint + test + build |
+
+| Command         | Meaning                                     |
+| --------------- | ------------------------------------------- |
+| `npm run test`  | Vitest (jsdom; GSAP/Spline/hCaptcha mocked) |
+| `npm run check` | lint + test + build                         |
+
 
 ---
 
+
+
 ## 5. Data schemas
+
+
 
 ### 5.1 Identity / CV (from `data.js`)
 
@@ -259,6 +309,8 @@ Based on this repository’s `src/` tree (not other projects).
   CV: { url: "/CV/Sammit-CV.pdf", fileName: "Sammit-CV.pdf", label: "CV" }
 }
 ```
+
+
 
 ### 5.2 Project item (`PROJECTS[]`)
 
@@ -283,51 +335,69 @@ Updating projects = edit this array + drop an image in `public/images/`. No CMS.
 { name: "frontend" | "backend" | "ai / ml" | ..., items: string[] }
 ```
 
+
+
 ### 5.4 Contact payload (client → Web3Forms)
 
 Built in `submitContactForm(payload, hcaptchaToken)`:
 
-| FormData field | Source |
-|----------------|--------|
-| `access_key` | `VITE_WEB3FORMS_ACCESS_KEY` |
-| `subject` | Derived: `Portfolio inquiry: {topic} from {name}` |
-| `name`, `email`, `topic`, `budget`, `source` | Form fields |
-| `message` | Mapped from `payload.project` |
-| `botcheck` | Empty honeypot |
-| `h-captcha-response` | Token from hCaptcha widget |
+
+| FormData field                               | Source                                            |
+| -------------------------------------------- | ------------------------------------------------- |
+| `access_key`                                 | `VITE_WEB3FORMS_ACCESS_KEY`                       |
+| `subject`                                    | Derived: `Portfolio inquiry: {topic} from {name}` |
+| `name`, `email`, `topic`, `budget`, `source` | Form fields                                       |
+| `message`                                    | Mapped from `payload.project`                     |
+| `botcheck`                                   | Empty honeypot                                    |
+| `h-captcha-response`                         | Token from hCaptcha widget                        |
+
+
+
 
 ### 5.5 Client-only persistence (not a DB)
 
-| Key | Storage | Purpose |
-|-----|---------|---------|
-| `portfolio-theme` | `localStorage` | dark / light |
-| `portfolio_contact_submitted_at` | `localStorage` | 24h submit cooldown |
-| visit / scroll keys | `sessionStorage` (via `visitCache`) | Skip preloader; restore position |
+
+| Key                              | Storage                             | Purpose                          |
+| -------------------------------- | ----------------------------------- | -------------------------------- |
+| `portfolio-theme`                | `localStorage`                      | dark / light                     |
+| `portfolio_contact_submitted_at` | `localStorage`                      | 24h submit cooldown              |
+| visit / scroll keys              | `sessionStorage` (via `visitCache`) | Skip preloader; restore position |
+
 
 ---
 
+
+
 ## 6. External “backend” / endpoints
+
+
 
 ### 6.1 Web3Forms — the contact “API”
 
-| Item | Detail |
-|------|--------|
-| URL | `https://api.web3forms.com/submit` |
-| Method | `POST` |
-| Body | `FormData` (multipart) |
-| Success | JSON with `success: true` |
-| Failure | Throw with `data.message` or generic error |
+
+| Item        | Detail                                           |
+| ----------- | ------------------------------------------------ |
+| URL         | `https://api.web3forms.com/submit`               |
+| Method      | `POST`                                           |
+| Body        | `FormData` (multipart)                           |
+| Success     | JSON with `success: true`                        |
+| Failure     | Throw with `data.message` or generic error       |
 | Side effect | Email delivered to inbox configured in Web3Forms |
+
 
 **Interview analogy:** This is like using Formspree or a serverless function — you outsource “accept form + send email” so you don’t run SMTP or store messages yourself.
 
 ### 6.2 hCaptcha
 
-| Item | Detail |
-|------|--------|
-| Site key | `VITE_HCAPTCHA_SITE_KEY` (Web3Forms free-plan default may be used) |
-| Role | Prove a human before submit |
-| Where verified | Server-side by Web3Forms using the token you append |
+
+| Item           | Detail                                                             |
+| -------------- | ------------------------------------------------------------------ |
+| Site key       | `VITE_HCAPTCHA_SITE_KEY` (Web3Forms free-plan default may be used) |
+| Role           | Prove a human before submit                                        |
+| Where verified | Server-side by Web3Forms using the token you append                |
+
+
+
 
 ### 6.3 Static asset “endpoints”
 
@@ -348,85 +418,119 @@ Anything under `public/` is copied to site root at build time:
 
 ---
 
+
+
 ## 7. End-to-end user journeys
+
+
 
 ### 7.1 First visit
 
-1. `visitCache` sees no visit flag → Preloader shows.  
-2. Scroll locked (`overflow: hidden` + Lenis unlock flag).  
-3. Preloader finishes → `preloaderDone`.  
-4. Hero intro runs → `scrollUnlocked`.  
-5. Lenis + section animations + spacebar scroll enable.  
+1. `visitCache` sees no visit flag → Preloader shows.
+2. Scroll locked (`overflow: hidden` + Lenis unlock flag).
+3. Preloader finishes → `preloaderDone`.
+4. Hero intro runs → `scrollUnlocked`.
+5. Lenis + section animations + spacebar scroll enable.
 6. Visit marked in session storage.
+
+
 
 ### 7.2 Return visit (same tab session)
 
-1. Skip preloader; restore scroll Y.  
+1. Skip preloader; restore scroll Y.
 2. Scroll unlocked immediately.
+
+
 
 ### 7.3 Browse projects
 
-1. Scroll or click nav → `#works` (in-page).  
-2. `Works` reads `PROJECTS` from data.  
+1. Scroll or click nav → `#works` (in-page).
+2. `Works` reads `PROJECTS` from data.
 3. GitHub icon opens external repo; hover preview on large screens (not over the GitHub icon).
+
+
 
 ### 7.4 View / download CV
 
-1. Navbar / Works / Footer / Dock call `openCv` or download helpers.  
-2. Modal iframes `getCvPreviewUrl()` → `/CV/Sammit-CV.pdf`.  
+1. Navbar / Works / Footer / Dock call `openCv` or download helpers.
+2. Modal iframes `getCvPreviewUrl()` → `/CV/Sammit-CV.pdf`.
 3. Download uses `<a download>` for local files.
+
+
 
 ### 7.5 Contact submit
 
-1. Validate fields (`contactValidation.js`).  
-2. Check 24h cooldown (`canSubmitContactForm`).  
-3. Complete hCaptcha → token.  
-4. `submitContactForm` → Web3Forms.  
+1. Validate fields (`contactValidation.js`).
+2. Check 24h cooldown (`canSubmitContactForm`).
+3. Complete hCaptcha → token.
+4. `submitContactForm` → Web3Forms.
 5. On success → `markContactFormSubmitted()`.
+
+
 
 ### 7.6 Theme toggle
 
-1. `ThemeToggle` → `toggleTheme()`.  
-2. `html.light` class + `data-theme` + `theme-color` meta.  
+1. `ThemeToggle` → `toggleTheme()`.
+2. `html.light` class + `data-theme` + `theme-color` meta.
 3. Persist `portfolio-theme` in `localStorage`.
 
 ---
 
+
+
 ## 8. Interview explanations (simple terms)
+
+
 
 ### “Walk me through the architecture.”
 
 > It’s a Vite + React SPA. One `App` shell, section components, and a single data module. Motion is GSAP/Lenis on the client. The only write-path to the outside world is the contact form posting to Web3Forms with an hCaptcha token. Everything else is static files.
 
+
+
 ### “How does frontend connect to backend?”
 
 > There isn’t a custom backend in this repo. Content is compiled into the JS bundle from `data.js`. Contact is a third-party form API. CV and images are static assets on the same origin as the site.
+
+
 
 ### “Why not Next.js?”
 
 > A portfolio is mostly marketing content + interactions. Vite SPA keeps the build simple, deploy is static files, and I didn’t need SSR for authenticated app routes. SEO is handled with solid `index.html` meta (and can be extended with prerender/OG tags if needed).
 
+
+
 ### “How do you update projects without editing markup?”
 
 > I don’t put project copy inside JSX lists by hand each time — I append/edit objects in `PROJECTS` inside `src/data/data.js` and add a thumbnail under `public/images/`. Components map over that array.
+
+
 
 ### “Dark mode?”
 
 > React context (`ThemeProvider`) toggles a class on `<html>`, CSS variables swap the palette, preference is saved in `localStorage`.
 
+
+
 ### “Animations — performance?”
 
 > GSAP drives scroll-linked work; Lenis only on fine pointers (phones use native scroll). Spline is lazy in Stack. Hero Structure Flow unmounts/budgets work when you’re not on the hero. Reduced-motion / return-visit paths skip heavy intro where appropriate.
 
+
+
 ### “Did you write tests?”
 
 > Yes — Vitest + Testing Library. Contact validation/submit helpers, CV helpers, visit cache, several components. Mocks keep GSAP/Spline/captcha out of jsdom. `npm run check` is the CI-style gate.
+
+
 
 ### “What’s the deploy flow?”
 
 > `npm run build` outputs `dist/`. `npm run deploy` runs `gh-pages -d dist` (after `predeploy` build). Hosting is static GitHub Pages (custom domain can point at it — e.g. sammit.com.np).
 
 ---
+
+
 
 ## 9. Master question bank — Sept 10
 
@@ -437,15 +541,19 @@ Anything under `public/` is copied to site root at build time:
 
 Questions are grouped by the company’s stated discussion areas, then by project depth, then by difficulty.
 
-| Tag | Meaning |
-|-----|---------|
-| **[High]** | Very likely given the brief (“walk through one project in detail,” frontend craft, deploy, forms). |
-| **[Med]** | Plausible follow-up once they like an answer. |
-| **[Gap]** | Probes something you may not have shipped in *this* repo — answer honestly and bridge to how you’d add it. |
+
+| Tag        | Meaning                                                                                                    |
+| ---------- | ---------------------------------------------------------------------------------------------------------- |
+| **[High]** | Very likely given the brief (“walk through one project in detail,” frontend craft, deploy, forms).         |
+| **[Med]**  | Plausible follow-up once they like an answer.                                                              |
+| **[Gap]**  | Probes something you may not have shipped in *this* repo — answer honestly and bridge to how you’d add it. |
+
 
 A couple of these (deploy flow, contact form backend, SEO) double as backdoor full-stack questions even though the site is mostly static — have a **real** answer ready, not “it’s just static.”
 
 ---
+
+
 
 ### 9A. Tech & build choices (portfolio)
 
@@ -475,6 +583,8 @@ A couple of these (deploy flow, contact form backend, SEO) double as backdoor fu
 
 ---
 
+
+
 ### 9B. Design & UX
 
 **[High] Walk through design decisions — layout, color, typography.**
@@ -503,6 +613,8 @@ A couple of these (deploy flow, contact form backend, SEO) double as backdoor fu
 
 ---
 
+
+
 ### 9C. Performance & SEO
 
 **[High] Lighthouse / what did you optimize?**
@@ -522,6 +634,8 @@ A couple of these (deploy flow, contact form backend, SEO) double as backdoor fu
 **Answer:** Not a first-class integration in this repo today. If asked: I’d add a privacy-light option (Plausible/Umami) or GA4 with consent — know *that* you don’t currently measure funnels, and that contact submissions are the main conversion signal via email.
 
 ---
+
+
 
 ### 9D. Code quality & structure
 
@@ -543,6 +657,8 @@ A couple of these (deploy flow, contact form backend, SEO) double as backdoor fu
 
 ---
 
+
+
 ### 9E. Content & functionality
 
 **[High] Working contact form — how does submission work?**
@@ -563,11 +679,14 @@ A couple of these (deploy flow, contact form backend, SEO) double as backdoor fu
 
 ---
 
+
+
 ### 9F. Reflection / trade-offs
 
 **[High] What would you rebuild differently today?**
 
 **Possible strong answers (pick what you believe):**
+
 - Stronger OG/SEO story (even static `og:image`).
 - Optional MDX case-study routes if deep project writeups matter.
 - Stricter env hygiene (no fallback keys in source).
@@ -582,6 +701,8 @@ A couple of these (deploy flow, contact form backend, SEO) double as backdoor fu
 **Answer:** Third-party form API vs owning a backend — faster ship, less ops, less control over spam/storage/rate limits. Motion-heavy storytelling vs maximal Lighthouse purity — I optimized the expensive bits rather than removing personality.
 
 ---
+
+
 
 ### 9G. Company product context — AI Counselor (discussion surface)
 
@@ -615,17 +736,23 @@ Bridge honestly: “My portfolio proves UI systems, motion, form integrations, a
 
 ---
 
+
+
 ### 9H. Full-stack “backdoor” prompts (have a crisp answer)
 
-| Prompt | Portfolio-grounded answer |
-|--------|---------------------------|
-| “Where’s the API?” | Web3Forms `POST /submit`; static files for CV/images. |
-| “Where’s the database?” | None for content. Browser storage for theme/cooldown/visit only. |
+
+| Prompt                              | Portfolio-grounded answer                                                                                                                                  |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| “Where’s the API?”                  | Web3Forms `POST /submit`; static files for CV/images.                                                                                                      |
+| “Where’s the database?”             | None for content. Browser storage for theme/cooldown/visit only.                                                                                           |
 | “How would you add a real backend?” | Small serverless function (verify captcha, send email, hide keys) or Express/FastAPI + DB for a guestbook/case studies; keep Vite or move to Next for SSR. |
-| “CI?” | `npm run check` locally; extend with GitHub Actions on PR (lint/test/build) before `gh-pages` or Pages deploy action. |
-| “Secrets?” | `VITE_*` are public in the client bundle — never put private SMTP passwords there; Web3Forms owns the mail secret server-side. |
+| “CI?”                               | `npm run check` locally; extend with GitHub Actions on PR (lint/test/build) before `gh-pages` or Pages deploy action.                                      |
+| “Secrets?”                          | `VITE_*` are public in the client bundle — never put private SMTP passwords there; Web3Forms owns the mail secret server-side.                             |
+
 
 ---
+
+
 
 ### 9I. Rapid-fire checklist before Sept 10
 
@@ -639,6 +766,8 @@ Bridge honestly: “My portfolio proves UI systems, motion, form integrations, a
 - [ ] Prepare one “what I’d add next” that shows product taste, not just tech novelty.
 
 ---
+
+
 
 ## Quick reference — say this in under 30 seconds
 

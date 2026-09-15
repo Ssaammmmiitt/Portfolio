@@ -348,10 +348,10 @@ export default function Contact({ ready }) {
                   ) : null}
                 </div>
               ) : (
-                <div className="flex w-full justify-center">
+                <div className="contact-submit-wrap flex w-full justify-center">
                   <button
                     type="submit"
-                    className="contact-submit reveal-item inline-flex h-10 items-center justify-center rounded-full px-4 text-sm font-extrabold tracking-wide uppercase sm:h-10 sm:px-4 md:h-10 md:px-4 lg:h-9 lg:px-3.5 lg:text-[0.8125rem]"
+                    className="contact-submit reveal-item inline-flex min-h-11 items-center justify-center rounded-full px-8 text-[0.9375rem] font-extrabold tracking-[0.14em] uppercase sm:min-h-12 sm:px-10 sm:text-base sm:tracking-[0.16em] md:min-h-[3.25rem] md:px-12"
                   >
                     submit
                   </button>

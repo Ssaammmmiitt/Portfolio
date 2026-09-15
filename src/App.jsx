@@ -36,14 +36,9 @@ export default function App() {
     };
   });
   const [preloaderDone, setPreloaderDone] = useState(returning);
-  const [scrollUnlocked, setScrollUnlocked] = useState(returning);
   const [cvOpen, setCvOpen] = useState(false);
   const [cvCollapsed, setCvCollapsed] = useState(false);
   const progressRef = useRef(null);
-
-  const unlockScroll = useCallback(() => {
-    setScrollUnlocked(true);
-  }, []);
 
   const openCv = useCallback(() => {
     setCvOpen(true);
@@ -70,25 +65,18 @@ export default function App() {
     }
   }, [returning, savedScroll]);
 
-  useLenis(preloaderDone, savedScroll, scrollUnlocked);
+  useLenis(preloaderDone, savedScroll);
   useInPageNav(preloaderDone);
   const { showTopNav, showDock } = useScrollNav(preloaderDone);
   useThemeScrollSync();
 
   useEffect(() => {
-    // Hide overflow until preloader finishes AND hero intro unlocks scroll.
-    document.body.style.overflow = preloaderDone && scrollUnlocked ? "" : "hidden";
+    // Hide overflow only while the preloader is visible.
+    document.body.style.overflow = preloaderDone ? "" : "hidden";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [preloaderDone, scrollUnlocked]);
-
-  useEffect(() => {
-    if (!preloaderDone || returning || scrollUnlocked) return;
-    // Safety unlock if hero intro callback is delayed/missed.
-    const id = window.setTimeout(unlockScroll, 3200);
-    return () => window.clearTimeout(id);
-  }, [preloaderDone, returning, scrollUnlocked, unlockScroll]);
+  }, [preloaderDone]);
 
   useEffect(() => {
     if (!preloaderDone || !progressRef.current) return;
@@ -125,7 +113,7 @@ export default function App() {
       <NavDock visible={preloaderDone && showDock} />
       <ScrollToTop enabled={preloaderDone} />
       <main className="flex flex-col">
-        <Hero animate={preloaderDone} instant={returning} onIntroReady={unlockScroll} />
+        <Hero animate={preloaderDone} instant={returning} />
         <Manifesto ready={preloaderDone} />
         <Marquee />
         <Works ready={preloaderDone} onViewCv={handleViewCv} />

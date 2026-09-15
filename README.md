@@ -209,7 +209,7 @@ Handled early by `src/lib/visitCache.js` (imported from `main.jsx`):
 - **Return visit** — skip preloader; restore scroll  
 - **Double reload at top** — clears visit/scroll and treats as first visit  
 - **Browser scroll restoration** — disabled; Lenis / manual scroll owns position  
-- **Spacebar** — scrolls the page (not theme toggle); enabled after hero intro on first visit  
+- **Spacebar** — scrolls the page (not theme toggle); available once the preloader finishes  
 
 ---
 
