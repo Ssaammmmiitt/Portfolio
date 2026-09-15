@@ -81,18 +81,22 @@ function LeadershipTimeline({ ready, open, listRef, trackFillRef }) {
   useLayoutEffect(() => {
     if (!ready || !open || !listRef.current) return;
 
-    const alreadySeen = isAlreadyInView(listRef.current);
+    const reduceMotion = prefersReducedMotion();
+    const entryItems = gsap.utils.toArray(".leadership-item");
+    const entryNodes = gsap.utils.toArray(".leadership-node");
 
     const ctx = gsap.context(() => {
-      const items = gsap.utils.toArray(".leadership-item");
       const trackFill = trackFillRef.current;
 
-      if (prefersReducedMotion() || alreadySeen) {
+      if (reduceMotion) {
         if (trackFill) gsap.set(trackFill, { scaleY: 1 });
-        gsap.set(items, { opacity: 1, y: 0 });
-        gsap.set(".leadership-node", { scale: 1, opacity: 1 });
+        gsap.set(entryItems, { opacity: 1, y: 0 });
+        gsap.set(entryNodes, { scale: 1, opacity: 1 });
         return;
       }
+
+      gsap.set(entryItems, { opacity: 0, y: 24 });
+      gsap.set(entryNodes, { scale: 0.4, opacity: 0 });
 
       if (trackFill) {
         gsap.set(trackFill, { scaleY: 0, transformOrigin: "top center" });
@@ -101,46 +105,70 @@ function LeadershipTimeline({ ready, open, listRef, trackFillRef }) {
           ease: "none",
           scrollTrigger: {
             trigger: listRef.current,
-            start: "top 78%",
-            end: "bottom 70%",
+            start: "top 80%",
+            end: "bottom 55%",
             scrub: 0.45,
+            invalidateOnRefresh: true,
           },
         });
       }
 
-      gsap.fromTo(
-        items,
-        { opacity: 0, y: 24 },
-        {
+      entryItems.forEach((item, i) => {
+        const node = entryNodes[i];
+        const alreadyVisible = isAlreadyInView(item, 0.92);
+
+        if (alreadyVisible) {
+          gsap.to(item, {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            delay: i * 0.1,
+            ease: "power3.out",
+            overwrite: true,
+          });
+          if (node) {
+            gsap.to(node, {
+              scale: 1,
+              opacity: 1,
+              duration: 0.5,
+              delay: i * 0.1,
+              ease: "back.out(2)",
+              overwrite: true,
+            });
+          }
+          return;
+        }
+
+        gsap.to(item, {
           opacity: 1,
           y: 0,
-          duration: 0.85,
-          stagger: 0.12,
+          duration: 0.75,
           ease: "power3.out",
+          overwrite: "auto",
           scrollTrigger: {
-            trigger: listRef.current,
-            start: "top 82%",
+            trigger: item,
+            start: "top 90%",
             once: true,
+            invalidateOnRefresh: true,
           },
-        }
-      );
+        });
 
-      gsap.fromTo(
-        ".leadership-node",
-        { scale: 0.4, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.55,
-          stagger: 0.12,
-          ease: "back.out(2)",
-          scrollTrigger: {
-            trigger: listRef.current,
-            start: "top 82%",
-            once: true,
-          },
+        if (node) {
+          gsap.to(node, {
+            scale: 1,
+            opacity: 1,
+            duration: 0.55,
+            ease: "back.out(2)",
+            overwrite: "auto",
+            scrollTrigger: {
+              trigger: item,
+              start: "top 90%",
+              once: true,
+              invalidateOnRefresh: true,
+            },
+          });
         }
-      );
+      });
     }, listRef);
 
     syncScrollTriggers();
@@ -175,18 +203,26 @@ export default function Leadership({ ready }) {
   const trackFillRef = useRef(null);
   const panelRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const [panelSettled, setPanelSettled] = useState(false);
   const reduceMotion = prefersReducedMotion();
 
   useReveal(root, ready);
 
   useEffect(() => {
     syncScrollTriggers();
-  }, [open]);
+  }, [open, panelSettled]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      setPanelSettled(false);
+      return;
+    }
 
-    const timer = window.setTimeout(() => syncScrollTriggers(), reduceMotion ? 0 : 520);
+    const timer = window.setTimeout(() => {
+      setPanelSettled(true);
+      syncScrollTriggers();
+    }, reduceMotion ? 0 : 520);
+
     return () => window.clearTimeout(timer);
   }, [open, reduceMotion]);
 
@@ -252,7 +288,13 @@ export default function Leadership({ ready }) {
             open ? "mt-8 grid-rows-[1fr] sm:mt-10 md:mt-12" : "mt-0 grid-rows-[0fr]"
           )}
         >
-          <div className="min-h-0 overflow-hidden">
+          <div
+            className={cn(
+              "min-h-0",
+              // Keep clipped while expanding/collapsing; unlock after settle so ScrollTrigger works.
+              panelSettled ? "overflow-visible" : "overflow-hidden"
+            )}
+          >
             {open ? (
               <div className="leadership-panel-open rounded-2xl px-3 py-5 sm:px-4 sm:py-6 md:px-5 md:py-7">
                 <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-x-16 xl:gap-x-20">
@@ -264,7 +306,7 @@ export default function Leadership({ ready }) {
                   </div>
                   <div className="min-w-0 lg:col-span-8 xl:col-span-9">
                     <LeadershipTimeline
-                      ready={ready}
+                      ready={ready && panelSettled}
                       open={open}
                       listRef={listRef}
                       trackFillRef={trackFillRef}

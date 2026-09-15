@@ -1057,6 +1057,28 @@ html.light .strategy-toggle:hover {
   box-shadow: var(--theme-strategy-shadow);
 }
 
+/* Hidden until scroll/open reveal runs (avoids a flash while the panel expands). */
+.leadership-panel-open .leadership-item,
+.leadership-panel-open .leadership-node {
+  opacity: 0;
+}
+
+.leadership-panel-open .leadership-track-fill {
+  transform: scaleY(0);
+  transform-origin: top center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .leadership-panel-open .leadership-item,
+  .leadership-panel-open .leadership-node {
+    opacity: 1;
+  }
+
+  .leadership-panel-open .leadership-track-fill {
+    transform: scaleY(1);
+  }
+}
+
 .leadership-highlight {
   border-color: var(--theme-strategy-border-hover);
   background: color-mix(in srgb, var(--theme-strategy-bg-hover) 88%, var(--theme-accent) 12%);
