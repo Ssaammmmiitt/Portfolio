@@ -24,7 +24,7 @@ function LeadershipHeader({ compact = false, open = false }) {
             compact ? "mt-3 sm:mt-4" : "mt-4 sm:mt-5"
           )}
         >
-          Hackathons, competitions, and campus events where I help teams ship and communities show up.
+          Hackathons, competitions, and campus events.
         </p>
       ) : null}
     </div>
