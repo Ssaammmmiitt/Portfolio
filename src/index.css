@@ -192,6 +192,7 @@ html.light {
   #stack,
   #about,
   #leadership,
+  #certificates,
   #contact {
     scroll-margin-top: max(5.5rem, calc(env(safe-area-inset-top) + 4.25rem));
   }
@@ -1095,6 +1096,99 @@ html.light .strategy-toggle:hover {
 
 .leadership-event {
   color: var(--theme-leadership-event);
+}
+
+.certificates-toggle {
+  background: var(--theme-strategy-bg);
+  border: 1px solid var(--theme-strategy-border);
+  box-shadow: var(--theme-strategy-shadow);
+}
+
+.certificates-toggle:hover,
+.certificates-toggle[aria-expanded="true"] {
+  background: var(--theme-strategy-bg-hover);
+  border-color: var(--theme-strategy-border-hover);
+}
+
+.certificates-panel-open {
+  border: 1px solid var(--theme-strategy-border);
+  background: var(--theme-strategy-bg);
+  box-shadow: var(--theme-strategy-shadow);
+}
+
+.certificates-panel-open .certificate-card {
+  opacity: 0;
+  background: var(--theme-strategy-bg);
+  box-shadow: var(--theme-strategy-shadow);
+}
+
+.certificate-card-scrim {
+  background:
+    linear-gradient(
+      to top,
+      color-mix(in srgb, var(--theme-background) 92%, transparent) 0%,
+      color-mix(in srgb, var(--theme-background) 72%, transparent) 38%,
+      color-mix(in srgb, var(--theme-background) 28%, transparent) 68%,
+      color-mix(in srgb, var(--theme-background) 10%, transparent) 100%
+    ),
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--theme-background) 55%, transparent) 0%,
+      transparent 55%
+    );
+}
+
+html.light .certificate-card-scrim {
+  background:
+    linear-gradient(
+      to top,
+      color-mix(in srgb, var(--theme-background) 94%, transparent) 0%,
+      color-mix(in srgb, var(--theme-background) 78%, transparent) 40%,
+      color-mix(in srgb, var(--theme-background) 35%, transparent) 70%,
+      color-mix(in srgb, var(--theme-background) 12%, transparent) 100%
+    ),
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--theme-background) 48%, transparent) 0%,
+      transparent 58%
+    );
+}
+
+.certificate-card-preview {
+  background: var(--theme-muted);
+}
+
+.certificate-card-preview-frame {
+  filter: saturate(0.92) contrast(1.02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .certificates-panel-open .certificate-card {
+    opacity: 1;
+  }
+}
+
+html.light .certificate-card:hover {
+  box-shadow: 0 14px 36px color-mix(in srgb, #0f766e 12%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .certificate-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--theme-strategy-border-hover);
+  }
+
+  .certificate-card:hover .certificate-card-preview-frame {
+    opacity: 1;
+    filter: saturate(1) contrast(1.04);
+  }
+}
+
+@media (max-width: 479px) {
+  .certificate-card-preview-frame {
+    width: 180%;
+    height: 150%;
+  }
 }
 
 .work-list {

@@ -13,8 +13,8 @@ describe("App", () => {
     renderWithProviders(<App />);
 
     expect(screen.getByRole("banner")).toBeInTheDocument();
-    expect(document.getElementById("manifesto")).toBeInTheDocument();
     expect(document.getElementById("works")).toBeInTheDocument();
+    expect(document.getElementById("certificates")).toBeInTheDocument();
     expect(document.getElementById("stack")).toBeInTheDocument();
     expect(document.getElementById("contact")).toBeInTheDocument();
 

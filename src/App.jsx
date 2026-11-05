@@ -3,13 +3,13 @@ import Navbar from "./Components/Navbar.jsx";
 import NavDock from "./Components/NavDock.jsx";
 import ScrollToTop from "./Components/ScrollToTop.jsx";
 import Hero from "./Components/Hero.jsx";
-import Manifesto from "./Components/Manifesto.jsx";
 import Marquee from "./Components/Marquee.jsx";
 import Stack from "./Components/Stack.jsx";
 import Stats from "./Components/Stats.jsx";
 import Works from "./Components/Works.jsx";
 import About from "./Components/About.jsx";
 import Leadership from "./Components/Leadership.jsx";
+import Certificates from "./Components/Certificates.jsx";
 import Contact from "./Components/Contact.jsx";
 import Footer from "./Components/Footer.jsx";
 import Preloader from "./Components/Preloader.jsx";
@@ -114,13 +114,14 @@ export default function App() {
       <ScrollToTop enabled={preloaderDone} />
       <main className="flex flex-col">
         <Hero animate={preloaderDone} instant={returning} />
-        <Manifesto ready={preloaderDone} />
+        {/* <Manifesto ready={preloaderDone} /> */}
         <Marquee />
         <Works ready={preloaderDone} onViewCv={handleViewCv} />
         <Stack ready={preloaderDone} />
         {/* <Strategy ready={preloaderDone} /> */}
         <Stats ready={preloaderDone} />
         <Leadership ready={preloaderDone} />
+        <Certificates ready={preloaderDone} />
         <About ready={preloaderDone} />
         <Contact ready={preloaderDone} />
       </main>

@@ -336,6 +336,54 @@ export const LEADERSHIP = [
 ];
 
 // ─────────────────────────────────────────────
+// CERTIFICATES
+// PDFs live in public/certs/ — keep titles accurate for interview talk-track.
+// ─────────────────────────────────────────────
+
+export const CERTIFICATES = [
+  {
+    id: "intro-sql",
+    title: "Introduction to SQL",
+    issuer: "DataCamp",
+    category: "SQL",
+    file: "/certs/certificate.pdf",
+    fileName: "Sammit-Introduction-to-SQL.pdf",
+  },
+  {
+    id: "intermediate-sql",
+    title: "Intermediate SQL",
+    issuer: "DataCamp",
+    category: "SQL",
+    file: "/certs/certificate_intermediate_sql.pdf",
+    fileName: "Sammit-Intermediate-SQL.pdf",
+  },
+  {
+    id: "joining-data",
+    title: "Joining Data in SQL",
+    issuer: "DataCamp",
+    category: "SQL",
+    file: "/certs/joining_data.pdf",
+    fileName: "Sammit-Joining-Data-in-SQL.pdf",
+  },
+  {
+    id: "snowflake",
+    title: "Introduction to Snowflake",
+    issuer: "DataCamp",
+    category: "Data platforms",
+    file: "/certs/Intro to snowflake.pdf",
+    fileName: "Sammit-Introduction-to-Snowflake.pdf",
+  },
+  {
+    id: "data-warehousing",
+    title: "Data Warehousing",
+    issuer: "DataCamp",
+    category: "Data",
+    file: "/certs/Data warehousing.pdf",
+    fileName: "Sammit-Data-Warehousing.pdf",
+  },
+];
+
+// ─────────────────────────────────────────────
 // ABOUT
 // More concise and professional than a long life story.
 // ─────────────────────────────────────────────

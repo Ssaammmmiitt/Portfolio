@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   BUDGETS,
+  CERTIFICATES,
   CODE_DATA,
   CONTACT_TOPICS,
   EMAIL,
@@ -35,6 +36,9 @@ describe("site data", () => {
     );
     expect(PROJECTS.every((project) => project.summary?.length > 0)).toBe(true);
     expect(LEADERSHIP.length).toBe(5);
+    expect(CERTIFICATES.length).toBe(5);
+    expect(CERTIFICATES.every((cert) => cert.file?.startsWith("/certs/"))).toBe(true);
+    expect(CERTIFICATES.every((cert) => cert.title?.length > 0)).toBe(true);
     expect(STATS.length).toBeGreaterThan(0);
     expect(CODE_DATA.length).toBeGreaterThan(0);
     expect(BUDGETS.length).toBeGreaterThan(0);
